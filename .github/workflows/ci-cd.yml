@@ -1,0 +1,171 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install frontend dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: Run frontend tests
+      run: |
+        cd frontend
+        npm test -- --coverage --watchAll=false
+    
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        pip install -r requirements.txt
+    
+    - name: Run backend tests
+      run: |
+        cd backend
+        python -m pytest tests/ -v --cov=. --cov-report=xml
+      env:
+        FLASK_ENV: testing
+
+  build-desktop:
+    runs-on: windows-latest
+    needs: [test-frontend, test-backend]
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: desktop-app/package-lock.json
+    
+    - name: Install desktop app dependencies
+      run: |
+        cd desktop-app
+        npm ci
+    
+    - name: Build desktop app
+      run: |
+        cd desktop-app
+        npm run build:win
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Upload Windows artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-desktop-app
+        path: desktop-app/dist/*.exe
+
+  deploy-web:
+    runs-on: ubuntu-latest
+    needs: [test-frontend, test-backend]
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install and build frontend
+      run: |
+        cd frontend
+        npm ci
+        npm run build
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./frontend/build
+        cname: whowantstobeashillonaire.com
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [test-frontend, test-backend]
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Build and push Docker images
+      run: |
+        docker-compose -f docker-compose.yml build
+        docker tag whowantstobeashillonaire-frontend ghcr.io/snapwave333/whowantstobeashillonaire-frontend:latest
+        docker tag whowantstobeashillonaire-backend ghcr.io/snapwave333/whowantstobeashillonaire-backend:latest
+        docker push ghcr.io/snapwave333/whowantstobeashillonaire-frontend:latest
+        docker push ghcr.io/snapwave333/whowantstobeashillonaire-backend:latest
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-desktop, deploy-web, docker-build]
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        body: |
+          ## What's Changed
+          - Automated release from main branch
+          - Desktop app build for Windows
+          - Web deployment to GitHub Pages
+          - Docker images published to GHCR
+          
+          ## Downloads
+          - Windows Desktop App: Available in artifacts
+          - Web Version: https://snapwave333.github.io/whowantstobeashillonaire
+          
+          Full Changelog: https://github.com/Snapwave333/whowantstobeashillonaire/commits/v${{ github.run_number }}
+        draft: false
+        prerelease: false
