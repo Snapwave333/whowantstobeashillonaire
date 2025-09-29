@@ -1,0 +1,101 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: desktop-app/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd desktop-app
+        npm ci
+        
+    - name: Build React app
+      run: |
+        cd desktop-app
+        npm run build:react
+        
+    - name: Build Electron app (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd desktop-app
+        npm run build:win
+        
+    - name: Build Electron app (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        cd desktop-app
+        npm run build:mac
+        
+    - name: Build Electron app (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        cd desktop-app
+        npm run build:linux
+        
+    - name: Upload Windows artifacts
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-build
+        path: desktop-app/dist/who-wants-to-be-a-shillionaire-win32-x64/
+        
+    - name: Upload macOS artifacts
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-build
+        path: desktop-app/dist/who-wants-to-be-a-shillionaire-darwin-x64/
+        
+    - name: Upload Linux artifacts
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-build
+        path: desktop-app/dist/who-wants-to-be-a-shillionaire-linux-x64/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          windows-build/**/*
+          macos-build/**/*
+          linux-build/**/*
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

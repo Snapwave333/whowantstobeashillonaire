@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to Be a Shillonair</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-logo">WHO WANTS TO BE A SHILLIONAIRE</div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
+
+    <div id="game-container">
+        <!-- Host Camera Section -->
+        <div id="host-section">
+            <div class="host-placeholder">
+                <img src="assets/images/custom/host_avatar.png" alt="Host Avatar" class="host-avatar-img">
+                <div class="host-label">LIVE HOST</div>
+            </div>
+        </div>
+
+        <!-- Pump Ladder -->
+        <div id="pump-ladder">
+            <h3>PUMP LADDER</h3>
+            <div class="ladder-container">
+                <div class="tier" data-tier="15">
+                    <span class="tier-number">15</span>
+                    <span class="crypto-amount">$45,000</span>
+                    <div class="safe-haven">SAFE</div>
+                </div>
+                <div class="tier" data-tier="14">
+                    <span class="tier-number">14</span>
+                    <span class="crypto-amount">$22,500</span>
+                </div>
+                <div class="tier" data-tier="13">
+                    <span class="tier-number">13</span>
+                    <span class="crypto-amount">$11,250</span>
+                </div>
+                <div class="tier" data-tier="12">
+                    <span class="tier-number">12</span>
+                    <span class="crypto-amount">$5,625</span>
+                </div>
+                <div class="tier" data-tier="11">
+                    <span class="tier-number">11</span>
+                    <span class="crypto-amount">$2,812</span>
+                </div>
+                <div class="tier" data-tier="10">
+                    <span class="tier-number">10</span>
+                    <span class="crypto-amount">$1,406</span>
+                    <div class="safe-haven">SAFE</div>
+                </div>
+                <div class="tier" data-tier="9">
+                    <span class="tier-number">9</span>
+                    <span class="crypto-amount">$703</span>
+                </div>
+                <div class="tier" data-tier="8">
+                    <span class="tier-number">8</span>
+                    <span class="crypto-amount">$350</span>
+                </div>
+                <div class="tier" data-tier="7">
+                    <span class="tier-number">7</span>
+                    <span class="crypto-amount">$175</span>
+                </div>
+                <div class="tier" data-tier="6">
+                    <span class="tier-number">6</span>
+                    <span class="crypto-amount">$87</span>
+                </div>
+                <div class="tier" data-tier="5">
+                    <span class="tier-number">5</span>
+                    <span class="crypto-amount">$1,000</span>
+                    <div class="safe-haven">SAFE</div>
+                </div>
+                <div class="tier" data-tier="4">
+                    <span class="tier-number">4</span>
+                    <span class="crypto-amount">$500</span>
+                </div>
+                <div class="tier" data-tier="3">
+                    <span class="tier-number">3</span>
+                    <span class="crypto-amount">$300</span>
+                </div>
+                <div class="tier" data-tier="2">
+                    <span class="tier-number">2</span>
+                    <span class="crypto-amount">$200</span>
+                </div>
+                <div class="tier" data-tier="1">
+                    <span class="tier-number">1</span>
+                    <span class="crypto-amount">$100</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <div id="game-area">
+            <!-- Question Display -->
+            <div id="question-section">
+                <div id="question-text">What is the capital of France?</div>
+                <div id="answers">
+                    <div class="answer" data-letter="A">A) London</div>
+                    <div class="answer" data-letter="B">B) Berlin</div>
+                    <div class="answer" data-letter="C">C) Paris</div>
+                    <div class="answer" data-letter="D">D) Madrid</div>
+                </div>
+            </div>
+
+            <!-- Current Prize and Lifelines -->
+            <div id="bottom-section">
+                <div id="lifelines">
+                    <div class="lifeline" data-lifeline="50/50">
+                        <span class="lifeline-icon">50/50</span>
+                        <span class="lifeline-label">HODL</span>
+                        <span class="lifeline-status">AVAILABLE</span>
+                    </div>
+                    <div class="lifeline" data-lifeline="ask">
+                        <span class="lifeline-icon">ASK</span>
+                        <span class="lifeline-label">DISCORD</span>
+                        <span class="lifeline-status">AVAILABLE</span>
+                    </div>
+                    <div class="lifeline" data-lifeline="phone">
+                        <span class="lifeline-icon">PHONE</span>
+                        <span class="lifeline-label">SCAMMER</span>
+                        <span class="lifeline-status">AVAILABLE</span>
+                    </div>
+                </div>
+
+                <div id="current-prize">
+                    <div class="prize-amount">0.1778 BTC</div>
+                    <div class="prize-usd">$8,000 USD</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Panel (Initially Hidden) -->
+    <div id="settings-panel" class="hidden">
+        <div class="settings-content">
+            <h2>PUMP MASTER CONTROL PANEL</h2>
+
+            <div class="setting-group">
+                <label>Prize Scale Multiplier:</label>
+                <input type="range" id="prize-multiplier" min="0.1" max="5" step="0.1" value="1.0">
+                <span id="multiplier-value">1.0x</span>
+            </div>
+
+            <div class="setting-group">
+                <label>Number of Tiers:</label>
+                <input type="number" id="num-tiers" min="10" max="15" value="15">
+            </div>
+
+            <div class="setting-group">
+                <label>Safe Havens:</label>
+                <div id="safe-haven-tiers">
+                    <label><input type="checkbox" value="5" checked> Tier 5</label>
+                    <label><input type="checkbox" value="10" checked> Tier 10</label>
+                    <label><input type="checkbox" value="15"> Tier 15</label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Difficulty:</label>
+                <select id="difficulty">
+                    <option value="general_easy">General Easy</option>
+                    <option value="general_medium" selected>General Medium</option>
+                    <option value="general_hard">General Hard</option>
+                    <option value="pop_culture">Pop Culture</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>Cryptocurrencies:</label>
+                <div id="crypto-selection">
+                    <label><input type="checkbox" value="BTC" checked> BTC</label>
+                    <label><input type="checkbox" value="ETH" checked> ETH</label>
+                    <label><input type="checkbox" value="SHILL" checked> SHILL</label>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="apply-settings">APPLY SETTINGS</button>
+                <button id="reset-settings">RESET</button>
+                <button id="close-settings">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Button -->
+    <button id="settings-btn">⚙️ PUMP MASTER</button>
+
+    <script>
+        // Hide loading overlay after page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading-overlay').classList.add('hidden');
+            }, 1000); // Show loading for 1 second minimum
+        });
+    </script>
+    <script src="game.js"></script>
+</body>
+</html>

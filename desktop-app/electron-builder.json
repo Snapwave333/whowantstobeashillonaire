@@ -1,0 +1,26 @@
+{
+  "appId": "com.shillionaire.desktop",
+  "productName": "Who Wants to be a Shillionaire",
+  "directories": {
+    "output": "dist"
+  },
+  "files": [
+    "src/**/*",
+    "build/**/*",
+    "assets/**/*",
+    "node_modules/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "assets/",
+      "to": "assets/"
+    }
+  ],
+  "win": {
+    "target": "dir",
+    "icon": "assets/icon.png"
+  },
+  "nsis": false,
+  "portable": false,
+  "compression": "store"
+}

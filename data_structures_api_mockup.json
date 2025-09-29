@@ -1,0 +1,304 @@
+{
+  "api_documentation": {
+    "version": "1.0.0",
+    "description": "API structures for Who Wants to Be a Shillonair game system",
+    "base_url": "https://api.whowantsbeashillonair.com"
+  },
+  "endpoints": {
+    "crypto_prices": {
+      "url": "/api/crypto/prices",
+      "method": "GET",
+      "description": "Get current cryptocurrency prices for prize calculations",
+      "parameters": {
+        "symbols": "Array of crypto symbols (e.g., BTC,ETH,SHILL)",
+        "fiat": "Target fiat currency (default: USD)"
+      },
+      "response_format": {
+        "success": true,
+        "data": {
+          "BTC": {
+            "symbol": "BTC",
+            "price_usd": 45000.50,
+            "price_btc": 1.0,
+            "last_updated": "2025-01-15T10:30:00Z"
+          },
+          "ETH": {
+            "symbol": "ETH",
+            "price_usd": 2500.75,
+            "price_btc": 0.055,
+            "last_updated": "2025-01-15T10:30:00Z"
+          }
+        },
+        "timestamp": "2025-01-15T10:30:00Z"
+      }
+    },
+    "question_bank": {
+      "url": "/api/questions",
+      "method": "GET",
+      "description": "Retrieve questions for the game",
+      "parameters": {
+        "category": "Question category (history, science, pop_culture, etc.)",
+        "difficulty": "Difficulty level (easy, medium, hard)",
+        "limit": "Number of questions to return (default: 10)"
+      },
+      "response_format": {
+        "success": true,
+        "data": {
+          "questions": [
+            {
+              "id": "q_001",
+              "text": "What is the capital of France?",
+              "answers": [
+                "London",
+                "Berlin",
+                "Paris",
+                "Madrid"
+              ],
+              "correct_answer": "Paris",
+              "category": "geography",
+              "difficulty": "easy",
+              "tags": ["capitals", "europe"]
+            }
+          ]
+        }
+      }
+    },
+    "game_session": {
+      "url": "/api/game/session",
+      "method": "POST",
+      "description": "Create or update a game session",
+      "request_format": {
+        "action": "create|update|save",
+        "session_id": "unique_session_identifier",
+        "game_state": "{GAME_STATE_OBJECT}"
+      }
+    }
+  },
+  "data_structures": {
+    "game_state": {
+      "description": "Complete game state object saved/loaded for auto-save functionality",
+      "structure": {
+        "session_id": "string (unique identifier)",
+        "current_tier": "integer (0-15)",
+        "current_prize": {
+          "usd_value": "number",
+          "crypto_amount": "number",
+          "crypto_symbol": "string (BTC, ETH, etc.)"
+        },
+        "safe_havens": "array of integers [5, 10]",
+        "used_lifelines": "array of strings ['50/50', 'AskDiscord', 'PhoneScammer']",
+        "current_question": {
+          "id": "string",
+          "text": "string",
+          "answers": "array of strings",
+          "correct_answer": "string",
+          "category": "string",
+          "difficulty": "string",
+          "tier": "integer",
+          "custom_reveal": {
+            "image_path": "string (optional)",
+            "sound_path": "string (optional)"
+          }
+        },
+        "game_active": "boolean",
+        "is_paused": "boolean",
+        "last_save_time": "timestamp",
+        "discord_poll_results": {
+          "active": "boolean",
+          "results": {
+            "A": "integer (votes)",
+            "B": "integer (votes)",
+            "C": "integer (votes)",
+            "D": "integer (votes)"
+          }
+        },
+        "phone_call_active": "boolean",
+        "pump_ladder": "array of prize objects for all tiers"
+      },
+      "example": {
+        "session_id": "session_abc123",
+        "current_tier": 7,
+        "current_prize": {
+          "usd_value": 8000,
+          "crypto_amount": 0.1778,
+          "crypto_symbol": "BTC"
+        },
+        "safe_havens": [5, 10],
+        "used_lifelines": ["50/50"],
+        "current_question": {
+          "id": "q_456",
+          "text": "Which planet is known as the Red Planet?",
+          "answers": ["Venus", "Mars", "Jupiter", "Saturn"],
+          "correct_answer": "Mars",
+          "category": "science",
+          "difficulty": "medium",
+          "tier": 7
+        },
+        "game_active": true,
+        "is_paused": false,
+        "last_save_time": "2025-01-15T10:30:00Z"
+      }
+    },
+    "game_master_settings": {
+      "description": "Configuration settings from the Pump Master panel",
+      "structure": {
+        "prize_scale_multiplier": "number (1-100+)",
+        "number_of_question_tiers": "integer (10-15)",
+        "safe_haven_tiers": "array of integers",
+        "trivia_difficulty": "string (general_easy, general_medium, general_hard, pop_culture)",
+        "selected_cryptocurrencies": "array of strings",
+        "custom_reveals": "object with tier keys",
+        "auto_save_interval": "integer (seconds)",
+        "sound_settings": {
+          "background_music": "string (file path or url)",
+          "correct_answer_sound": "string",
+          "wrong_answer_sound": "string",
+          "lifeline_sounds": {
+            "fifty_fifty": "string",
+            "ask_discord": "string",
+            "phone_scammer": "string"
+          }
+        },
+        "overlay_settings": {
+          "theme": "string (dark, light, crypto_futuristic)",
+          "show_crypto_prices": "boolean",
+          "animation_speed": "string (slow, normal, fast)"
+        }
+      },
+      "example": {
+        "prize_scale_multiplier": 1.5,
+        "number_of_question_tiers": 15,
+        "safe_haven_tiers": [5, 10],
+        "trivia_difficulty": "general_medium",
+        "selected_cryptocurrencies": ["BTC", "ETH", "SHILL"],
+        "custom_reveals": {
+          "15": {
+            "image_path": "/custom/final_win.jpg",
+            "sound_path": "/sounds/applause.mp3"
+          }
+        },
+        "auto_save_interval": 30,
+        "sound_settings": {
+          "background_music": "/music/quiz_theme.mp3",
+          "correct_answer_sound": "/sounds/correct.mp3",
+          "wrong_answer_sound": "/sounds/wrong.mp3",
+          "lifeline_sounds": {
+            "fifty_fifty": "/sounds/5050.mp3",
+            "ask_discord": "/sounds/ask_chat.mp3",
+            "phone_scammer": "/sounds/phone_ring.mp3"
+          }
+        }
+      }
+    },
+    "question_bank": {
+      "description": "Structure for storing and organizing trivia questions",
+      "structure": {
+        "id": "string (unique identifier)",
+        "text": "string (the question)",
+        "answers": "array of strings (4 options)",
+        "correct_answer": "string (must match one of the answers)",
+        "category": "string (history, science, pop_culture, geography, sports, etc.)",
+        "difficulty": "string (easy, medium, hard)",
+        "tags": "array of strings (for filtering)",
+        "created_date": "timestamp",
+        "source": "string (optional - where the question came from)",
+        "usage_count": "integer (track popularity)",
+        "success_rate": "number (percentage of correct answers)"
+      },
+      "example": {
+        "id": "q_hist_001",
+        "text": "In which year did World War II end?",
+        "answers": ["1944", "1945", "1946", "1947"],
+        "correct_answer": "1945",
+        "category": "history",
+        "difficulty": "medium",
+        "tags": ["world_war", "20th_century", "milestones"],
+        "created_date": "2025-01-01T00:00:00Z",
+        "source": "Historical Records Database",
+        "usage_count": 15,
+        "success_rate": 0.73
+      }
+    },
+    "discord_poll": {
+      "description": "Structure for Ask the Discord lifeline polls",
+      "structure": {
+        "poll_id": "string",
+        "question_id": "string",
+        "question_text": "string",
+        "options": "array of objects with answer text and vote counts",
+        "total_votes": "integer",
+        "is_active": "boolean",
+        "created_at": "timestamp",
+        "expires_at": "timestamp",
+        "winning_option": "string (calculated after poll ends)"
+      },
+      "example": {
+        "poll_id": "poll_xyz789",
+        "question_id": "q_456",
+        "question_text": "Which planet is known as the Red Planet?",
+        "options": [
+          {"text": "Venus", "votes": 5},
+          {"text": "Mars", "votes": 25},
+          {"text": "Jupiter", "votes": 3},
+          {"text": "Saturn", "votes": 2}
+        ],
+        "total_votes": 35,
+        "is_active": true,
+        "created_at": "2025-01-15T10:30:00Z",
+        "expires_at": "2025-01-15T10:30:30Z"
+      }
+    },
+    "leaderboard": {
+      "description": "Structure for tracking top scores/achievements",
+      "structure": {
+        "entry_id": "string",
+        "player_name": "string",
+        "final_tier": "integer",
+        "final_prize": {
+          "usd_value": "number",
+          "crypto_amount": "number",
+          "crypto_symbol": "string"
+        },
+        "game_duration": "integer (seconds)",
+        "date_achieved": "timestamp",
+        "cryptocurrencies_used": "array of strings"
+      },
+      "example": {
+        "entry_id": "leader_001",
+        "player_name": "CryptoWinner",
+        "final_tier": 15,
+        "final_prize": {
+          "usd_value": 1000000,
+          "crypto_amount": 22.222,
+          "crypto_symbol": "BTC"
+        },
+        "game_duration": 1800,
+        "date_achieved": "2025-01-15T11:00:00Z",
+        "cryptocurrencies_used": ["BTC", "ETH", "SHILL"]
+      }
+    }
+  },
+  "storage_format": {
+    "local_storage_key": "whowants_savestate",
+    "backup_storage": "cloud_storage_or_file_system",
+    "encryption": "AES-256-GCM",
+    "compression": "gzip"
+  },
+  "integration_notes": {
+    "crypto_api_providers": [
+      "CoinGecko API (recommended)",
+      "CoinMarketCap API",
+      "Binance API"
+    ],
+    "discord_integration": {
+      "bot_token": "required_for_polls",
+      "server_id": "target_discord_server",
+      "channel_id": "polls_channel"
+    },
+    "streaming_software": [
+      "OBS Studio (recommended)",
+      "Streamlabs OBS",
+      "XSplit"
+    ]
+  }
+}
