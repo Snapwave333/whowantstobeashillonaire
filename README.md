@@ -5,7 +5,7 @@
   
   **A Modern Desktop Trivia Game Experience**
   
-  [![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)](https://github.com/Snapwave333/whowantstobeashillonaire/releases)
+  [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Snapwave333/whowantstobeashillonaire/releases)
   <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/ci-cd.yml"><img alt="CI/CD" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/ci-cd.yml?label=CI%2FCD"></a>
   <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/codeql.yml"><img alt="CodeQL" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/codeql.yml?label=CodeQL"></a>
   <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/lint-frontend.yml"><img alt="Lint Frontend & Desktop" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/lint-frontend.yml?label=Lint%20Frontend%20%26%20Desktop"></a>
