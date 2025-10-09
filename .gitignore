@@ -1,43 +1,28 @@
 # Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Production builds
-build/
-dist/
-*.tgz
-*.tar.gz
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
-*.egg-info/
-.pytest_cache/
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
-instance/
+# Build outputs
+dist/
+build/
+out/
+*.exe
+*.msi
+*.dmg
+*.deb
+*.rpm
+*.AppImage
 
-# IDE and Editor files
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
@@ -54,44 +39,135 @@ ehthumbs.db
 Thumbs.db
 
 # Logs
-logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
 # Runtime data
-pids/
+pids
 *.pid
 *.seed
 *.pid.lock
 
 # Coverage directory used by tools like istanbul
 coverage/
+*.lcov
 
-# Electron
-out/
-dist_electron/
+# nyc test coverage
+.nyc_output
 
-# Temporary files
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+
+# Gatsby files
+.cache/
+public
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
 tmp/
 temp/
 
-# Docker
-.dockerignore
+# Large files and binaries
+*.dll
+*.so
+*.dylib
+*.bin
+*.exe
+*.msi
+*.dmg
+*.deb
+*.rpm
+*.AppImage
+
+# Compiled binaries
+WhoWantsToBeAShillionaire/bin/
+WhoWantsToBeAShillionaire/obj/
+Installer/bin/
+Installer/obj/
+
+# Large DLL files
+WhoWantsToBeAShillionaire/obj/Release/net8.0-windows/win-x64/R2R/
+WhoWantsToBeAShillionaire/publish/
+
+# Electron build outputs
+desktop-app/dist/
+desktop-app/out/
+
+# React build outputs
+frontend/build/
+
+# Python build outputs
+backend/instance/
+backend/__pycache__/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large asset files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
 
 # Backup files
 *.bak
 *.backup
-*~
+*.old
 
-# Package files
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-
-# Windows specific
-*.exe
-*.msi
+# Test files
+test_answer.json
