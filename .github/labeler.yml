@@ -1,0 +1,15 @@
+frontend:
+  - changed-files:
+      - any-glob-to-any-file: 'frontend/**'
+backend:
+  - changed-files:
+      - any-glob-to-any-file: 'backend/**'
+desktop-app:
+  - changed-files:
+      - any-glob-to-any-file: 'desktop-app/**'
+docs:
+  - changed-files:
+      - any-glob-to-any-file: 'docs/**'
+ci:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'

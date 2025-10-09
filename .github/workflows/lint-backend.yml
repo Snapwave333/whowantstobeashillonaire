@@ -1,0 +1,30 @@
+name: Lint Backend
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install deps
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt flake8 black
+      - name: Run Flake8
+        run: |
+          cd backend
+          flake8 .
+      - name: Run Black (check)
+        run: |
+          cd backend
+          black --check .

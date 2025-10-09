@@ -1,0 +1,33 @@
+name: Lint Frontend & Desktop
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install deps (frontend)
+        run: |
+          cd frontend
+          npm ci
+      - name: Lint (frontend)
+        run: |
+          cd frontend
+          npx eslint .
+      - name: Install deps (desktop)
+        run: |
+          cd desktop-app
+          npm ci
+      - name: Lint (desktop)
+        run: |
+          cd desktop-app
+          npx eslint .

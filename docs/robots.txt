@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://snapwave333.github.io/whowantstobeashillonaire/docs/sitemap.xml

@@ -6,11 +6,51 @@
   **A Modern Desktop Trivia Game Experience**
   
   [![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)](https://github.com/Snapwave333/whowantstobeashillonaire/releases)
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/ci-cd.yml"><img alt="CI/CD" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/ci-cd.yml?label=CI%2FCD"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/codeql.yml"><img alt="CodeQL" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/codeql.yml?label=CodeQL"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/lint-frontend.yml"><img alt="Lint Frontend & Desktop" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/lint-frontend.yml?label=Lint%20Frontend%20%26%20Desktop"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/lint-backend.yml"><img alt="Lint Backend" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/lint-backend.yml?label=Lint%20Backend"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Snapwave333/whowantstobeashillonaire?display_name=tag&sort=semver"></a>
+  <a href="https://app.codecov.io/gh/Snapwave333/whowantstobeashillonaire"><img alt="Coverage" src="https://img.shields.io/codecov/c/github/Snapwave333/whowantstobeashillonaire?flag=combined"></a>
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
   [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://github.com/Snapwave333/whowantstobeashillonaire)
+  <a href="https://snapwave333.github.io/whowantstobeashillonaire/docs/"><img alt="Docs" src="https://img.shields.io/badge/docs-available-blue"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/pkgs/container/whowantstobeashillonaire-frontend"><img alt="GHCR Frontend" src="https://img.shields.io/badge/GHCR-frontend-0A0?logo=docker&labelColor=555"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/pkgs/container/whowantstobeashillonaire-backend"><img alt="GHCR Backend" src="https://img.shields.io/badge/GHCR-backend-0A0?logo=docker&labelColor=555"></a>
+  <a href="https://img.shields.io/github/deployments/Snapwave333/whowantstobeashillonaire/github-pages?label=Pages"><img alt="Pages" src="https://img.shields.io/github/deployments/Snapwave333/whowantstobeashillonaire/github-pages?label=Pages"></a>
+  <a href="https://ghcr.io/Snapwave333/whowantstobeashillonaire-frontend"><img alt="Frontend Image Size" src="https://img.shields.io/docker/image-size/ghcr.io/snapwave333/whowantstobeashillonaire-frontend/latest?label=frontend%20image"></a>
+  <a href="https://ghcr.io/Snapwave333/whowantstobeashillonaire-backend"><img alt="Backend Image Size" src="https://img.shields.io/docker/image-size/ghcr.io/snapwave333/whowantstobeashillonaire-backend/latest?label=backend%20image"></a>
+  <a href="CONTRIBUTING.md"><img alt="Contributing" src="https://img.shields.io/badge/Contributing-welcome-brightgreen"></a>
+  <a href="CODE_OF_CONDUCT.md"><img alt="Code of Conduct" src="https://img.shields.io/badge/Code%20of%20Conduct-Contributor%20Covenant-blueviolet"></a>
+  <a href="SUPPORT.md"><img alt="Support" src="https://img.shields.io/badge/Support-get%20help-informational"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Snapwave333/whowantstobeashillonaire?style=social"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/network/members"><img alt="GitHub Forks" src="https://img.shields.io/github/forks/Snapwave333/whowantstobeashillonaire?style=social"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/Snapwave333/whowantstobeashillonaire"></a>
+  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/pulls"><img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/Snapwave333/whowantstobeashillonaire"></a>
 </div>
 
 ---
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Who%20Wants%20to%20Be%20a%20Shillionaire&fontSize=24&animation=fadeIn" alt="Header banner" />
+</p>
+
+## 🧭 Table of Contents
+
+- [🎮 About](#-about)
+- [🚀 Quick Start](#-quick-start)
+- [⬇️ Downloads](#️-downloads)
+- [🎯 Game Modes](#-game-modes)
+- [🛠️ Development](#️-development)
+- [🎨 Customization](#-customization)
+- [🤖 AI Integration](#-ai-integration)
+- [📈 Project Stats](#-project-stats)
+- [📋 Requirements](#-requirements)
+- [🐛 Troubleshooting](#-troubleshooting)
+- [📄 License](#-license)
+- [👥 Contributing](#-contributing)
+- [📞 Contact](#-contact)
+- [🙏 Acknowledgments](#-acknowledgments)
 
 ## 🎮 About
 
@@ -76,6 +116,14 @@
    cd desktop-app
    npm run dev
    ```
+
+## ⬇️ Downloads
+
+- **Get the latest build:** [Releases page](https://github.com/Snapwave333/whowantstobeashillonaire/releases/latest)
+  - Windows installer: `.exe`
+  - Portable archive: `.zip`
+
+Note: Binaries are distributed via Releases only and are not committed to the repository.
 
 ## 🎯 Game Modes
 
@@ -154,6 +202,25 @@ The game uses Google's Gemini AI for dynamic question generation:
 - **Quality Assurance**: Built-in validation ensures proper question format
 - **Fallback System**: Sample questions available if API is unavailable
 
+## 📈 Project Stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=Snapwave333&show_icons=true&theme=tokyonight&include_all_commits=true&rank_icon=github" alt="GitHub Stats" />
+</p>
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Snapwave333&layout=compact&theme=tokyonight" alt="Top Languages" />
+</p>
+<p align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Snapwave333&theme=tokyonight" alt="GitHub Streak" />
+</p>
+
+<h2> 🚀 &nbsp;Some Tools I Have Used for this and other projects</h2>
+<p align="left">
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="vscode" width="45" height="45"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="bash" width="45" height="45"/>
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="php" width="45" height="45"/>
+</p>
+
 ## 📋 Requirements
 
 ### System Requirements
@@ -217,5 +284,28 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   <img src="assets/github-signature.png" alt="Who Wants to Be a Shillionaire Signature" width="600">
   
   <p>Made with ❤️ by Snapwave333</p>
+
+  <h2> 🚀 &nbsp;Some Tools I Have Used for this and other projects</h2>
+  <p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg" alt="npm" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg" alt="Electron" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" alt="Flask" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg" alt="SQLite" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" alt="Nginx" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" width="45" height="45"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Bash" width="45" height="45"/>
+  </p>
   <p>⭐ Star this repo if you like it!</p>
+  
+  <img src="https://raw.githubusercontent.com/Snapwave333/whowantstobeashillonaire/output/github-contribution-grid-snake.svg" alt="snake" />
 </div>

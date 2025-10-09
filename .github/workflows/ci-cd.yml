@@ -29,6 +29,15 @@ jobs:
         cd frontend
         npm test -- --coverage --watchAll=false
     
+    - name: Upload frontend coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./frontend/coverage/lcov.info
+        flags: frontend
+        fail_ci_if_error: false
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    
     - name: Build frontend
       run: |
         cd frontend
@@ -52,9 +61,18 @@ jobs:
     - name: Run backend tests
       run: |
         cd backend
-        python -m pytest tests/ -v --cov=. --cov-report=xml
+        python -m pytest tests/ -v --cov=. --cov-report=xml --cov-report=term-missing
       env:
         FLASK_ENV: testing
+
+    - name: Upload backend coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./backend/coverage.xml
+        flags: backend
+        fail_ci_if_error: false
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   build-desktop:
     runs-on: windows-latest
@@ -82,11 +100,17 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
+    - name: Package portable zip
+      run: |
+        powershell -NoProfile -Command "Compress-Archive -Path 'desktop-app\\dist\\*' -DestinationPath 'desktop-app\\dist\\who-wants-to-be-a-shillionaire-win64.zip' -Force"
+
     - name: Upload Windows artifacts
       uses: actions/upload-artifact@v4
       with:
         name: windows-desktop-app
-        path: desktop-app/dist/*.exe
+        path: |
+          desktop-app/dist/*.exe
+          desktop-app/dist/*.zip
 
   deploy-web:
     runs-on: ubuntu-latest
@@ -107,6 +131,11 @@ jobs:
         cd frontend
         npm ci
         npm run build
+
+    - name: Include docs in site
+      run: |
+        mkdir -p frontend/build/docs
+        if [ -d "docs" ]; then cp -R docs/* frontend/build/docs/; fi
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -147,14 +176,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Download desktop artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: windows-desktop-app
+        path: ./release-assets
+
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ github.run_number }}
-        release_name: Release v${{ github.run_number }}
+        name: Release v${{ github.run_number }}
         body: |
           ## What's Changed
           - Automated release from main branch
@@ -163,9 +196,14 @@ jobs:
           - Docker images published to GHCR
           
           ## Downloads
-          - Windows Desktop App: Available in artifacts
+          - Windows Desktop App: see assets below
           - Web Version: https://snapwave333.github.io/whowantstobeashillonaire
           
           Full Changelog: https://github.com/Snapwave333/whowantstobeashillonaire/commits/v${{ github.run_number }}
         draft: false
         prerelease: false
+        files: |
+          ./release-assets/*.exe
+          ./release-assets/*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

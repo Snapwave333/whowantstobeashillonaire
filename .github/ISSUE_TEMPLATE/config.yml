@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Documentation
+    url: https://snapwave333.github.io/whowantstobeashillonaire/docs/
+    about: Read the docs for setup, usage, and troubleshooting.
+  - name: 💬 Discussions
+    url: https://github.com/Snapwave333/whowantstobeashillonaire/discussions
+    about: Ask questions and get community support.
+  - name: 🔐 Security Policy
+    url: https://github.com/Snapwave333/whowantstobeashillonaire/blob/main/SECURITY.md
+    about: Please report security issues responsibly.

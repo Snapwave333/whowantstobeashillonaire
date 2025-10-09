@@ -11,7 +11,7 @@
     "start": "electron-forge start",
     "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:3000 && electron src/main.js\"",
     "dev:react": "cd ../frontend && npm start",
-    "build:react": "cd ../frontend && npm run build && cp -r build ../desktop-app/",
+    "build:react": "cd ../frontend && npm run build && node -e \"const fs=require('fs'); const path=require('path'); function copyDir(src,dest){if(!fs.existsSync(dest))fs.mkdirSync(dest,{recursive:true}); const entries=fs.readdirSync(src,{withFileTypes:true}); for(let entry of entries){const srcPath=path.join(src,entry.name); const destPath=path.join(dest,entry.name); if(entry.isDirectory()){copyDir(srcPath,destPath);}else{fs.copyFileSync(srcPath,destPath);}}} copyDir('build','../desktop-app/build');\"",
     "build": "electron-packager . who-wants-to-be-a-shillionaire --platform=win32 --arch=x64 --out=dist --overwrite --ignore=\"node_modules/(electron-prebuilt|electron-packager)\" --ignore=\"\\.git\"",
     "build:win": "electron-packager . who-wants-to-be-a-shillionaire --platform=win32 --arch=x64 --out=dist --overwrite --ignore=\"node_modules/(electron-prebuilt|electron-packager)\" --ignore=\"\\.git\"",
     "build:mac": "electron-packager . who-wants-to-be-a-shillionaire --platform=darwin --arch=x64 --out=dist --overwrite --ignore=\"node_modules/(electron-prebuilt|electron-packager)\" --ignore=\"\\.git\"",
@@ -100,6 +100,7 @@
     "@electron-forge/plugin-fuses": "^7.10.0",
     "@electron/fuses": "^1.8.0",
     "electron": "^28.1.0",
-    "electron-packager": "^17.1.2"
+    "electron-packager": "^17.1.2",
+    "electron-builder": "^24.9.1"
   }
 }
