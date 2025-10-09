@@ -22,7 +22,7 @@ jobs:
 
       - name: Check PR title format
         if: steps.check_dependabot.outputs.is_dependabot == 'false'
-        uses: amannn/action-semantic-pull-request@v5
+        uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
