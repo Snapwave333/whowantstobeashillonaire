@@ -186,8 +186,8 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v${{ github.run_number }}
-        name: Release v${{ github.run_number }}
+        tag_name: v1.0.0
+        name: Release v1.0.0
         body: |
           ## What's Changed
           - Automated release from main branch
@@ -199,7 +199,7 @@ jobs:
           - Windows Desktop App: see assets below
           - Web Version: https://snapwave333.github.io/whowantstobeashillonaire
           
-          Full Changelog: https://github.com/Snapwave333/whowantstobeashillonaire/commits/v${{ github.run_number }}
+          Full Changelog: https://github.com/Snapwave333/whowantstobeashillonaire/commits/v1.0.0
         draft: false
         prerelease: false
         files: |
