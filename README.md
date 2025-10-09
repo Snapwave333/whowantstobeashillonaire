@@ -214,6 +214,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
+  <img src="assets/github-signature.png" alt="Who Wants to Be a Shillionaire Signature" width="600">
+  
   <p>Made with ❤️ by Snapwave333</p>
   <p>⭐ Star this repo if you like it!</p>
 </div>
