@@ -1,7 +1,7 @@
 # 🎯 Who Wants to Be a Shillionaire?
 
 <div align="center">
-  <img src="desktop-app/assets/images/app-icon-new.png" alt="Shillionaire Logo" width="200" height="200">
+  <img src="assets/github-banner.png" alt="Who Wants to Be a Shillionaire Banner" width="800">
   
   **A Modern Desktop Trivia Game Experience**
   
