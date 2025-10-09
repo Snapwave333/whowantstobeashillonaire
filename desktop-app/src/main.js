@@ -16,7 +16,7 @@ class ShillionaireApp {
     this.mainWindow = null;
     this.tray = null;
     this.isQuitting = false;
-    this.updater = new AppUpdater();
+    // this.updater = new AppUpdater(); // Disabled for standalone builds
     
     this.init();
   }
@@ -28,9 +28,9 @@ class ShillionaireApp {
       this.createTray();
       this.createMenu();
       
-      // Set up auto updater with main window reference
-      this.updater.setMainWindow(this.mainWindow);
-      this.updater.checkForUpdatesAndNotify();
+      // Set up auto updater with main window reference (disabled for standalone builds)
+      // this.updater.setMainWindow(this.mainWindow);
+      // this.updater.checkForUpdatesAndNotify();
       
       app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
@@ -52,23 +52,33 @@ class ShillionaireApp {
   }
 
   createWindow() {
-    // Create the browser window
+    // Get screen dimensions
+    const { screen } = require('electron');
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
+    const { x: workAreaX, y: workAreaY } = primaryDisplay.workArea;
+    
+    // Calculate window dimensions (fullscreen minus taskbar)
+    const windowWidth = screenWidth;
+    const windowHeight = screenHeight;
+
+    // Create the main window (Contestant Game Board)
     this.mainWindow = new BrowserWindow({
-      width: 1200,
-      height: 800,
-      minWidth: 800,
-      minHeight: 600,
+      width: windowWidth,
+      height: windowHeight,
+      x: workAreaX,
+      y: workAreaY,
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
-        preload: path.join(__dirname, 'preload.js')
+        preload: path.join(__dirname, 'preload.js'),
+        webSecurity: false
       },
       icon: path.join(__dirname, '../assets/icon.png'),
-      show: false, // Don't show until ready
+      show: false,
       titleBarStyle: 'default',
       frame: true,
       backgroundColor: '#1a1a2e',
-      // Windows-specific enhancements
       skipTaskbar: false,
       autoHideMenuBar: false,
       maximizable: true,
@@ -76,16 +86,93 @@ class ShillionaireApp {
       fullscreenable: true
     });
 
-    // Load the app
-    this.mainWindow.loadFile(path.join(__dirname, '../build/index.html'));
+    // Load the contestant game board
+    const gameBoardPath = path.join(__dirname, '../contestant-game-board.html');
+    console.log('Loading contestant game board from:', gameBoardPath);
+    this.mainWindow.loadFile(gameBoardPath);
+    
+    // Show main window
+    this.mainWindow.show();
 
-    // Show window when ready
+    // Create Game Master Settings popup window
+    this.createGameMasterWindow();
+  }
+
+  createGameMasterWindow() {
+    // Get screen dimensions for Game Master window
+    const { screen } = require('electron');
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
+    const { x: workAreaX, y: workAreaY } = primaryDisplay.workArea;
+    
+    // Calculate Game Master window dimensions (fullscreen minus taskbar)
+    const gameMasterWidth = screenWidth;
+    const gameMasterHeight = screenHeight;
+
+    // Create the Game Master Settings popup window
+    this.gameMasterWindow = new BrowserWindow({
+      width: gameMasterWidth,
+      height: gameMasterHeight,
+      x: workAreaX,
+      y: workAreaY,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        preload: path.join(__dirname, 'preload.js'),
+        webSecurity: false
+      },
+      icon: path.join(__dirname, '../assets/icon.png'),
+      show: true,
+      titleBarStyle: 'default',
+      frame: true,
+      backgroundColor: '#1a1a2e',
+      parent: this.mainWindow, // Make it a child window
+      modal: false,
+      skipTaskbar: true, // Don't show in taskbar
+      autoHideMenuBar: true,
+      maximizable: true,
+      resizable: true
+    });
+
+    // Load the game master settings
+    const gameMasterPath = path.join(__dirname, '../game-master-settings.html');
+    console.log('Loading game master settings from:', gameMasterPath);
+    this.gameMasterWindow.loadFile(gameMasterPath);
+
+    // Handle Game Master window close
+    this.gameMasterWindow.on('closed', () => {
+      this.gameMasterWindow = null;
+    });
+  }
+
+  loadMainApp() {
+    const isDev = process.env.NODE_ENV === 'development';
+    console.log('Environment:', isDev ? 'development' : 'production');
+    console.log('__dirname:', __dirname);
+    
+    // Load the built React app
+    const buildPath = path.join(__dirname, 'build/index.html');
+    console.log('Looking for build at:', buildPath);
+    console.log('Build exists:', require('fs').existsSync(buildPath));
+    
+    if (require('fs').existsSync(buildPath)) {
+      console.log('Loading built React app from:', buildPath);
+      this.mainWindow.loadFile(buildPath);
+    } else {
+      console.log('Build not found, falling back to renderer');
+      const rendererPath = path.join(__dirname, 'renderer/index.html');
+      console.log('Loading renderer from:', rendererPath);
+      this.mainWindow.loadFile(rendererPath);
+    }
+
+    // Show window when ready (backup)
     this.mainWindow.once('ready-to-show', () => {
       this.mainWindow.show();
+      this.mainWindow.focus();
       
       // Check for updates after window is shown
       if (!isDev) {
-        this.updater.checkForUpdates();
+        // this.updater.checkForUpdates(); // Disabled for standalone builds
       }
       
       // Windows-specific: Flash taskbar on startup
@@ -96,6 +183,45 @@ class ShillionaireApp {
         }, 2000);
       }
     });
+
+    // Add error handling for failed loads
+    this.mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+      console.error('Failed to load:', validatedURL, errorDescription);
+      console.error('Error code:', errorCode);
+      if (isDev && validatedURL.includes('localhost:3000')) {
+        console.log('React dev server not available, falling back to local file');
+        // Try to load built React app first
+        const buildPath = path.join(__dirname, 'build/index.html');
+        if (require('fs').existsSync(buildPath)) {
+          this.mainWindow.loadFile(buildPath);
+        } else {
+          this.mainWindow.loadFile(path.join(__dirname, 'renderer/index.html'));
+        }
+      }
+    });
+
+    // Add success handling
+    this.mainWindow.webContents.on('did-finish-load', () => {
+      console.log('Page finished loading successfully');
+    });
+
+    // Add DOM ready handling
+    this.mainWindow.webContents.on('dom-ready', () => {
+      console.log('DOM is ready');
+    });
+
+    // Add console message handling for debugging
+    this.mainWindow.webContents.on('console-message', (event, level, message) => {
+      console.log('Renderer console:', message);
+    });
+
+    // Force show after a short delay if not already visible
+    setTimeout(() => {
+      if (this.mainWindow && !this.mainWindow.isVisible()) {
+        this.mainWindow.show();
+        this.mainWindow.focus();
+      }
+    }, 1000);
 
     // Handle window close
     this.mainWindow.on('close', (event) => {
@@ -154,7 +280,7 @@ class ShillionaireApp {
       {
         label: 'Check for Updates',
         click: () => {
-          this.updater.forceCheckForUpdates();
+          // this.updater.forceCheckForUpdates(); // Disabled for standalone builds
         }
       },
       { type: 'separator' },
@@ -328,7 +454,7 @@ class ShillionaireApp {
           {
             label: 'Check for Updates',
             click: () => {
-              this.updater.forceCheckForUpdates();
+              // this.updater.forceCheckForUpdates(); // Disabled for standalone builds
             }
           }
         ]
@@ -388,5 +514,16 @@ ipcMain.handle('set-store-value', (event, key, value) => {
   store.set(key, value);
 });
 
+// IPC handler for opening game master settings window
+ipcMain.handle('open-game-master-settings', () => {
+  if (global.shillionaireApp && global.shillionaireApp.gameMasterWindow) {
+    // If window exists, focus it
+    global.shillionaireApp.gameMasterWindow.focus();
+  } else {
+    // If window doesn't exist, create it
+    global.shillionaireApp.createGameMasterWindow();
+  }
+});
+
 // Initialize the app
-new ShillionaireApp();
+global.shillionaireApp = new ShillionaireApp();

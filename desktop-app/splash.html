@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to be a Shillionaire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .splash-container {
+            text-align: center;
+            color: white;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #f7931e, #ffd700, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(247, 147, 30, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: slideUp 1s ease-out 0.5s both;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(247, 147, 30, 0.3);
+            border-top: 4px solid #f7931e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            opacity: 0.8;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f7931e, #ffd700);
+            border-radius: 2px;
+            animation: progress 3s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 0.9;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 30px rgba(247, 147, 30, 0.5); }
+            to { text-shadow: 0 0 40px rgba(247, 147, 30, 0.8), 0 0 60px rgba(255, 215, 0, 0.3); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #f7931e;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="splash-container">
+        <div class="logo">Who Wants to be a Shillionaire?</div>
+        <div class="subtitle">Test your knowledge and win virtual millions!</div>
+        
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading game...</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Simulate loading progress
+        function simulateLoading() {
+            const loadingText = document.querySelector('.loading-text');
+            const messages = [
+                'Loading game...',
+                'Preparing questions...',
+                'Setting up prize ladder...',
+                'Initializing lifelines...',
+                'Almost ready...'
+            ];
+            
+            let messageIndex = 0;
+            const interval = setInterval(() => {
+                if (messageIndex < messages.length - 1) {
+                    messageIndex++;
+                    loadingText.textContent = messages[messageIndex];
+                } else {
+                    clearInterval(interval);
+                }
+            }, 600);
+        }
+
+        // Initialize splash screen
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            simulateLoading();
+        });
+
+        // Listen for the main app to be ready
+        window.addEventListener('message', (event) => {
+            if (event.data === 'app-ready') {
+                // Fade out splash screen
+                document.body.style.transition = 'opacity 0.5s ease-out';
+                document.body.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.style.display = 'none';
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

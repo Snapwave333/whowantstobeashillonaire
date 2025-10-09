@@ -6,6 +6,7 @@ import Header from './components/Header';
 import LoadingSpinner from './components/LoadingSpinner';
 
 // Lazy load components for code splitting
+const HomePage = lazy(() => import('./components/HomePage'));
 const GamePage = lazy(() => import('./components/GamePage'));
 const GameOverPage = lazy(() => import('./components/GameOverPage'));
 
@@ -30,10 +31,10 @@ function App() {
           <MainContent>
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
-                <Route path="/" element={<Navigate to="/game" replace />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/game" element={<GamePage />} />
                 <Route path="/game-over" element={<GameOverPage />} />
-                <Route path="*" element={<Navigate to="/game" replace />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
           </MainContent>

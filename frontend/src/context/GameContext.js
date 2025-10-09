@@ -126,16 +126,12 @@ export function GameProvider({ children }) {
   const startGame = useCallback(async (playerName = "Live Player", difficulty = null, category = null) => {
     try {
       clearError();
-      const response = await api.post('/game/start', {
-        player_name: playerName,
-        difficulty_id: difficulty,
-        category_id: category
-      });
+      const response = await api.post('/game/start');
       
       dispatch({
         type: 'START_GAME',
         payload: {
-          sessionId: response.data.session_id,
+          sessionId: response.data.session.id,
           sessionToken: response.data.session_token
         }
       });
@@ -149,7 +145,7 @@ export function GameProvider({ children }) {
   }, [clearError]);
 
   const getQuestion = useCallback(async () => {
-    if (!state.sessionId || !state.sessionToken) {
+    if (!state.sessionToken) {
       setError('No active game session');
       return;
     }
@@ -157,18 +153,21 @@ export function GameProvider({ children }) {
     try {
       setLoading(true);
       clearError();
-      const response = await api.get(`/game/question/${state.sessionId}`, {
-        headers: {
-          'Authorization': `Bearer ${state.sessionToken}`
-        }
-      });
+      const response = await api.get(`/game/question/${state.sessionToken}`);
+      
+      // Normalize the question data to match frontend expectations
+      const normalizedQuestion = {
+        ...response.data.question,
+        question_text: response.data.question.text,
+        id: response.data.question.id
+      };
       
       dispatch({
         type: 'SET_CURRENT_QUESTION',
         payload: {
-          question: response.data.question,
-          questionIndex: response.data.session.current_question_index,
-          prizeAmount: response.data.session.current_prize_amount
+          question: normalizedQuestion,
+          questionIndex: response.data.session.current_level - 1,
+          prizeAmount: response.data.question.prize_amount
         }
       });
       
@@ -180,9 +179,9 @@ export function GameProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, [state.sessionId, state.sessionToken, clearError]);
+  }, [state.sessionToken, clearError]);
 
-  const submitAnswer = useCallback(async (answerId) => {
+  const submitAnswer = useCallback(async (answerText) => {
     if (!state.sessionToken || !state.currentQuestion?.id) {
       setError('Invalid game state for answer submission');
       return;
@@ -194,14 +193,14 @@ export function GameProvider({ children }) {
       const response = await api.post('/game/answer', {
         session_token: state.sessionToken,
         question_id: state.currentQuestion.id,
-        answer_id: answerId
+        answer: answerText
       });
       
       dispatch({
         type: 'SUBMIT_ANSWER',
         payload: {
-          score: response.data.session.score,
-          gameStatus: response.data.session.status
+          score: response.data.session.total_winnings,
+          gameStatus: response.data.session.is_active ? 'playing' : 'game_over'
         }
       });
       

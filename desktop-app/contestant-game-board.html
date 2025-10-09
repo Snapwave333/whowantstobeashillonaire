@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to be a Shillionaire - Game Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .game-header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid #f7931e;
+            position: relative;
+        }
+
+        .game-title {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            flex: 0 0 auto;
+            position: relative;
+        }
+
+        .game-title img {
+            height: 90%;
+            max-width: 90%;
+            object-fit: contain;
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+        .contestant-info {
+            text-align: right;
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .settings-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #f7931e, #ff6b35);
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(247, 147, 30, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .settings-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(247, 147, 30, 0.4);
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+        }
+
+        .settings-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(247, 147, 30, 0.3);
+        }
+
+        .settings-icon {
+            font-size: 1.1rem;
+        }
+
+        .contestant-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f7931e;
+            margin-bottom: 0.25rem;
+        }
+
+        .current-prize {
+            font-size: 1.2rem;
+            color: #ffd700;
+            font-weight: 600;
+        }
+
+        .main-game-area {
+            flex: 1;
+            display: flex;
+            padding: 0.5rem;
+            gap: 1rem;
+        }
+
+        .question-area {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .question-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #f7931e;
+        }
+
+        .question-prize {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .answer-button {
+            padding: 1.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .answer-button:hover {
+            border-color: #f7931e;
+            background: rgba(247, 147, 30, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .answer-button.selected {
+            border-color: #f7931e;
+            background: rgba(247, 147, 30, 0.3);
+            box-shadow: 0 0 20px rgba(247, 147, 30, 0.5);
+        }
+
+        .answer-button.correct {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.3);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .answer-button.incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.3);
+            box-shadow: 0 0 20px rgba(244, 67, 54, 0.5);
+        }
+
+        .answer-button.eliminated {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .lifelines-area {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .lifeline-button {
+            padding: 1rem 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .lifeline-button:hover:not(:disabled) {
+            border-color: #f7931e;
+            background: rgba(247, 147, 30, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .lifeline-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(244, 67, 54, 0.2);
+            border-color: #f44336;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .action-button {
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .submit-button {
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            color: white;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .quit-button {
+            background: linear-gradient(45deg, #f44336, #ef5350);
+            color: white;
+        }
+
+        .quit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(244, 67, 54, 0.3);
+        }
+
+        .action-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .prize-ladder {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 15px;
+            padding: 1rem;
+            border: 1px solid rgba(247, 147, 30, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prize-ladder-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .prize-ladder-single {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .prize-ladder h3 {
+            color: #f7931e;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .prize-level {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .prize-level:last-child {
+            border-bottom: none;
+        }
+
+        .prize-level.current {
+            background: rgba(247, 147, 30, 0.3);
+            border-radius: 8px;
+            border: 1px solid #f7931e;
+        }
+
+        .prize-level.safe-haven {
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 8px;
+            border: 1px solid #4caf50;
+        }
+
+        .prize-level.passed {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4caf50;
+        }
+
+        .level-number {
+            font-weight: 600;
+            color: #f7931e;
+        }
+
+        .prize-amount {
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .waiting-screen {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .waiting-message {
+            font-size: 2rem;
+            color: #f7931e;
+            margin-bottom: 1rem;
+        }
+
+        .waiting-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <button class="settings-button" onclick="openGameMasterSettings()" title="Open Game Master Settings">
+            <span class="settings-icon">⚙️</span>
+            <span>Settings</span>
+        </button>
+        <div class="game-title">
+            <img src="assets/images/game-title.png" alt="Who Wants to be a Shillionaire?" />
+        </div>
+        <div class="contestant-info">
+            <div class="contestant-name" id="contestantName">Waiting for contestant...</div>
+            <div class="current-prize" id="currentPrize">$0</div>
+        </div>
+    </div>
+
+    <div class="main-game-area">
+        <div class="question-area">
+            <div id="waitingScreen" class="waiting-screen">
+                <div>
+                    <div class="waiting-message">🎮 Game Board Ready</div>
+                    <div class="waiting-subtitle">Waiting for Game Master to start the game...</div>
+                </div>
+            </div>
+
+            <div id="gameScreen" class="question-card hidden">
+                <div class="question-header">
+                    <div class="question-number" id="questionNumber">Question 1 of 15</div>
+                    <div class="question-prize" id="questionPrize">$100</div>
+                </div>
+                <div class="question-text" id="questionText">
+                    Which planet is known as the Red Planet?
+                </div>
+                <div class="answers-grid" id="answersGrid">
+                    <button class="answer-button" onclick="selectAnswer(this, 'Mars')">A) Mars</button>
+                    <button class="answer-button" onclick="selectAnswer(this, 'Venus')">B) Venus</button>
+                    <button class="answer-button" onclick="selectAnswer(this, 'Jupiter')">C) Jupiter</button>
+                    <button class="answer-button" onclick="selectAnswer(this, 'Saturn')">D) Saturn</button>
+                </div>
+                <div class="lifelines-area" id="lifelinesArea">
+                    <button class="lifeline-button" onclick="useLifeline('fiftyFifty')">50:50</button>
+                    <button class="lifeline-button" onclick="useLifeline('phoneFriend')">📞 Phone a Friend</button>
+                    <button class="lifeline-button" onclick="useLifeline('askAudience')">👥 Ask the Audience</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-button submit-button" onclick="submitAnswer()" disabled>Submit Answer</button>
+                    <button class="action-button quit-button" onclick="quitGame()">Quit Game</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="prize-ladder">
+            <h3>Prize Ladder</h3>
+            <div class="prize-ladder-columns">
+                <div class="prize-ladder-single">
+                    <div class="prize-level safe-haven">15. $1,000,000</div>
+                    <div class="prize-level">13. $250,000</div>
+                    <div class="prize-level">11. $64,000</div>
+                    <div class="prize-level">9. $16,000</div>
+                    <div class="prize-level">7. $4,000</div>
+                    <div class="prize-level safe-haven">5. $1,000</div>
+                    <div class="prize-level">3. $300</div>
+                    <div class="prize-level current">1. $100</div>
+                </div>
+                <div class="prize-ladder-single">
+                    <div class="prize-level">14. $500,000</div>
+                    <div class="prize-level">12. $125,000</div>
+                    <div class="prize-level safe-haven">10. $32,000</div>
+                    <div class="prize-level">8. $8,000</div>
+                    <div class="prize-level">6. $2,000</div>
+                    <div class="prize-level">4. $500</div>
+                    <div class="prize-level">2. $200</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedAnswer = null;
+        let gameState = {
+            contestantName: '',
+            currentQuestion: 0,
+            totalQuestions: 15,
+            currentPrize: 0,
+            lifelinesUsed: {
+                fiftyFifty: false,
+                phoneFriend: false,
+                askAudience: false
+            }
+        };
+
+        function selectAnswer(button, answer) {
+            // Remove previous selection
+            document.querySelectorAll('.answer-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Select new answer
+            button.classList.add('selected');
+            selectedAnswer = answer;
+
+            // Enable submit button
+            document.querySelector('.submit-button').disabled = false;
+        }
+
+        function submitAnswer() {
+            if (!selectedAnswer) return;
+
+            // This would normally be handled by the Game Master
+            alert('Answer submitted! Waiting for Game Master to reveal the result...');
+        }
+
+        function useLifeline(type) {
+            if (gameState.lifelinesUsed[type]) {
+                alert('This lifeline has already been used!');
+                return;
+            }
+
+            // This would normally be handled by the Game Master
+            alert(`${type} lifeline requested! Waiting for Game Master to activate...`);
+        }
+
+        function quitGame() {
+            if (confirm('Are you sure you want to quit? You will keep your current winnings.')) {
+                alert('Quit request sent to Game Master...');
+            }
+        }
+
+        // Simulate game updates (in real implementation, this would come from Game Master)
+        function updateGameDisplay(contestantName, question, answers, currentPrize, questionNumber) {
+            gameState.contestantName = contestantName;
+            gameState.currentPrize = currentPrize;
+            gameState.currentQuestion = questionNumber - 1;
+
+            document.getElementById('contestantName').textContent = contestantName;
+            document.getElementById('currentPrize').textContent = `$${currentPrize.toLocaleString()}`;
+            document.getElementById('questionNumber').textContent = `Question ${questionNumber} of ${gameState.totalQuestions}`;
+            document.getElementById('questionText').textContent = question;
+
+            // Update answers
+            const answersGrid = document.getElementById('answersGrid');
+            answersGrid.innerHTML = '';
+            answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.className = 'answer-button';
+                button.textContent = `${String.fromCharCode(65 + index)}) ${answer}`;
+                button.onclick = () => selectAnswer(button, answer);
+                answersGrid.appendChild(button);
+            });
+
+            // Show game screen
+            document.getElementById('waitingScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+        }
+
+        // Game state management
+        let gameState = {
+            contestantName: 'Contestant',
+            currentQuestion: '',
+            answers: [],
+            correctAnswer: 0,
+            currentLevel: 1,
+            prizeAmount: 0,
+            lifelinesUsed: {
+                fiftyFifty: false,
+                phoneFriend: false,
+                askAudience: false
+            }
+        };
+
+        // Listen for game state updates from game master
+        function updateGameFromMaster(newState) {
+            gameState = { ...gameState, ...newState };
+            updateGameDisplay(
+                gameState.contestantName,
+                gameState.currentQuestion,
+                gameState.answers,
+                gameState.correctAnswer,
+                gameState.currentLevel
+            );
+        }
+
+        // Simulate receiving updates from game master (in real implementation, this would be IPC)
+        function simulateGameMasterUpdate() {
+            // This would normally come from the game master window via Electron IPC
+            const sampleQuestion = {
+                contestantName: 'John Doe',
+                currentQuestion: 'Which planet is known as the Red Planet?',
+                answers: ['Mars', 'Venus', 'Jupiter', 'Saturn'],
+                correctAnswer: 0,
+                currentLevel: 1,
+                prizeAmount: 100
+            };
+            updateGameFromMaster(sampleQuestion);
+        }
+
+        // Function to open Game Master Settings window
+        function openGameMasterSettings() {
+            // In Electron, this would use IPC to communicate with the main process
+            // For now, we'll simulate opening the settings window
+            if (window.electronAPI && window.electronAPI.openGameMasterSettings) {
+                window.electronAPI.openGameMasterSettings();
+            } else {
+                // Fallback: open settings in a new window (for testing)
+                const settingsWindow = window.open('game-master-settings.html', 'GameMasterSettings', 
+                    'width=1200,height=800,resizable=yes,scrollbars=yes');
+                if (settingsWindow) {
+                    settingsWindow.focus();
+                } else {
+                    alert('Please allow popups for this site to open the Game Master Settings window.');
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate game start after 3 seconds
+            setTimeout(() => {
+                simulateGameMasterUpdate();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

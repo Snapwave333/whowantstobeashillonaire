@@ -1,0 +1,392 @@
+<Window x:Class="WhoWantsToBeAShillionaire.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings - Who Wants to Be a Shillionaire?"
+        Height="500" Width="600"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{DynamicResource PrimaryBackground}">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                   Text="Application Settings" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Foreground="{DynamicResource GoldColor}"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+        
+        <!-- Settings Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                
+                <!-- AI Provider Settings Section -->
+                <GroupBox Header="AI Provider Settings" 
+                          Foreground="{DynamicResource TextColor}"
+                          BorderBrush="{DynamicResource AccentColor}"
+                          Margin="0,0,0,20">
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Left: Provider List -->
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Select Provider" 
+                                       Foreground="{DynamicResource TextColor}" 
+                                       FontWeight="Bold"/>
+                            <ListBox x:Name="ProviderListBox" Height="220" SelectionChanged="ProviderListBox_SelectionChanged">
+                                <ListBoxItem Content="OpenAI" Tag="openai"/>
+                                <ListBoxItem Content="Anthropic" Tag="anthropic"/>
+                                <ListBoxItem Content="Google Gemini (AI Studio)" Tag="google"/>
+                                <ListBoxItem Content="Hugging Face" Tag="huggingface"/>
+                                <ListBoxItem Content="Cohere" Tag="cohere"/>
+                                <ListBoxItem Content="AI21 Labs" Tag="ai21"/>
+                                <ListBoxItem Content="Mistral" Tag="mistral"/>
+                                <ListBoxItem Content="DeepSeek" Tag="deepseek"/>
+                                <ListBoxItem Content="Custom API" Tag="custom"/>
+                            </ListBox>
+                        </StackPanel>
+
+                        <!-- Right: Provider Details -->
+                        <StackPanel Grid.Column="1">
+                            <TextBlock x:Name="SelectedProviderLabel" 
+                                       Text="Provider: OpenAI" 
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource TextColor}"/>
+
+                            <!-- Provider API Key Management Link -->
+                            <TextBlock Margin="0,5,0,10" Foreground="{DynamicResource TextColor}">
+                                <Run Text="Manage API Key: "/>
+                                <Hyperlink x:Name="ProviderLink" NavigateUri="https://platform.openai.com/api-keys" RequestNavigate="ProviderLink_RequestNavigate">
+                                    <Run Text="Open in Browser"/>
+                                </Hyperlink>
+                            </TextBlock>
+
+                            <!-- API Key Input and Actions -->
+                            <TextBlock Text="API Key" Foreground="{DynamicResource TextColor}"/>
+                            <Grid Margin="0,5,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <PasswordBox x:Name="APIKeyPasswordBox" Height="30" Grid.Column="0" Margin="0,0,10,0" PasswordChanged="APIKeyPasswordBox_PasswordChanged"/>
+                                <TextBox x:Name="APIKeyTextBox" Height="30" Grid.Column="0" Margin="0,0,10,0" Visibility="Collapsed" TextChanged="APIKeyTextBox_TextChanged"/>
+                                <Button x:Name="ShowHideAPIKeyButton" Grid.Column="1" Content="Show" Width="60" Height="30" Click="ShowHideAPIKeyButton_Click"/>
+                                <Button x:Name="DeleteAPIKeyButton" Grid.Column="2" Content="Delete" Width="70" Height="30" Click="DeleteAPIKeyButton_Click"/>
+                            </Grid>
+
+                            <!-- Model Selector (provider-specific) -->
+                            <TextBlock Text="Model" Foreground="{DynamicResource TextColor}"/>
+                            <ComboBox x:Name="ModelComboBox" Height="30" Margin="0,5,0,10" IsEditable="True" SelectionChanged="ModelComboBox_SelectionChanged" LostFocus="ModelComboBox_LostFocus" />
+                            <StackPanel x:Name="ModelWarningPanel" Orientation="Horizontal" Visibility="Collapsed" ToolTipService.ShowDuration="6000" Opacity="0.0">
+                                <StackPanel.ToolTip>
+                                    <ToolTip>
+                                        <TextBlock Text="This model isn’t in the curated list for the selected provider. It may work, but hasn’t been validated." TextWrapping="Wrap" Width="280"/>
+                                    </ToolTip>
+                                </StackPanel.ToolTip>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <Trigger Property="Visibility" Value="Visible">
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.20"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <Path Fill="{DynamicResource AccentColor}" Margin="0,0,6,0" Data="M 10,0 L 20,20 L 0,20 Z" Width="14" Height="14" Stretch="Uniform" Opacity="0.9"/>
+                                <TextBlock x:Name="ModelWarningText" Text="Model not in curated list for provider" Foreground="{DynamicResource AccentColor}"/>
+                            </StackPanel>
+
+                            <!-- Custom API URL (for custom provider) -->
+                            <TextBlock x:Name="CustomAPIURLLabel" Text="Custom API URL" Foreground="{DynamicResource TextColor}" Visibility="Collapsed"/>
+                            <TextBox x:Name="CustomAPIURLTextBox" Height="30" Margin="0,5,0,10" Visibility="Collapsed" TextChanged="CustomAPIURLTextBox_TextChanged"/>
+
+                            <!-- Test Connection Button -->
+                            <Button x:Name="TestConnectionButton" Content="Test Connection" Height="35" Width="170" HorizontalAlignment="Left" Style="{DynamicResource GameButtonStyle}" Click="TestConnectionButton_Click" Margin="0,0,0,10"/>
+                            <TextBlock x:Name="ConnectionStatusTextBlock" Text="Connection Status: Not tested" Foreground="{DynamicResource TextColor}"/>
+
+                            <!-- Separator -->
+                            <Separator Margin="0,10,0,10" Background="{DynamicResource AccentColor}"/>
+
+                            <!-- AI Generation Settings (unchanged) -->
+                            <TextBlock Text="Question Generation Settings:" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
+                            <Grid Margin="0,5,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                            <TextBlock Text="Questions to generate per difficulty:" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
+                                <TextBox x:Name="QuestionsPerDifficultyTextBox" Grid.Column="1" Height="25" Text="10" TextAlignment="Center" TextChanged="QuestionsPerDifficultyTextBox_TextChanged"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                            <TextBlock Text="AI Creativity (0.0 - 1.0):" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
+                                <TextBox x:Name="AICreativityTextBox" Grid.Column="1" Height="25" Text="0.7" TextAlignment="Center" TextChanged="AICreativityTextBox_TextChanged"/>
+                            </Grid>
+                            <TextBlock Text="Preferred Question Categories:" Foreground="{DynamicResource TextColor}"/>
+                            <TextBox x:Name="PreferredCategoriesTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Text="General Knowledge, Science, History, Geography, Sports, Entertainment, Literature" Margin="0,5,0,0" TextChanged="PreferredCategoriesTextBox_TextChanged"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+                
+                <!-- Audio Settings Section -->
+                <GroupBox Header="Audio Settings" 
+                          Foreground="{DynamicResource TextColor}"
+                          BorderBrush="{DynamicResource AccentColor}"
+                          Margin="0,0,0,20">
+                    <StackPanel Margin="10">
+                        
+                        <CheckBox x:Name="EnableSoundEffectsCheckBox" 
+                                  Content="Enable Sound Effects" 
+                                  Foreground="{DynamicResource TextColor}"
+                                  IsChecked="True"
+                                  Margin="0,0,0,10"
+                                  Checked="EnableSoundEffectsCheckBox_Checked"
+                                  Unchecked="EnableSoundEffectsCheckBox_Unchecked"/>
+                        
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Volume:" 
+                                       Foreground="{DynamicResource TextColor}" 
+                                       VerticalAlignment="Center"/>
+                            <Slider x:Name="VolumeSlider" 
+                                    Grid.Column="1"
+                                    Minimum="0" 
+                                    Maximum="100" 
+                                    Value="50"
+                                    TickFrequency="10"
+                                    IsSnapToTickEnabled="True"
+                                    ValueChanged="VolumeSlider_ValueChanged"/>
+                            <TextBlock x:Name="VolumeLabel"
+                                       Grid.Column="1"
+                                       Margin="10,0,0,0"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextColor}"
+                                       Text="50%"/>
+                        </Grid>
+                        
+                    </StackPanel>
+                </GroupBox>
+                
+                <!-- Game Settings Section -->
+                <GroupBox Header="Game Settings" 
+                          Foreground="{DynamicResource TextColor}"
+                          BorderBrush="{DynamicResource AccentColor}">
+                    <StackPanel Margin="10">
+                        
+                        <CheckBox x:Name="AutoSaveCheckBox" 
+                                  Content="Auto-save game progress" 
+                                  Foreground="{DynamicResource TextColor}"
+                                  IsChecked="True"
+                                  Margin="0,0,0,10"
+                                  Checked="AutoSaveCheckBox_Checked"
+                                  Unchecked="AutoSaveCheckBox_Unchecked"/>
+                        
+                        <CheckBox x:Name="QuestionTimerCheckBox" 
+                                  Content="Enable Question Timer" 
+                                  Foreground="{DynamicResource TextColor}"
+                                  IsChecked="False"
+                                  Margin="0,0,0,10"
+                                  Checked="QuestionTimerCheckBox_Checked"
+                                  Unchecked="QuestionTimerCheckBox_Unchecked"/>
+                        
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Question Timer (seconds, 0 = disabled):" 
+                                       Foreground="{DynamicResource TextColor}" 
+                                       VerticalAlignment="Center"/>
+                            <TextBox x:Name="QuestionTimerTextBox" 
+                                     Grid.Column="1"
+                                     Height="25" 
+                                     Text="0"
+                                     TextAlignment="Center"
+                                     TextChanged="QuestionTimerTextBox_TextChanged"/>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Theme:" 
+                                       Foreground="{DynamicResource TextColor}"
+                                       VerticalAlignment="Center"/>
+                            <ComboBox x:Name="ThemeComboBox" Grid.Column="1" Height="28">
+                                <ComboBoxItem Content="Default" Tag="Default"/>
+                                <ComboBoxItem Content="Liquid Glass (iOS)" Tag="LiquidGlass"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Game Setup additions -->
+                        <Grid Margin="0,10,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Number of Tiers:" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
+                            <TextBox x:Name="NumberOfTiersTextBox" Grid.Column="1" Height="25" Text="15" TextAlignment="Center" TextChanged="NumberOfTiersTextBox_TextChanged"/>
+                        </Grid>
+
+                        <TextBlock Text="Safe Havens:" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
+                        <WrapPanel x:Name="SafeHavenWrapPanel" Margin="0,5,0,10"/>
+
+                        <TextBlock Text="Gemini API Key" Foreground="{DynamicResource TextColor}"/>
+                        <Grid Margin="0,5,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <PasswordBox x:Name="GeminiKeyPasswordBox" Height="30" Grid.Column="0" Margin="0,0,10,0" PasswordChanged="GeminiKeyPasswordBox_PasswordChanged"/>
+                            <TextBox x:Name="GeminiKeyTextBox" Height="30" Grid.Column="0" Margin="0,0,10,0" Visibility="Collapsed" TextChanged="GeminiKeyTextBox_TextChanged"/>
+                            <Button x:Name="ShowHideGeminiKeyButton" Grid.Column="1" Content="Show" Width="60" Height="30" Click="ShowHideGeminiKeyButton_Click"/>
+                            <Button x:Name="DeleteGeminiKeyButton" Grid.Column="2" Content="Delete" Width="70" Height="30" Click="DeleteGeminiKeyButton_Click"/>
+                        </Grid>
+
+                        <!-- Background Image Prompt and Regeneration -->
+                        <TextBlock Text="Background Image Prompt" Foreground="{DynamicResource TextColor}"/>
+                        <TextBox x:Name="ImagePromptTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,5,0,10" TextChanged="ImagePromptTextBox_TextChanged"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="RegenerateBackgroundButton" Content="Regenerate Background" Height="35" Width="200" HorizontalAlignment="Left" Style="{DynamicResource GameButtonStyle}" Click="RegenerateBackgroundButton_Click" Grid.Column="0"/>
+                            <TextBlock x:Name="BackgroundStatusText" Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource TextColor}" Text=""/>
+                        </Grid>
+                        
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Prize Configuration Section -->
+                <GroupBox Header="Prize Configuration" 
+                          Foreground="{DynamicResource TextColor}"
+                          BorderBrush="{DynamicResource AccentColor}"
+                          Margin="0,20,0,0">
+                    <StackPanel Margin="10">
+                        <CheckBox x:Name="UseCustomPrizesCheckBox" Content="Use Custom Prizes" Foreground="{DynamicResource TextColor}" Margin="0,0,0,10" Checked="UseCustomPrizesCheckBox_Checked" Unchecked="UseCustomPrizesCheckBox_Unchecked"/>
+                        <ItemsControl x:Name="PrizeTiersItemsControl"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Question Builder Section -->
+                <GroupBox Header="Question Builder" 
+                          Foreground="{DynamicResource TextColor}"
+                          BorderBrush="{DynamicResource AccentColor}"
+                          Margin="0,20,0,0">
+                    <StackPanel Margin="10">
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Assign to Tier:" Foreground="{DynamicResource TextColor}" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="QuestionTierComboBox" Grid.Column="1" Height="28"/>
+                        </Grid>
+
+                        <TextBlock Text="Question Text:" Foreground="{DynamicResource TextColor}"/>
+                        <TextBox x:Name="QuestionTextBox" Height="80" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,5,0,10"/>
+
+                        <TextBlock Text="Answer Options (2–4):" Foreground="{DynamicResource TextColor}"/>
+                        <Grid Margin="0,5,0,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <RadioButton x:Name="CorrectA" GroupName="CorrectAnswer" Content="A" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                            <TextBox x:Name="AnswerATextBox" Grid.Column="1" Grid.Row="0" Height="25" Margin="0,0,0,5"/>
+
+                            <RadioButton x:Name="CorrectB" GroupName="CorrectAnswer" Content="B" Grid.Row="1" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                            <TextBox x:Name="AnswerBTextBox" Grid.Column="1" Grid.Row="1" Height="25" Margin="0,0,0,5"/>
+
+                            <RadioButton x:Name="CorrectC" GroupName="CorrectAnswer" Content="C" Grid.Row="2" VerticalAlignment="Center" Margin="0,0,10,5"/>
+                            <TextBox x:Name="AnswerCTextBox" Grid.Column="1" Grid.Row="2" Height="25" Margin="0,0,0,5"/>
+
+                            <RadioButton x:Name="CorrectD" GroupName="CorrectAnswer" Content="D" Grid.Row="3" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBox x:Name="AnswerDTextBox" Grid.Column="1" Grid.Row="3" Height="25"/>
+                        </Grid>
+
+                        <TextBlock Text="Hint (Optional):" Foreground="{DynamicResource TextColor}"/>
+                        <TextBox x:Name="HintTextBox" Height="25" Margin="0,5,0,10"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <Button x:Name="AddQuestionButton" Content="Add Question" Width="120" Height="30" Style="{DynamicResource GameButtonStyle}" Click="AddQuestionButton_Click"/>
+                            <Button x:Name="RemoveSelectedQuestionButton" Content="Remove Selected" Width="140" Height="30" Margin="10,0,0,0" Style="{DynamicResource GameButtonStyle}" Click="RemoveSelectedQuestionButton_Click"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Custom Questions:" FontWeight="Bold" Foreground="{DynamicResource TextColor}"/>
+                        <ListBox x:Name="QuestionsListBox" Height="140"/>
+                    </StackPanel>
+                </GroupBox>
+                
+            </StackPanel>
+        </ScrollViewer>
+        
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,20,0,0">
+            <Button x:Name="ResetButton" 
+                    Content="Reset to Defaults" 
+                    Width="140" 
+                    Height="35" 
+                    Margin="0,0,10,0"
+                    Style="{DynamicResource GameButtonStyle}"
+                    Click="ResetButton_Click"/>
+            <Button x:Name="SaveButton" 
+                    Content="Apply Settings" 
+                    Width="140" 
+                    Height="35" 
+                    Margin="0,0,10,0"
+                    Style="{DynamicResource GameButtonStyle}"
+                    Click="SaveButton_Click"/>
+            <Button x:Name="StartGameButton"
+                    Content="Start Game"
+                    Width="120"
+                    Height="35"
+                    Margin="0,0,10,0"
+                    Style="{DynamicResource GameButtonStyle}"
+                    Click="StartGameButton_Click"/>
+            <Button x:Name="CancelButton" 
+                    Content="Cancel" 
+                    Width="80" 
+                    Height="35"
+                    Style="{DynamicResource GameButtonStyle}"
+                    Click="CancelButton_Click"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>

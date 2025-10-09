@@ -1,0 +1,15 @@
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\bin\Release\net8.0-windows\Installer.exe
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\bin\Release\net8.0-windows\Installer.deps.json
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\bin\Release\net8.0-windows\Installer.runtimeconfig.json
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\bin\Release\net8.0-windows\Installer.dll
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\bin\Release\net8.0-windows\Installer.pdb
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.AssemblyInfoInputs.cache
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.AssemblyInfo.cs
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.csproj.CoreCompileInputs.cache
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.sourcelink.json
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.dll
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\refint\Installer.dll
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.pdb
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\Installer.genruntimeconfig.cache
+C:\Users\chrom\OneDrive\Desktop\apps\whowants\Installer\obj\Release\net8.0-windows\ref\Installer.dll

@@ -4,23 +4,36 @@
   "directories": {
     "output": "dist"
   },
+  "icon": "assets/icon.png",
   "files": [
     "src/**/*",
     "build/**/*",
-    "assets/**/*",
     "node_modules/**/*"
   ],
-  "extraResources": [
-    {
-      "from": "assets/",
-      "to": "assets/"
-    }
-  ],
+  "extraResources": [],
   "win": {
-    "target": "dir",
-    "icon": "assets/icon.png"
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "requestedExecutionLevel": "asInvoker",
+    "artifactName": "${productName}-${version}-${arch}.${ext}"
   },
-  "nsis": false,
-  "portable": false,
-  "compression": "store"
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Who Wants to be a Shillionaire"
+  },
+  "portable": {
+    "artifactName": "${productName}-Portable-${version}-${arch}.${ext}"
+  },
+  "compression": "normal"
 }

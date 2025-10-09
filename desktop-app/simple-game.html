@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to be a Shillionaire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem 2rem;
+            border-bottom: 2px solid #f7931e;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #f7931e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #f7931e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #f7931e;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .start-button {
+            width: 100%;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #f7931e, #ffd700);
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(247, 147, 30, 0.3);
+        }
+
+        .tutorial-button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid rgba(247, 147, 30, 0.5);
+            border-radius: 8px;
+            background: transparent;
+            color: #f7931e;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-button:hover {
+            background: rgba(247, 147, 30, 0.1);
+            border-color: #f7931e;
+            transform: translateY(-2px);
+        }
+
+        .game-area {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f7931e;
+        }
+
+        .prize-amount {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .answer-button {
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .answer-button:hover {
+            border-color: #f7931e;
+            background: rgba(247, 147, 30, 0.2);
+        }
+
+        .answer-button.correct {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+
+        .answer-button.incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.2);
+        }
+
+        .lifelines {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .lifeline-button {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lifeline-button:hover:not(:disabled) {
+            border-color: #f7931e;
+            background: rgba(247, 147, 30, 0.2);
+        }
+
+        .lifeline-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .action-button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button {
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            color: white;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .quit-button {
+            background: linear-gradient(45deg, #f44336, #ef5350);
+            color: white;
+        }
+
+        .quit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(244, 67, 54, 0.3);
+        }
+
+        .action-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .prize-ladder {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 1rem;
+            min-width: 200px;
+        }
+
+        .prize-ladder h3 {
+            color: #f7931e;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .prize-level {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prize-level:last-child {
+            border-bottom: none;
+        }
+
+        .prize-level.current {
+            background: rgba(247, 147, 30, 0.3);
+            border-radius: 5px;
+        }
+
+        .prize-level.safe-haven {
+            background: rgba(76, 175, 80, 0.3);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Who Wants to be a Shillionaire?</h1>
+    </div>
+
+    <div class="main-content">
+        <div id="welcome-screen" class="welcome-card">
+            <h2 class="title">Welcome!</h2>
+            <p class="subtitle">
+                Test your knowledge and climb the money ladder. 
+                Answer 15 questions correctly to become a millionaire!
+            </p>
+            
+            <div class="form-group">
+                <label for="playerName">Your Name</label>
+                <input type="text" id="playerName" placeholder="Enter your name" maxlength="50">
+            </div>
+            
+            <button class="start-button" onclick="startGame()">Start Game</button>
+            <button class="tutorial-button" onclick="showTutorial()">📚 How to Play</button>
+        </div>
+
+        <div id="game-screen" class="game-area">
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">Question <span id="questionNum">1</span> of 15</div>
+                    <div class="prize-amount">$<span id="prizeAmount">100</span></div>
+                </div>
+                <div class="question-text" id="questionText">
+                    Which planet is known as the Red Planet?
+                </div>
+                <div class="answers-grid" id="answersGrid">
+                    <button class="answer-button" onclick="selectAnswer(this, 'Mars')">A) Mars</button>
+                    <button class="answer-button" onclick="selectAnswer(this, 'Venus')">B) Venus</button>
+                    <button class="answer-button" onclick="selectAnswer(this, 'Jupiter')">C) Jupiter</button>
+                    <button class="answer-button" onclick="selectAnswer(this, 'Saturn')">D) Saturn</button>
+                </div>
+                <div class="lifelines">
+                    <button class="lifeline-button" onclick="useLifeline('fiftyFifty')">50:50</button>
+                    <button class="lifeline-button" onclick="useLifeline('phoneFriend')">📞 Phone a Friend</button>
+                    <button class="lifeline-button" onclick="useLifeline('askAudience')">👥 Ask the Audience</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-button submit-button" onclick="submitAnswer()" disabled>Submit Answer</button>
+                    <button class="action-button quit-button" onclick="quitGame()">Quit Game</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="prize-ladder">
+        <h3>Prize Ladder</h3>
+        <div class="prize-level safe-haven">15. $1,000,000</div>
+        <div class="prize-level">14. $500,000</div>
+        <div class="prize-level">13. $250,000</div>
+        <div class="prize-level">12. $125,000</div>
+        <div class="prize-level">11. $64,000</div>
+        <div class="prize-level safe-haven current">10. $32,000</div>
+        <div class="prize-level">9. $16,000</div>
+        <div class="prize-level">8. $8,000</div>
+        <div class="prize-level">7. $4,000</div>
+        <div class="prize-level">6. $2,000</div>
+        <div class="prize-level safe-haven">5. $1,000</div>
+        <div class="prize-level">4. $500</div>
+        <div class="prize-level">3. $300</div>
+        <div class="prize-level">2. $200</div>
+        <div class="prize-level current">1. $100</div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let selectedAnswer = null;
+        let playerName = '';
+
+        function startGame() {
+            const nameInput = document.getElementById('playerName');
+            playerName = nameInput.value.trim();
+            
+            if (!playerName) {
+                alert('Please enter your name!');
+                return;
+            }
+
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+        }
+
+        function selectAnswer(button, answer) {
+            // Remove previous selection
+            document.querySelectorAll('.answer-button').forEach(btn => {
+                btn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                btn.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+
+            // Select new answer
+            button.style.borderColor = '#f7931e';
+            button.style.background = 'rgba(247, 147, 30, 0.2)';
+            selectedAnswer = answer;
+
+            // Enable submit button
+            document.querySelector('.submit-button').disabled = false;
+        }
+
+        function submitAnswer() {
+            if (!selectedAnswer) return;
+
+            const correctAnswer = 'Mars'; // This would come from the backend
+            const buttons = document.querySelectorAll('.answer-button');
+            
+            // Show correct/incorrect answers
+            buttons.forEach(button => {
+                const answer = button.textContent.split(') ')[1];
+                if (answer === correctAnswer) {
+                    button.classList.add('correct');
+                } else if (answer === selectedAnswer && answer !== correctAnswer) {
+                    button.classList.add('incorrect');
+                }
+                button.disabled = true;
+            });
+
+            // Disable submit button
+            document.querySelector('.submit-button').disabled = true;
+
+            // Show result
+            setTimeout(() => {
+                if (selectedAnswer === correctAnswer) {
+                    alert('Correct! You win $' + getPrizeAmount(currentQuestion));
+                    currentQuestion++;
+                    if (currentQuestion <= 15) {
+                        nextQuestion();
+                    } else {
+                        alert('Congratulations! You are now a millionaire!');
+                    }
+                } else {
+                    alert('Incorrect! The correct answer was ' + correctAnswer + '. You win $' + getSafeHavenAmount());
+                    endGame();
+                }
+            }, 2000);
+        }
+
+        function nextQuestion() {
+            // Reset for next question
+            selectedAnswer = null;
+            document.querySelectorAll('.answer-button').forEach(btn => {
+                btn.className = 'answer-button';
+                btn.disabled = false;
+                btn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                btn.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+            
+            document.querySelector('.submit-button').disabled = true;
+            document.getElementById('questionNum').textContent = currentQuestion;
+            document.getElementById('prizeAmount').textContent = getPrizeAmount(currentQuestion);
+            
+            // Update prize ladder
+            updatePrizeLadder();
+        }
+
+        function getPrizeAmount(level) {
+            const prizes = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
+            return prizes[level - 1];
+        }
+
+        function getSafeHavenAmount() {
+            if (currentQuestion >= 10) return 32000;
+            if (currentQuestion >= 5) return 1000;
+            return 0;
+        }
+
+        function updatePrizeLadder() {
+            document.querySelectorAll('.prize-level').forEach((level, index) => {
+                level.classList.remove('current');
+                if (15 - index === currentQuestion) {
+                    level.classList.add('current');
+                }
+            });
+        }
+
+        function useLifeline(type) {
+            alert('Lifeline: ' + type + ' (This would be implemented with backend integration)');
+        }
+
+        function quitGame() {
+            if (confirm('Are you sure you want to quit? You will keep your current winnings.')) {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            alert('Game Over! Thanks for playing, ' + playerName + '!');
+            // Reset to welcome screen
+            document.getElementById('welcome-screen').style.display = 'block';
+            document.getElementById('game-screen').style.display = 'none';
+            currentQuestion = 1;
+            selectedAnswer = null;
+        }
+
+        function showTutorial() {
+            alert(`How to Play:
+
+🎯 Objective: Answer 15 questions correctly to win $1,000,000!
+
+💰 Prize Ladder: Each question gets progressively harder and more valuable.
+
+🆘 Lifelines:
+• 50:50 - Eliminates two wrong answers
+• Phone a Friend - Get help from a friend
+• Ask the Audience - See audience voting
+
+🏆 Safe Havens: At questions 5 ($1,000) and 10 ($32,000), you're guaranteed to keep that amount even if you answer incorrectly later.
+
+🎮 Gameplay: Select your answer, use lifelines if needed, and submit. You can quit at any time to keep your current winnings!`);
+        }
+    </script>
+</body>
+</html>

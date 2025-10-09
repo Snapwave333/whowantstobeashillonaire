@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "electron src/main.js",
+    "start": "electron-forge start",
     "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:3000 && electron src/main.js\"",
     "dev:react": "cd ../frontend && npm start",
     "build:react": "cd ../frontend && npm run build && cp -r build ../desktop-app/",
@@ -16,10 +16,14 @@
     "build:win": "electron-packager . who-wants-to-be-a-shillionaire --platform=win32 --arch=x64 --out=dist --overwrite --ignore=\"node_modules/(electron-prebuilt|electron-packager)\" --ignore=\"\\.git\"",
     "build:mac": "electron-packager . who-wants-to-be-a-shillionaire --platform=darwin --arch=x64 --out=dist --overwrite --ignore=\"node_modules/(electron-prebuilt|electron-packager)\" --ignore=\"\\.git\"",
     "build:linux": "electron-packager . who-wants-to-be-a-shillionaire --platform=linux --arch=x64 --out=dist --overwrite --ignore=\"node_modules/(electron-prebuilt|electron-packager)\" --ignore=\"\\.git\"",
-    "build:portable": "electron-packager . who-wants-to-be-a-shillionaire --platform=win32 --arch=x64 --out=dist --overwrite --portable --ignore=\"node_modules/(electron-prebuilt|electron-packager)\" --ignore=\"\\.git\"",
+    "build:exe": "electron-builder --win --x64",
+    "build:portable": "electron-builder --win portable --x64",
+    "build:installer": "electron-builder --win nsis --x64",
     "pack": "npm run build:react && npm run build",
     "test": "jest",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "build": {
     "appId": "com.snapwave.shillionaire",
@@ -43,22 +47,33 @@
       }
     ],
     "win": {
-      "target": "portable",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "icon": "assets/icon.png",
-      "publisherName": "Snapwave",
       "requestedExecutionLevel": "asInvoker",
-      "artifactName": "${productName}-${version}-${arch}.${ext}",
-      "sign": false,
-      "verifyUpdateCodeSignature": false,
-      "signingHashAlgorithms": [],
-      "publish": {
-        "provider": "github",
-        "owner": "Snapwave333",
-        "repo": "whowantstobeashillonaire"
-      }
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "portable": {
       "artifactName": "${productName}-${version}-portable.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Who Wants to be a Shillionaire"
     },
     "publish": {
       "provider": "github",
@@ -67,14 +82,24 @@
     }
   },
   "dependencies": {
+    "@genwave/svgmaker-mcp": "^0.3.0",
     "axios": "^1.6.2",
     "electron-log": "^5.0.1",
+    "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^8.1.0",
-    "electron-updater": "^6.1.7"
+    "electron-updater": "^6.1.7",
+    "smart-buffer": "^4.2.0"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.10.0",
+    "@electron-forge/maker-deb": "^7.10.0",
+    "@electron-forge/maker-rpm": "^7.10.0",
+    "@electron-forge/maker-squirrel": "^7.10.0",
+    "@electron-forge/maker-zip": "^7.10.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.10.0",
+    "@electron-forge/plugin-fuses": "^7.10.0",
+    "@electron/fuses": "^1.8.0",
     "electron": "^28.1.0",
-    "electron-builder": "^24.13.3",
     "electron-packager": "^17.1.2"
   }
 }

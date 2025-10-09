@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to be a Shillionaire - Game Master Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding: 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid #f7931e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header h1 {
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            position: relative;
+        }
+
+        .header h1 img {
+            height: 70%;
+            max-width: 90%;
+            object-fit: contain;
+            margin: 0;
+            padding: 0;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .settings-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            overflow-x: visible;
+            padding-bottom: 2rem;
+        }
+
+        .accordion-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: visible;
+        }
+
+        .accordion-header {
+            background: rgba(247, 147, 30, 0.2);
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .accordion-header:hover {
+            background: rgba(247, 147, 30, 0.3);
+        }
+
+        .accordion-header.active {
+            background: rgba(247, 147, 30, 0.4);
+        }
+
+        .accordion-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f7931e;
+        }
+
+        .accordion-icon {
+            font-size: 1.2rem;
+            color: #f7931e;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-icon.expanded {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.expanded {
+            max-height: 800px;
+            overflow-y: auto;
+            overflow-x: visible;
+        }
+
+        .accordion-panel {
+            padding: 1.5rem;
+            padding-bottom: 3rem;
+            overflow: visible;
+        }
+
+        .accordion-panel.extra-padding {
+            padding: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .panel-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f7931e;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #f7931e;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group select {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            z-index: 1000;
+            position: relative;
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: white;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .form-group select:focus {
+            z-index: 1001;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+            transform: scale(1.2);
+        }
+
+        .form-group label:has(input[type="checkbox"]) {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.25rem;
+            width: calc(50% - 0.5rem);
+        }
+
+        .button.primary {
+            background: linear-gradient(45deg, #f7931e, #ffd700);
+            color: white;
+        }
+
+        .button.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .button.danger {
+            background: linear-gradient(45deg, #f44336, #ef5350);
+            color: white;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .status-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-label {
+            font-weight: 500;
+            color: #f7931e;
+        }
+
+        .status-value {
+            font-weight: 600;
+        }
+
+        .status-value.success {
+            color: #4caf50;
+        }
+
+        .status-value.warning {
+            color: #ff9800;
+        }
+
+        .status-value.error {
+            color: #f44336;
+        }
+
+        .large-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .button-row .button {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .current-settings {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .live-game-info {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .api-config {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .game-setup {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .game-controls {
+            grid-column: 1;
+            grid-row: 3;
+        }
+
+        .question-management {
+            grid-column: 2;
+            grid-row: 3;
+        }
+
+        .manual-question {
+            grid-column: 1 / 3;
+            grid-row: 4;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .alert.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+
+        .alert.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+
+        .alert.warning {
+            background: rgba(255, 152, 0, 0.2);
+            border: 1px solid #ff9800;
+            color: #ff9800;
+        }
+
+        .top-display-modules {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .display-module {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+        }
+
+        .display-module h3 {
+            font-size: 1.2rem;
+            color: #f7931e;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Prize Editor Modal - Fullscreen */
+        .prize-editor-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .prize-editor-modal.hidden {
+            display: none;
+        }
+
+        .prize-editor-content {
+            width: 95vw;
+            height: 90vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border-radius: 15px;
+            border: 2px solid rgba(247, 147, 30, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .prize-editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: rgba(247, 147, 30, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prize-editor-header h2 {
+            color: #f7931e;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            color: #f7931e;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: rgba(247, 147, 30, 0.2);
+            transform: scale(1.1);
+        }
+
+        .prize-editor-body {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .prize-ladder-editor {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-height: 100%;
+        }
+
+        .prize-tier-editor {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prize-tier-editor h4 {
+            color: #f7931e;
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+        }
+
+        .prize-editor-actions {
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .file-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .file-input-group .button {
+            width: auto;
+            min-width: 120px;
+            margin: 0;
+        }
+
+        .file-name {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-style: italic;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(45deg, #f7931e, #ffd700);
+            border-color: #f7931e;
+            color: white;
+            font-weight: 600;
+        }
+
+        .edit-input {
+            transition: all 0.3s ease;
+        }
+
+        .edit-input.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            <img src="assets/images/game-title.png" alt="Who Wants to be a Shillionaire?" />
+        </h1>
+    </div>
+
+    <div class="settings-container">
+        <!-- Top Display Modules -->
+        <div class="top-display-modules">
+            <!-- All Currently Enabled Settings -->
+            <div class="display-module">
+                <h3>📊 All Currently Enabled Settings</h3>
+                <div class="status-display">
+                    <div class="status-item">
+                        <span class="status-label">API Status:</span>
+                        <span class="status-value" id="currentApiStatus">❌ Not Configured</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Contestant:</span>
+                        <span class="status-value" id="currentContestant">None</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Game Mode:</span>
+                        <span class="status-value" id="currentGameMode">Standard (15 Questions)</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Category:</span>
+                        <span class="status-value" id="currentCategory">General Knowledge</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Prize Ladder:</span>
+                        <span class="status-value" id="currentLadder">Standard Ladder</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Game Status:</span>
+                        <span class="status-value" id="currentGameStatus">🟡 Ready to Start</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Game Information -->
+            <div class="display-module">
+                <h3>📺 Live Game Information</h3>
+                <div class="status-display">
+                    <div class="status-item">
+                        <span class="status-label">Current Question:</span>
+                        <span class="status-value" id="liveQuestion">0/15</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Current Prize:</span>
+                        <span class="status-value" id="livePrize">$0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Lifelines Used:</span>
+                        <span class="status-value" id="liveLifelines">0/3</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Time Remaining:</span>
+                        <span class="status-value" id="liveTime">No Limit</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Contestant Answer:</span>
+                        <span class="status-value" id="liveAnswer">Waiting...</span>
+                    </div>
+                </div>
+                <div class="button-row">
+                    <button class="button primary" onclick="markCorrect()" id="markCorrectBtn" disabled>✓ Correct</button>
+                    <button class="button danger" onclick="markIncorrect()" id="markIncorrectBtn" disabled>✗ Incorrect</button>
+                    <button class="button secondary" onclick="contestantQuit()" id="contestantQuitBtn" disabled>Quit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Configuration -->
+        <div class="accordion-section">
+            <div class="accordion-header" onclick="toggleAccordion('apiConfig')">
+                <div class="accordion-title">🔑 API Configuration</div>
+                <div class="accordion-icon" id="apiConfigIcon">▼</div>
+            </div>
+            <div class="accordion-content" id="apiConfigContent">
+                <div class="accordion-panel">
+                    <div class="form-group">
+                        <label for="geminiApiKey">Gemini API Key</label>
+                        <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API key">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="saveApiKey" checked> Save API Key Securely
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" onclick="testApiConnection()" class="btn btn-primary">Test API Connection</button>
+                        <button type="button" onclick="saveApiKey()" class="btn btn-success">Save API Key</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="questionCategory">Question Category</label>
+                        <select id="questionCategory">
+                            <option value="random">🎲 Random (All Categories)</option>
+                            <option value="general">General Knowledge</option>
+                            <option value="science">Science</option>
+                            <option value="history">History</option>
+                            <option value="sports">Sports</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="geography">Geography</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="customPrompt">Custom Question Prompt</label>
+                        <textarea id="customPrompt" placeholder="Enter custom instructions for AI-generated questions..." class="large-textarea"></textarea>
+                    </div>
+                    <div class="button-row">
+                        <button class="button primary" onclick="saveApiKey()">Save API Key</button>
+                        <button class="button secondary" onclick="testApiConnection()">Test Connection</button>
+                    </div>
+                    <div id="apiStatus" class="alert hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Setup -->
+        <div class="accordion-section">
+            <div class="accordion-header" onclick="toggleAccordion('gameSetup')">
+                <div class="accordion-title">🎯 Game Setup</div>
+                <div class="accordion-icon" id="gameSetupIcon">▼</div>
+            </div>
+            <div class="accordion-content" id="gameSetupContent">
+                <div class="accordion-panel">
+                    <div class="form-group">
+                        <label for="contestantName">Contestant Name</label>
+                        <input type="text" id="contestantName" placeholder="Enter contestant name">
+                    </div>
+                    <div class="form-group">
+                        <label for="gameMode">Game Mode</label>
+                        <select id="gameMode">
+                            <option value="standard">Standard (15 Questions)</option>
+                            <option value="quick">Quick (10 Questions)</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ladderName">Prize Ladder</label>
+                        <input type="text" id="ladderName" placeholder="Standard Ladder" value="Standard Ladder">
+                    </div>
+                    <div class="button-row">
+                        <button class="button secondary" onclick="openPrizeEditor()">Edit Prize Ladder</button>
+                        <button class="button secondary" onclick="resetPrizeLadder()">Reset to Default</button>
+                        <button class="button secondary" onclick="savePrizeLadder()">Save Ladder</button>
+                        <button class="button secondary" onclick="loadPrizeLadder()">Load Ladder</button>
+                    </div>
+                    <div style="margin-bottom: 1rem;"></div>
+                    <div class="button-row">
+                        <button class="button primary" onclick="startNewGame()">Start New Game</button>
+                        <button class="button danger" onclick="endGame()" id="endGameBtn" disabled>End Game</button>
+                    </div>
+                    <div style="margin-bottom: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="accordion-section">
+            <div class="accordion-header" onclick="toggleAccordion('gameControls')">
+                <div class="accordion-title">🎮 Game Controls</div>
+                <div class="accordion-icon" id="gameControlsIcon">▼</div>
+            </div>
+            <div class="accordion-content" id="gameControlsContent">
+                <div class="accordion-panel extra-padding">
+                    <div class="status-display">
+                        <div class="status-item">
+                            <span class="status-label">Current Game:</span>
+                            <span class="status-value" id="controlGameStatus">No active game</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Question:</span>
+                            <span class="status-value" id="controlQuestion">0/15</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Prize:</span>
+                            <span class="status-value" id="controlPrize">$0</span>
+                        </div>
+                    </div>
+                    <div class="button-row">
+                        <button class="button secondary" onclick="nextQuestion()" id="nextQuestionBtn" disabled>Next Question</button>
+                        <button class="button secondary" onclick="showCorrectAnswer()" id="showAnswerBtn" disabled>Show Answer</button>
+                    </div>
+                    <div class="button-row">
+                        <button class="button secondary" onclick="useLifeline('fiftyFifty')" id="fiftyFiftyBtn" disabled>50:50</button>
+                        <button class="button secondary" onclick="useLifeline('phoneFriend')" id="phoneFriendBtn" disabled>Phone Friend</button>
+                        <button class="button secondary" onclick="useLifeline('askAudience')" id="askAudienceBtn" disabled>Ask Audience</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Management -->
+        <div class="accordion-section">
+            <div class="accordion-header" onclick="toggleAccordion('questionManagement')">
+                <div class="accordion-title">❓ Question Management</div>
+                <div class="accordion-icon" id="questionManagementIcon">▼</div>
+            </div>
+            <div class="accordion-content" id="questionManagementContent">
+                <div class="accordion-panel">
+                    <div class="button-row">
+                        <button class="button secondary" onclick="generateQuestion()" id="generateQuestionBtn" disabled>Generate New Question</button>
+                        <button class="button secondary" onclick="editCurrentQuestion()" id="editQuestionBtn" disabled>Edit Current Question</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="correctAnswer">Correct Answer (A, B, C, or D)</label>
+                        <input type="text" id="correctAnswer" placeholder="A" maxlength="1">
+                    </div>
+                    <div class="button-row">
+                        <button class="button primary" onclick="setManualQuestion()">Set Manual Question</button>
+                        <button class="button secondary" onclick="loadQuestionFromFile()">Load from File</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Question Entry -->
+        <div class="accordion-section">
+            <div class="accordion-header" onclick="toggleAccordion('manualQuestion')">
+                <div class="accordion-title">📝 Manual Question Entry</div>
+                <div class="accordion-icon" id="manualQuestionIcon">▼</div>
+            </div>
+            <div class="accordion-content" id="manualQuestionContent">
+                <div class="accordion-panel extra-padding">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div class="form-group">
+                                <label for="manualQuestion">Enter question manually...</label>
+                                <textarea id="manualQuestion" placeholder="Enter question manually..." class="large-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label for="manualAnswers">Answers (one per line)</label>
+                                <textarea id="manualAnswers" placeholder="A) Answer 1&#10;B) Answer 2&#10;C) Answer 3&#10;D) Answer 4" class="large-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prize Editor Modal -->
+    <div id="prizeEditorModal" class="prize-editor-modal hidden">
+        <div class="prize-editor-content">
+            <div class="prize-editor-header">
+                <h2>🎯 Prize Ladder Editor</h2>
+                <button class="close-button" onclick="closePrizeEditor()">&times;</button>
+            </div>
+            <div class="prize-editor-body">
+                <div class="prize-ladder-editor" id="prizeLadderEditor">
+                    <!-- Prize tiers will be generated here -->
+                </div>
+            </div>
+            <div class="prize-editor-actions">
+                <button class="button secondary" onclick="addPrizeTier()">Add Tier</button>
+                <button class="button primary" onclick="applyPrizeLadder()">Apply Changes</button>
+                <button class="button danger" onclick="closePrizeEditor()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            isActive: false,
+            contestantName: '',
+            currentQuestion: 0,
+            totalQuestions: 15,
+            currentPrize: 0,
+            lifelinesUsed: {
+                fiftyFifty: false,
+                phoneFriend: false,
+                askAudience: false
+            },
+            geminiApiKey: '',
+            currentQuestionData: null
+        };
+
+        // Customizable prize ladder
+        let customPrizeLadder = [
+            { level: 1, prize: 100, text: "$100", image: null, sound: null, isSafeHaven: false },
+            { level: 2, prize: 200, text: "$200", image: null, sound: null, isSafeHaven: false },
+            { level: 3, prize: 300, text: "$300", image: null, sound: null, isSafeHaven: false },
+            { level: 4, prize: 500, text: "$500", image: null, sound: null, isSafeHaven: false },
+            { level: 5, prize: 1000, text: "$1,000", image: null, sound: null, isSafeHaven: true },
+            { level: 6, prize: 2000, text: "$2,000", image: null, sound: null, isSafeHaven: false },
+            { level: 7, prize: 4000, text: "$4,000", image: null, sound: null, isSafeHaven: false },
+            { level: 8, prize: 8000, text: "$8,000", image: null, sound: null, isSafeHaven: false },
+            { level: 9, prize: 16000, text: "$16,000", image: null, sound: null, isSafeHaven: false },
+            { level: 10, prize: 32000, text: "$32,000", image: null, sound: null, isSafeHaven: true },
+            { level: 11, prize: 64000, text: "$64,000", image: null, sound: null, isSafeHaven: false },
+            { level: 12, prize: 125000, text: "$125,000", image: null, sound: null, isSafeHaven: false },
+            { level: 13, prize: 250000, text: "$250,000", image: null, sound: null, isSafeHaven: false },
+            { level: 14, prize: 500000, text: "$500,000", image: null, sound: null, isSafeHaven: false },
+            { level: 15, prize: 1000000, text: "$1,000,000", image: null, sound: null, isSafeHaven: false }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedApiKey();
+            updateAllDisplays();
+            
+            // Add event listeners
+            document.getElementById('gameMode').addEventListener('change', updateAllDisplays);
+            document.getElementById('questionCategory').addEventListener('change', updateAllDisplays);
+            document.getElementById('contestantName').addEventListener('input', updateAllDisplays);
+            
+            // Expand first section by default
+            toggleAccordion('apiConfig');
+            
+            // Prize Editor Modal event listeners
+            document.getElementById('prizeEditorModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePrizeEditor();
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('prizeEditorModal');
+                    if (!modal.classList.contains('hidden')) {
+                        closePrizeEditor();
+                    }
+                }
+            });
+        });
+
+        // Accordion functionality
+        function toggleAccordion(sectionId) {
+            const content = document.getElementById(sectionId + 'Content');
+            const icon = document.getElementById(sectionId + 'Icon');
+            const header = content.previousElementSibling;
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                icon.classList.remove('expanded');
+                header.classList.remove('active');
+            } else {
+                // Close all other sections
+                document.querySelectorAll('.accordion-content').forEach(section => {
+                    section.classList.remove('expanded');
+                });
+                document.querySelectorAll('.accordion-icon').forEach(icon => {
+                    icon.classList.remove('expanded');
+                });
+                document.querySelectorAll('.accordion-header').forEach(header => {
+                    header.classList.remove('active');
+                });
+                
+                // Open selected section
+                content.classList.add('expanded');
+                icon.classList.add('expanded');
+                header.classList.add('active');
+            }
+        }
+
+        function loadSavedApiKey() {
+            const savedKey = localStorage.getItem('geminiApiKey');
+            if (savedKey) {
+                document.getElementById('geminiApiKey').value = savedKey;
+                gameState.geminiApiKey = savedKey;
+            }
+            updateAllDisplays();
+        }
+
+        function updateAllDisplays() {
+            updateCurrentSettings();
+            updateLiveGameInfo();
+            updateGameControls();
+        }
+
+        function updateCurrentSettings() {
+            // API Status
+            const apiStatus = document.getElementById('currentApiStatus');
+            if (gameState.geminiApiKey) {
+                apiStatus.textContent = '✅ Configured';
+                apiStatus.className = 'status-value success';
+            } else {
+                apiStatus.textContent = '❌ Not Configured';
+                apiStatus.className = 'status-value error';
+            }
+
+            // Contestant
+            const contestant = document.getElementById('currentContestant');
+            contestant.textContent = gameState.contestantName || 'None';
+            contestant.className = gameState.contestantName ? 'status-value success' : 'status-value warning';
+
+            // Game Mode
+            const gameMode = document.getElementById('currentGameMode');
+            const mode = document.getElementById('gameMode').value;
+            const modeText = mode === 'quick' ? 'Quick (10 Questions)' : 
+                           mode === 'custom' ? `Custom (${gameState.totalQuestions} Questions)` : 
+                           'Standard (15 Questions)';
+            gameMode.textContent = modeText;
+            gameMode.className = 'status-value info';
+
+            // Category
+            const category = document.getElementById('currentCategory');
+            const cat = document.getElementById('questionCategory').value;
+            const catText = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/([A-Z])/g, ' $1');
+            category.textContent = catText;
+            category.className = 'status-value info';
+
+            // Prize Ladder
+            const ladder = document.getElementById('currentLadder');
+            ladder.textContent = document.getElementById('ladderName').value;
+            ladder.className = 'status-value info';
+
+            // Game Status
+            const gameStatus = document.getElementById('currentGameStatus');
+            if (!gameState.isActive && !gameState.contestantName) {
+                gameStatus.textContent = '🟡 Ready to Start';
+                gameStatus.className = 'status-value warning';
+            } else if (!gameState.isActive && gameState.contestantName) {
+                gameStatus.textContent = '🔴 Game Ended';
+                gameStatus.className = 'status-value error';
+            } else if (gameState.isActive) {
+                gameStatus.textContent = '🟢 Game Active';
+                gameStatus.className = 'status-value success';
+            }
+        }
+
+        function updateLiveGameInfo() {
+            document.getElementById('liveQuestion').textContent = `${gameState.currentQuestion + 1}/${gameState.totalQuestions}`;
+            document.getElementById('livePrize').textContent = `$${gameState.currentPrize.toLocaleString()}`;
+            
+            const lifelinesUsed = Object.values(gameState.lifelinesUsed).filter(used => used).length;
+            document.getElementById('liveLifelines').textContent = `${lifelinesUsed}/3`;
+        }
+
+        function updateGameControls() {
+            document.getElementById('controlGameStatus').textContent = gameState.contestantName || 'No active game';
+            document.getElementById('controlQuestion').textContent = `${gameState.currentQuestion + 1}/${gameState.totalQuestions}`;
+            document.getElementById('controlPrize').textContent = `$${gameState.currentPrize.toLocaleString()}`;
+        }
+
+        function saveApiKey() {
+            const apiKey = document.getElementById('geminiApiKey').value.trim();
+            if (!apiKey) {
+                showAlert('apiStatus', 'Please enter a valid API key', 'error');
+                return;
+            }
+
+            gameState.geminiApiKey = apiKey;
+            localStorage.setItem('geminiApiKey', apiKey);
+            showAlert('apiStatus', 'API key saved successfully!', 'success');
+            
+            // Enable game controls
+            document.getElementById('generateQuestionBtn').disabled = false;
+            updateAllDisplays();
+        }
+
+        async function testApiConnection() {
+            if (!gameState.geminiApiKey) {
+                showAlert('apiStatus', 'Please configure your API key first!', 'error');
+                return;
+            }
+            
+            try {
+                showAlert('apiStatus', 'Testing Gemini API connection...', 'warning');
+                
+                // Test API with a simple request
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${gameState.geminiApiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: "Say 'API connection successful' in JSON format: {\"status\": \"success\", \"message\": \"API connection successful\"}"
+                            }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                showAlert('apiStatus', '✅ Gemini API connection successful!', 'success');
+                
+            } catch (error) {
+                console.error('API connection test failed:', error);
+                showAlert('apiStatus', `❌ API connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        function showAlert(elementId, message, type) {
+            const alertElement = document.getElementById(elementId);
+            alertElement.className = `alert ${type}`;
+            alertElement.textContent = message;
+            alertElement.classList.remove('hidden');
+            
+            setTimeout(() => {
+                alertElement.classList.add('hidden');
+            }, 3000);
+        }
+
+        function startNewGame() {
+            const contestantName = document.getElementById('contestantName').value.trim();
+            const gameMode = document.getElementById('gameMode').value;
+            
+            if (!contestantName) {
+                alert('Please enter a contestant name!');
+                return;
+            }
+
+            if (!gameState.geminiApiKey) {
+                alert('Please configure your Gemini API key first!');
+                return;
+            }
+
+            // Reset game state
+            gameState.isActive = true;
+            gameState.contestantName = contestantName;
+            gameState.currentQuestion = 0;
+            gameState.currentPrize = 0;
+            gameState.lifelinesUsed = {
+                fiftyFifty: false,
+                phoneFriend: false,
+                askAudience: false
+            };
+
+            // Set total questions based on mode
+            if (gameMode === 'quick') {
+                gameState.totalQuestions = 10;
+            } else if (gameMode === 'custom') {
+                gameState.totalQuestions = parseInt(prompt('Enter number of questions:') || '15');
+            } else {
+                gameState.totalQuestions = 15;
+            }
+
+            // Enable game controls
+            document.getElementById('nextQuestionBtn').disabled = false;
+            document.getElementById('showAnswerBtn').disabled = false;
+            document.getElementById('fiftyFiftyBtn').disabled = false;
+            document.getElementById('phoneFriendBtn').disabled = false;
+            document.getElementById('askAudienceBtn').disabled = false;
+            document.getElementById('endGameBtn').disabled = false;
+            document.getElementById('markCorrectBtn').disabled = false;
+            document.getElementById('markIncorrectBtn').disabled = false;
+            document.getElementById('contestantQuitBtn').disabled = false;
+
+            updateAllDisplays();
+            generateQuestion();
+        }
+
+        async function generateQuestion() {
+            if (!gameState.geminiApiKey) {
+                alert('Please configure your Gemini API key first!');
+                return;
+            }
+
+            try {
+                showAlert('apiStatus', 'Generating question with Gemini AI...', 'warning');
+                
+                // Calculate difficulty based on current question
+                const difficultyLevel = Math.min(Math.ceil((gameState.currentQuestion + 1) / 3), 5); // Scale 1-5
+                const category = document.getElementById('questionCategory').value || 'general';
+                
+                // Create prompt for Gemini AI
+                const prompt = `Generate a multiple choice question for "Who Wants to Be a Millionaire" style game show.
+                
+Requirements:
+- Difficulty Level: ${difficultyLevel}/5 (1=Easy, 5=Very Hard)
+- Category: ${category}
+- Question Number: ${gameState.currentQuestion + 1} of ${gameState.totalQuestions}
+- Format: JSON with question, 4 answer options, and correct answer index (0-3)
+- Make it challenging but fair for the difficulty level
+- Ensure only one answer is clearly correct
+- Make incorrect answers plausible but wrong
+
+Example format:
+{
+  "question": "What is the capital of France?",
+  "answers": ["London", "Paris", "Berlin", "Madrid"],
+  "correct": 1,
+  "difficulty": 2,
+  "category": "geography"
+}
+
+Generate the question now:`;
+
+                // Call Gemini AI API
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${gameState.geminiApiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                const generatedText = data.candidates[0].content.parts[0].text;
+                
+                // Extract JSON from the response
+                const jsonMatch = generatedText.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    throw new Error('No valid JSON found in AI response');
+                }
+                
+                const questionData = JSON.parse(jsonMatch[0]);
+                
+                // Validate the question data
+                if (!questionData.question || !questionData.answers || questionData.correct === undefined) {
+                    throw new Error('Invalid question format from AI');
+                }
+                
+                gameState.currentQuestionData = questionData;
+                updateAllDisplays();
+                showAlert('apiStatus', `Question generated successfully! (Difficulty: ${difficultyLevel}/5)`, 'success');
+                
+            } catch (error) {
+                console.error('Error generating question:', error);
+                showAlert('apiStatus', `Error generating question: ${error.message}`, 'error');
+                
+                // Fallback to sample questions
+                const sampleQuestions = [
+                    {
+                        question: "Which planet is known as the Red Planet?",
+                        answers: ["Mars", "Venus", "Jupiter", "Saturn"],
+                        correct: 0,
+                        difficulty: 1,
+                        category: "science"
+                    },
+                    {
+                        question: "In which year did World War II end?",
+                        answers: ["1944", "1945", "1946", "1947"],
+                        correct: 1,
+                        difficulty: 2,
+                        category: "history"
+                    },
+                    {
+                        question: "What is the capital of Australia?",
+                        answers: ["Sydney", "Melbourne", "Canberra", "Perth"],
+                        correct: 2,
+                        difficulty: 2,
+                        category: "geography"
+                    }
+                ];
+                
+                const randomQuestion = sampleQuestions[Math.floor(Math.random() * sampleQuestions.length)];
+                gameState.currentQuestionData = randomQuestion;
+                updateAllDisplays();
+                showAlert('apiStatus', 'Using fallback question (check API key)', 'warning');
+            }
+        }
+
+        function nextQuestion() {
+            if (gameState.currentQuestion < gameState.totalQuestions - 1) {
+                gameState.currentQuestion++;
+                generateQuestion();
+            } else {
+                alert('Congratulations! The contestant has won the grand prize!');
+                endGame();
+            }
+        }
+
+        function showCorrectAnswer() {
+            if (gameState.currentQuestionData) {
+                const correctAnswer = gameState.currentQuestionData.answers[gameState.currentQuestionData.correct];
+                alert(`The correct answer is: ${correctAnswer}`);
+            }
+        }
+
+        function useLifeline(type) {
+            if (gameState.lifelinesUsed[type]) {
+                alert('This lifeline has already been used!');
+                return;
+            }
+
+            gameState.lifelinesUsed[type] = true;
+            
+            switch (type) {
+                case 'fiftyFifty':
+                    alert('50:50 used! Two incorrect answers have been eliminated.');
+                    break;
+                case 'phoneFriend':
+                    alert('Phone a Friend used! The friend suggests the answer.');
+                    break;
+                case 'askAudience':
+                    alert('Ask the Audience used! The audience votes are displayed.');
+                    break;
+            }
+            
+            updateAllDisplays();
+        }
+
+        function markCorrect() {
+            gameState.currentPrize = customPrizeLadder[gameState.currentQuestion]?.prize || 0;
+            alert(`Correct! The contestant wins $${gameState.currentPrize.toLocaleString()}`);
+            updateAllDisplays();
+        }
+
+        function markIncorrect() {
+            const safeHavenAmount = getSafeHavenAmount();
+            if (safeHavenAmount > 0) {
+                gameState.currentPrize = safeHavenAmount;
+                alert(`Incorrect! The contestant is at a safe haven and keeps $${safeHavenAmount.toLocaleString()}`);
+            } else {
+                gameState.currentPrize = 0;
+                alert('Incorrect! The contestant loses everything!');
+            }
+            endGame();
+        }
+
+        function contestantQuit() {
+            const safeHavenAmount = getSafeHavenAmount();
+            gameState.currentPrize = safeHavenAmount;
+            alert(`The contestant quits and keeps $${safeHavenAmount.toLocaleString()}`);
+            endGame();
+        }
+
+        function getSafeHavenAmount() {
+            if (gameState.currentQuestion >= 9) return 32000; // Question 10
+            if (gameState.currentQuestion >= 4) return 1000;  // Question 5
+            return 0;
+        }
+
+        function endGame() {
+            gameState.isActive = false;
+            
+            // Disable all game controls
+            document.querySelectorAll('.button').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // Re-enable setup controls
+            document.getElementById('generateQuestionBtn').disabled = false;
+            
+            alert(`Game Over! ${gameState.contestantName} won $${gameState.currentPrize.toLocaleString()}`);
+            updateAllDisplays();
+        }
+
+        function setManualQuestion() {
+            const question = document.getElementById('manualQuestion').value.trim();
+            const answersText = document.getElementById('manualAnswers').value.trim();
+            const correctAnswer = document.getElementById('correctAnswer').value.trim().toUpperCase();
+            
+            if (!question || !answersText || !correctAnswer) {
+                alert('Please fill in all fields!');
+                return;
+            }
+            
+            const answers = answersText.split('\n').map(line => line.trim()).filter(line => line);
+            if (answers.length !== 4) {
+                alert('Please provide exactly 4 answers!');
+                return;
+            }
+            
+            const correctIndex = correctAnswer.charCodeAt(0) - 65;
+            if (correctIndex < 0 || correctIndex > 3) {
+                alert('Correct answer must be A, B, C, or D!');
+                return;
+            }
+            
+            gameState.currentQuestionData = {
+                question: question,
+                answers: answers,
+                correct: correctIndex
+            };
+            
+            updateAllDisplays();
+            alert('Manual question set successfully!');
+        }
+
+        function editCurrentQuestion() {
+            if (!gameState.currentQuestionData) {
+                alert('No question to edit!');
+                return;
+            }
+            
+            document.getElementById('manualQuestion').value = gameState.currentQuestionData.question;
+            document.getElementById('manualAnswers').value = gameState.currentQuestionData.answers.join('\n');
+            document.getElementById('correctAnswer').value = String.fromCharCode(65 + gameState.currentQuestionData.correct);
+        }
+
+        function loadQuestionFromFile() {
+            alert('Load from file functionality would be implemented here');
+        }
+
+        // Prize Ladder Editor Functions
+        function openPrizeEditor() {
+            const modal = document.getElementById('prizeEditorModal');
+            modal.classList.remove('hidden');
+            generatePrizeEditor();
+        }
+
+        function closePrizeEditor() {
+            const modal = document.getElementById('prizeEditorModal');
+            modal.classList.add('hidden');
+        }
+
+        function generatePrizeEditor() {
+            const editor = document.getElementById('prizeLadderEditor');
+            editor.innerHTML = '';
+            
+            const defaultPrizes = [
+                { amount: 100, text: '$100', safeHaven: false },
+                { amount: 200, text: '$200', safeHaven: false },
+                { amount: 300, text: '$300', safeHaven: false },
+                { amount: 500, text: '$500', safeHaven: false },
+                { amount: 1000, text: '$1,000', safeHaven: true },
+                { amount: 2000, text: '$2,000', safeHaven: false },
+                { amount: 4000, text: '$4,000', safeHaven: false },
+                { amount: 8000, text: '$8,000', safeHaven: false },
+                { amount: 16000, text: '$16,000', safeHaven: false },
+                { amount: 32000, text: '$32,000', safeHaven: true },
+                { amount: 64000, text: '$64,000', safeHaven: false },
+                { amount: 125000, text: '$125,000', safeHaven: false },
+                { amount: 250000, text: '$250,000', safeHaven: false },
+                { amount: 500000, text: '$500,000', safeHaven: false },
+                { amount: 1000000, text: '$1,000,000', safeHaven: false }
+            ];
+
+            defaultPrizes.forEach((prize, index) => {
+                const tierEditor = createPrizeTierEditor(index + 1, prize);
+                editor.appendChild(tierEditor);
+            });
+        }
+
+        function createPrizeTierEditor(tierNumber, prize) {
+            const tierDiv = document.createElement('div');
+            tierDiv.className = 'prize-tier-editor';
+            tierDiv.innerHTML = `
+                <h4>Question ${tierNumber}</h4>
+                <div class="form-group">
+                    <label>Edit Mode</label>
+                    <div class="toggle-buttons">
+                        <button type="button" class="toggle-btn active" id="amountToggle${tierNumber}" onclick="toggleEditMode(${tierNumber}, 'amount')">Prize Amount ($)</button>
+                        <button type="button" class="toggle-btn" id="textToggle${tierNumber}" onclick="toggleEditMode(${tierNumber}, 'text')">Display Text</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div id="amountInput${tierNumber}" class="edit-input">
+                        <label>Prize Amount ($)</label>
+                        <input type="number" value="${prize.amount}" onchange="updatePrizeAmount(${tierNumber}, this.value)">
+                    </div>
+                    <div id="textInput${tierNumber}" class="edit-input hidden">
+                        <label>Display Text</label>
+                        <input type="text" value="${prize.text}" onchange="updatePrizeText(${tierNumber}, this.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Prize Image (optional)</label>
+                    <div class="file-input-group">
+                        <input type="file" id="imageFile${tierNumber}" accept="image/*" onchange="updatePrizeImage(${tierNumber}, this)" style="display: none;">
+                        <button type="button" class="button secondary" onclick="document.getElementById('imageFile${tierNumber}').click()">Browse Image</button>
+                        <span class="file-name" id="imageFileName${tierNumber}">No image selected</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Prize Sound (optional)</label>
+                    <div class="file-input-group">
+                        <input type="file" id="soundFile${tierNumber}" accept="audio/*" onchange="updatePrizeSound(${tierNumber}, this)" style="display: none;">
+                        <button type="button" class="button secondary" onclick="document.getElementById('soundFile${tierNumber}').click()">Browse Sound</button>
+                        <span class="file-name" id="soundFileName${tierNumber}">No sound selected</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" ${prize.safeHaven ? 'checked' : ''} onchange="toggleSafeHaven(${tierNumber}, this.checked)">
+                        Safe Haven
+                    </label>
+                </div>
+                <button class="button danger" onclick="removePrizeTier(${tierNumber})" style="width: 100%; margin-top: 0.5rem;">Remove Tier</button>
+            `;
+            return tierDiv;
+        }
+
+        function toggleEditMode(tierNumber, mode) {
+            const amountToggle = document.getElementById(`amountToggle${tierNumber}`);
+            const textToggle = document.getElementById(`textToggle${tierNumber}`);
+            const amountInput = document.getElementById(`amountInput${tierNumber}`);
+            const textInput = document.getElementById(`textInput${tierNumber}`);
+            
+            if (mode === 'amount') {
+                // Switch to amount mode
+                amountToggle.classList.add('active');
+                textToggle.classList.remove('active');
+                amountInput.classList.remove('hidden');
+                textInput.classList.add('hidden');
+            } else {
+                // Switch to text mode
+                textToggle.classList.add('active');
+                amountToggle.classList.remove('active');
+                textInput.classList.remove('hidden');
+                amountInput.classList.add('hidden');
+            }
+            
+            console.log(`Tier ${tierNumber} switched to ${mode} edit mode`);
+        }
+
+        function updatePrizeAmount(tierNumber, amount) {
+            console.log(`Updated tier ${tierNumber} amount to $${amount}`);
+        }
+
+        function updatePrizeText(tierNumber, text) {
+            console.log(`Updated tier ${tierNumber} text to "${text}"`);
+        }
+
+        function updatePrizeImage(tierNumber, fileInput) {
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : 'No image selected';
+            const fileNameSpan = document.getElementById(`imageFileName${tierNumber}`);
+            fileNameSpan.textContent = fileName;
+            
+            if (fileInput.files[0]) {
+                const file = fileInput.files[0];
+                console.log(`Updated tier ${tierNumber} image:`, {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    lastModified: file.lastModified
+                });
+                
+                // Here you would typically upload the file or convert to base64
+                // For now, we'll just log the file info
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    console.log(`Image data URL for tier ${tierNumber}:`, e.target.result.substring(0, 100) + '...');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updatePrizeSound(tierNumber, fileInput) {
+            const fileName = fileInput.files[0] ? fileInput.files[0].name : 'No sound selected';
+            const fileNameSpan = document.getElementById(`soundFileName${tierNumber}`);
+            fileNameSpan.textContent = fileName;
+            
+            if (fileInput.files[0]) {
+                const file = fileInput.files[0];
+                console.log(`Updated tier ${tierNumber} sound:`, {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    lastModified: file.lastModified
+                });
+                
+                // Here you would typically upload the file or convert to base64
+                // For now, we'll just log the file info
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    console.log(`Sound data URL for tier ${tierNumber}:`, e.target.result.substring(0, 100) + '...');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function toggleSafeHaven(tierNumber, isSafeHaven) {
+            console.log(`Tier ${tierNumber} safe haven: ${isSafeHaven}`);
+        }
+
+        function removePrizeTier(tierNumber) {
+            if (confirm(`Remove Question ${tierNumber} from the prize ladder?`)) {
+                console.log(`Removed tier ${tierNumber}`);
+                generatePrizeEditor(); // Regenerate to update numbering
+            }
+        }
+
+        function addPrizeTier() {
+            console.log('Adding new prize tier');
+            generatePrizeEditor(); // Regenerate to add new tier
+        }
+
+        function applyPrizeLadder() {
+            if (confirm('Apply these changes to the prize ladder?')) {
+                console.log('Applied prize ladder changes');
+                closePrizeEditor();
+            }
+        }
+
+        function resetPrizeLadder() {
+            if (confirm('Reset to default prize ladder?')) {
+                alert('Prize ladder reset to default');
+            }
+        }
+
+        function savePrizeLadder() {
+            alert('Prize ladder saved successfully!');
+        }
+
+        function loadPrizeLadder() {
+            alert('Prize ladder loaded successfully!');
+        }
+    </script>
+</body>
+</html>

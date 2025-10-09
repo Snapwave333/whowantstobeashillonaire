@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useGame } from '../context/GameContext';
+import TutorialModal from './TutorialModal';
 
 const HomeContainer = styled.div`
   flex: 1;
@@ -149,6 +150,25 @@ const ErrorMessage = styled.div`
   margin-top: 1rem;
 `;
 
+const TutorialButton = styled.button`
+  padding: 0.75rem 1.5rem;
+  border: 2px solid rgba(247, 147, 30, 0.5);
+  border-radius: 8px;
+  background: transparent;
+  color: #f7931e;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  
+  &:hover {
+    background: rgba(247, 147, 30, 0.1);
+    border-color: #f7931e;
+    transform: translateY(-2px);
+  }
+`;
+
 function HomePage() {
   const navigate = useNavigate();
   const { 
@@ -167,6 +187,8 @@ function HomePage() {
     difficulty: '',
     category: ''
   });
+  
+  const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -269,7 +291,23 @@ function HomePage() {
             {error}
           </ErrorMessage>
         )}
+        
+        <TutorialButton onClick={() => setShowTutorial(true)}>
+          📚 How to Play
+        </TutorialButton>
       </WelcomeCard>
+      
+      <TutorialModal 
+        isOpen={showTutorial}
+        onClose={() => setShowTutorial(false)}
+        onStartGame={() => {
+          setShowTutorial(false);
+          // Auto-fill form if user wants to start after tutorial
+          if (!formData.playerName) {
+            setFormData(prev => ({ ...prev, playerName: 'Player' }));
+          }
+        }}
+      />
     </HomeContainer>
   );
 }

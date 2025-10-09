@@ -17,15 +17,7 @@
         </div>
     </div>
 
-    <div id="game-container">
-        <!-- Host Camera Section -->
-        <div id="host-section">
-            <div class="host-placeholder">
-                <img src="assets/images/custom/host_avatar.png" alt="Host Avatar" class="host-avatar-img">
-                <div class="host-label">LIVE HOST</div>
-            </div>
-        </div>
-
+    <div id="game-container" class="hidden">
         <!-- Pump Ladder -->
         <div id="pump-ladder">
             <h3>PUMP LADDER</h3>
@@ -137,8 +129,8 @@
         </div>
     </div>
 
-    <!-- Settings Panel (Initially Hidden) -->
-    <div id="settings-panel" class="hidden">
+    <!-- Settings Panel -->
+    <div id="settings-panel">
         <div class="settings-content">
             <h2>PUMP MASTER CONTROL PANEL</h2>
 
@@ -184,21 +176,96 @@
             <div class="button-group">
                 <button id="apply-settings">APPLY SETTINGS</button>
                 <button id="reset-settings">RESET</button>
-                <button id="close-settings">CLOSE</button>
+                <button id="close-settings">START GAME</button>
             </div>
         </div>
     </div>
 
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="hidden">
+        <div class="tutorial-content">
+            <div class="tutorial-step tutorial-active" id="tutorial-step-1">
+                <h3>Welcome to Pump Master Settings!</h3>
+                <p>This panel controls how the game works. Let's walk through the settings.</p>
+                <button id="tutorial-next">Next →</button>
+                <button id="tutorial-skip">Skip Tutorial</button>
+            </div>
+            <div class="tutorial-step" id="tutorial-step-2">
+                <h3>Prize Scale Multiplier</h3>
+                <p>Adjust this slider to multiply all prize amounts. 1.0x is normal, higher values make prizes bigger!</p>
+                <button class="tutorial-prev">← Back</button>
+                <button id="tutorial-next-2">Next →</button>
+                <button class="tutorial-skip">Skip Tutorial</button>
+            </div>
+            <div class="tutorial-step" id="tutorial-step-3">
+                <h3>Number of Tiers</h3>
+                <p>Choose how many question tiers you want (10-15). More tiers = longer game and higher prizes.</p>
+                <button class="tutorial-prev">← Back</button>
+                <button id="tutorial-next-3">Next →</button>
+                <button class="tutorial-skip">Skip Tutorial</button>
+            </div>
+            <div class="tutorial-step" id="tutorial-step-4">
+                <h3>Safe Havens</h3>
+                <p>Check the tiers where players get a guaranteed prize if they lose. Recommended: Tier 5 and 10.</p>
+                <button class="tutorial-prev">← Back</button>
+                <button id="tutorial-next-4">Next →</button>
+                <button class="tutorial-skip">Skip Tutorial</button>
+            </div>
+            <div class="tutorial-step" id="tutorial-step-5">
+                <h3>Difficulty Level</h3>
+                <p>Select question difficulty: from easy facts to pop culture quizzes.</p>
+                <button class="tutorial-prev">← Back</button>
+                <button id="tutorial-next-5">Next →</button>
+                <button class="tutorial-skip">Skip Tutorial</button>
+            </div>
+            <div class="tutorial-step" id="tutorial-step-6">
+                <h3>Cryptocurrency Selection</h3>
+                <p>Choose which cryptocurrencies to use as prizes. SHILL is unlimited, BTC/ETH use real prices.</p>
+                <button class="tutorial-prev">← Back</button>
+                <button id="tutorial-finish">Finish Tutorial</button>
+                <button class="tutorial-skip">Skip Tutorial</button>
+            </div>
+        </div>
+        <div class="tutorial-pointer" id="tutorial-pointer"></div>
+    </div>
+
     <!-- Settings Button -->
-    <button id="settings-btn">⚙️ PUMP MASTER</button>
+    <button id="settings-btn" class="hidden">⚙️ PUMP MASTER</button>
 
     <script>
-        // Hide loading overlay after page loads
-        window.addEventListener('load', function() {
+        // Hide loading overlay after DOM is ready or after timeout
+        document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
-                document.getElementById('loading-overlay').classList.add('hidden');
+                const overlay = document.getElementById('loading-overlay');
+                if (overlay) {
+                    overlay.classList.add('hidden');
+                }
             }, 1000); // Show loading for 1 second minimum
         });
+
+        // Fallback in case DOMContentLoaded doesn't fire properly
+        setTimeout(function() {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay && !overlay.classList.contains('hidden')) {
+                overlay.classList.add('hidden');
+            }
+        }, 3000); // Force hide after 3 seconds
+    </script>
+
+    <!-- Live reload connection status -->
+    <div id="live-reload-status" style="position: fixed; bottom: 10px; right: 10px; color: #0f0; font-family: 'Roboto Condensed', monospace; font-size: 12px; z-index: 2000; opacity: 0.6;">LiveReload: Connecting...</div>
+
+    <script>
+        // Live reload status indicator — PowerShell pun intended
+        (function(){
+          try {
+            var statusEl = document.getElementById('live-reload-status');
+            var es = new EventSource('/__events');
+            es.onopen = function(){ statusEl.textContent = 'LiveReload: Connected'; statusEl.style.color = '#0f0'; };
+            es.onmessage = function(ev){ if (ev && ev.data === 'reload') { statusEl.textContent = 'LiveReload: Reloading'; location.reload(); } };
+            es.onerror = function(){ statusEl.textContent = 'LiveReload: Disconnected'; statusEl.style.color = '#f33'; };
+          } catch (e) { console.warn('LiveReload init failed', e); }
+        })();
     </script>
     <script src="game.js"></script>
 </body>

@@ -1,238 +1,219 @@
-# Who Wants to Be a Shillionaire
+# 🎯 Who Wants to Be a Shillionaire?
 
-A desktop trivia game built with Electron, React, and Python Flask backend. Test your knowledge and compete for cryptocurrency prizes!
+<div align="center">
+  <img src="desktop-app/assets/images/app-icon-new.png" alt="Shillionaire Logo" width="200" height="200">
+  
+  **A Modern Desktop Trivia Game Experience**
+  
+  [![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)](https://github.com/Snapwave333/whowantstobeashillonaire/releases)
+  [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+  [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://github.com/Snapwave333/whowantstobeashillonaire)
+</div>
 
-## 🎮 Features
+---
 
-### Desktop Application
-- **Cross-platform support** - Windows, macOS, and Linux
-- **System tray integration** - Minimize to tray and quick access
-- **Auto-update functionality** - Automatic updates when new versions are available
-- **Native menus** - Full menu system with keyboard shortcuts
-- **Windows-specific enhancements**:
-  - Taskbar flashing notifications
-  - Balloon notifications
-  - Always on top option
-  - Hide to tray functionality
+## 🎮 About
 
-### Game Features
-- **Multiple difficulty levels** - Easy, Normal, and Hard
-- **Sound and music controls** - Toggle sound effects and background music
-- **High score tracking** - Local score persistence
-- **Responsive design** - Optimized for desktop experience
+**Who Wants to Be a Shillionaire** is a modern, AI-powered desktop trivia game that brings the excitement of the classic game show to your computer. Built with Electron and powered by Gemini AI, it features dynamic question generation, scaling difficulty, and a professional dual-window interface for hosts and contestants.
 
-### Technical Features
-- **Modern architecture** - Electron with React frontend
-- **Secure communication** - Context isolation and preload scripts
-- **Persistent settings** - User preferences saved locally
-- **Development tools** - Hot reload and debugging support
+### ✨ Key Features
+
+- 🤖 **AI-Powered Questions**: Dynamic question generation using Google's Gemini AI
+- 🎯 **Scaling Difficulty**: Questions automatically scale from easy to expert level
+- 🎨 **Modern UI**: Sleek dark theme with cinematic lighting and animations
+- 🎮 **Dual-Window Setup**: Separate interfaces for Game Master and Contestant
+- 🏆 **Customizable Prize Ladder**: Edit prizes, images, sounds, and display text
+- 🎵 **Audio Integration**: Sound effects and ambient audio support
+- 🔧 **Game Master Controls**: Full host control panel with API configuration
+- 📱 **Responsive Design**: Optimized for various screen sizes
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
-- Python 3.8+
-- npm or yarn
+
+- **Node.js** (v16 or higher)
+- **npm** or **yarn**
+- **Git**
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd whowants
+   git clone https://github.com/Snapwave333/whowantstobeashillonaire.git
+   cd whowantstobeashillonaire
    ```
 
-2. **Install backend dependencies**
+2. **Install dependencies**
    ```bash
+   # Backend dependencies
    cd backend
    pip install -r requirements.txt
-   ```
-
-3. **Install frontend dependencies**
-   ```bash
+   
+   # Frontend dependencies
    cd ../frontend
    npm install
-   ```
-
-4. **Install desktop app dependencies**
-   ```bash
+   
+   # Desktop app dependencies
    cd ../desktop-app
    npm install
    ```
 
-### Running the Application
+3. **Configure API Key**
+   - Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/)
+   - Enter it in the Game Master Settings when you first run the app
 
-1. **Start the backend server**
+4. **Run the application**
    ```bash
+   # Start the backend
    cd backend
    python app.py
-   ```
-
-2. **Start the frontend (for development)**
-   ```bash
+   
+   # Start the frontend (in another terminal)
    cd frontend
    npm start
-   ```
-
-3. **Start the desktop application**
-   ```bash
+   
+   # Start the desktop app (in another terminal)
    cd desktop-app
-   npm start
+   npm run dev
    ```
 
-### Building for Production
+## 🎯 Game Modes
 
-1. **Build the React frontend**
-   ```bash
-   cd desktop-app
-   npm run build:react
-   ```
+### 🎮 Contestant Mode
+- Clean, focused interface for players
+- Real-time question display
+- Lifeline integration (50/50, Phone a Friend, Ask the Audience)
+- Prize ladder visualization
 
-2. **Build the desktop executable**
-   ```bash
-   # Windows
-   npm run build:win
-   
-   # macOS
-   npm run build:mac
-   
-   # Linux
-   npm run build:linux
-   
-   # All platforms
-   npm run pack
-   ```
-
-## 📁 Project Structure
-
-```
-whowants/
-├── backend/                 # Python Flask API server
-│   ├── app.py              # Main Flask application
-│   ├── requirements.txt    # Python dependencies
-│   └── ...
-├── frontend/               # React web application
-│   ├── src/               # React source code
-│   ├── public/            # Static assets
-│   ├── package.json       # Frontend dependencies
-│   └── ...
-├── desktop-app/           # Electron desktop application
-│   ├── src/               # Electron main process
-│   │   ├── main.js        # Main Electron process
-│   │   ├── preload.js     # Preload script
-│   │   └── updater.js     # Auto-update functionality
-│   ├── assets/            # Desktop app assets
-│   ├── build/             # Built React app (generated)
-│   ├── dist/              # Built executables (generated)
-│   └── package.json       # Desktop app dependencies
-└── README.md              # This file
-```
+### 🎛️ Game Master Mode
+- Full control panel for hosts
+- AI question generation with difficulty scaling
+- Prize ladder customization
+- Game state management
+- API configuration and testing
 
 ## 🛠️ Development
 
-### Available Scripts
+### Project Structure
 
-**Backend:**
-- `python app.py` - Start Flask development server
+```
+whowantstobeashillonaire/
+├── backend/                 # Flask API server
+│   ├── app.py              # Main Flask application
+│   ├── models/             # Database models
+│   ├── routes/             # API endpoints
+│   └── utils/              # AI integration utilities
+├── frontend/               # React web application
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   └── context/        # Game state management
+│   └── public/
+├── desktop-app/            # Electron desktop application
+│   ├── src/                # Main and renderer processes
+│   ├── assets/             # Icons, images, sounds
+│   └── build/              # Built React app
+├── docs/                   # Documentation
+└── README.md
+```
 
-**Frontend:**
-- `npm start` - Start React development server
-- `npm run build` - Build React app for production
+### Building for Production
 
-**Desktop App:**
-- `npm start` - Start Electron app
-- `npm run dev` - Start with hot reload
-- `npm run build:react` - Build React app into desktop app
-- `npm run build` - Build Windows executable
-- `npm run pack` - Build React app and executable
+```bash
+# Build the desktop installer
+cd desktop-app
+npm run build:installer
 
-### Development Workflow
+# Build the web version
+cd frontend
+npm run build
+```
 
-1. Start the backend server for API functionality
-2. For web development: Start the frontend React server
-3. For desktop development: Build React app and start Electron
-4. Use the built-in developer tools for debugging
+## 🎨 Customization
 
-## 🔧 Configuration
+### Prize Ladder
+- Edit prize amounts and display text
+- Upload custom images and sounds
+- Set safe haven levels
+- Toggle between amount and text display
 
-### Auto-Updates
-The desktop app includes auto-update functionality. Configure update servers in `desktop-app/src/updater.js`.
+### Question Categories
+- General Knowledge
+- Science & Technology
+- History
+- Geography
+- Sports & Entertainment
+- Literature & Arts
+- Random (AI-selected)
 
-### Settings Storage
-User preferences are stored locally using `electron-store`:
-- Sound settings
-- Difficulty preferences
-- Window state
-- Game progress
+## 🤖 AI Integration
 
-## 🚀 Deployment
+The game uses Google's Gemini AI for dynamic question generation:
 
-### GitHub Actions
-The project includes automated CI/CD with GitHub Actions:
-- Builds for Windows, macOS, and Linux
-- Automatic releases on version tags
-- Artifact uploads for each platform
+- **Smart Difficulty Scaling**: Questions automatically increase in complexity
+- **Category-Specific Content**: AI generates contextually appropriate questions
+- **Quality Assurance**: Built-in validation ensures proper question format
+- **Fallback System**: Sample questions available if API is unavailable
 
-### Manual Deployment
-1. Build the application for your target platform
-2. Distribute the executable from the `dist/` folder
-3. Set up update server for auto-update functionality
+## 📋 Requirements
 
-## 🎯 Game Rules
+### System Requirements
+- **OS**: Windows 10/11 (64-bit)
+- **RAM**: 4GB minimum, 8GB recommended
+- **Storage**: 500MB available space
+- **Internet**: Required for AI question generation
 
-1. Answer trivia questions to progress through levels
-2. Each correct answer increases your potential winnings
-3. Use lifelines when you're unsure:
-   - 50/50: Remove two incorrect answers
-   - Ask the Audience: See what others would choose
-   - Phone a Friend: Get expert advice
-4. Walk away at any time to keep your current winnings
-5. One wrong answer and you lose everything!
-
-## 🏆 Scoring System
-
-- **Easy Mode**: Lower point values, more forgiving
-- **Normal Mode**: Standard scoring system
-- **Hard Mode**: Higher stakes, maximum rewards
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+### Development Requirements
+- **Node.js**: v16+
+- **Python**: v3.8+
+- **Git**: Latest version
 
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
-**App won't start:**
-- Ensure all dependencies are installed
-- Check that ports 3000 and 5000 are available
-- Verify Python and Node.js versions
+**API Connection Failed**
+- Verify your Gemini API key is correct
+- Check internet connection
+- Ensure API key has proper permissions
 
-**Build failures:**
-- Clear node_modules and reinstall dependencies
-- Check that all required build tools are installed
-- Ensure sufficient disk space for builds
+**App Won't Start**
+- Run `npm install` in all directories
+- Check Node.js version compatibility
+- Verify all dependencies are installed
 
-**Auto-update issues:**
-- Verify update server configuration
-- Check network connectivity
-- Review update server logs
+**Questions Not Generating**
+- Test API connection in Game Master Settings
+- Check API key configuration
+- Verify internet connectivity
 
-## 📞 Support
+## 📄 License
 
-For support and questions:
-- Create an issue on GitHub
-- Check the troubleshooting section
-- Review the development documentation
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📞 Contact
+
+- **Developer**: Snapwave333
+- **Email**: [Your Email]
+- **GitHub**: [@Snapwave333](https://github.com/Snapwave333)
+
+## 🙏 Acknowledgments
+
+- **Google Gemini AI** for question generation
+- **Electron** for cross-platform desktop development
+- **React** for modern web interface
+- **Flask** for robust backend API
 
 ---
 
-**Enjoy playing Who Wants to Be a Shillionaire!** 🎉
+<div align="center">
+  <p>Made with ❤️ by Snapwave333</p>
+  <p>⭐ Star this repo if you like it!</p>
+</div>

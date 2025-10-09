@@ -13,6 +13,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getStoreValue: (key) => ipcRenderer.invoke('get-store-value', key),
   setStoreValue: (key, value) => ipcRenderer.invoke('set-store-value', key, value),
   
+  // Game Master Settings
+  openGameMasterSettings: () => ipcRenderer.invoke('open-game-master-settings'),
+  
   // Game events
   onNewGame: (callback) => ipcRenderer.on('new-game', callback),
   onRestartGame: (callback) => ipcRenderer.on('restart-game', callback),

@@ -48,11 +48,11 @@ const PlayerInfo = styled.div`
   }
 `;
 
-const PlayerName = styled.div`
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-`;
+// const PlayerName = styled.div`
+//   font-size: 1rem;
+//   font-weight: 500;
+//   margin-bottom: 0.25rem;
+// `;
 
 const Score = styled.div`
   font-size: 1.2rem;

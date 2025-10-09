@@ -258,14 +258,14 @@ function GamePage() {
     if (!currentQuestion?.answers) return [];
     
     return currentQuestion.answers.map((answer, index) => {
-      const isEliminated = eliminatedAnswers.includes(answer.id);
-      const isSelected = selectedAnswer === answer.id;
+      const isEliminated = eliminatedAnswers.includes(answer);
+      const isSelected = selectedAnswer === answer;
       let className = '';
       
       if (showResult && answerResult) {
-        if (answer.is_correct) {
+        if (answer === answerResult.correct_answer) {
           className = 'correct';
-        } else if (isSelected && !answer.is_correct) {
+        } else if (isSelected && answer !== answerResult.correct_answer) {
           className = 'incorrect';
         }
       } else if (isSelected) {
@@ -277,7 +277,7 @@ function GamePage() {
       }
 
       return {
-        ...answer,
+        answer_text: answer,
         label: answerLabels[index],
         className,
         isEliminated,
@@ -328,9 +328,9 @@ function GamePage() {
     }
   }, [gameStatus, navigate]);
 
-  const handleAnswerSelect = (answerId) => {
+  const handleAnswerSelect = (answerText) => {
     if (showResult || loading) return;
-    setSelectedAnswer(answerId);
+    setSelectedAnswer(answerText);
   };
 
   const handleSubmitAnswer = async () => {
@@ -366,7 +366,7 @@ function GamePage() {
     navigate('/game-over');
   };
 
-  if (!currentQuestion && !loading) {
+  if (!currentQuestion && !loading && !gameStarting) {
     return <LoadingSpinner text="Starting game..." />;
   }
 
@@ -385,18 +385,18 @@ function GamePage() {
             Question {currentQuestionIndex + 1} of 15
           </QuestionNumber>
           <QuestionMeta>
-            <span>Category: {currentQuestion.category}</span>
-            <span>Difficulty: {currentQuestion.difficulty}</span>
+            <span>Category: {currentQuestion?.category || 'Loading...'}</span>
+            <span>Difficulty: {currentQuestion?.difficulty || 'Loading...'}</span>
           </QuestionMeta>
         </QuestionHeader>
         
-        <QuestionText>{currentQuestion.question_text}</QuestionText>
+        <QuestionText>{currentQuestion?.question_text || 'Loading question...'}</QuestionText>
         
         <AnswersGrid>
-          {formattedAnswers.map((answer) => (
+          {formattedAnswers.map((answer, index) => (
             <AnswerButton
-              key={answer.id}
-              onClick={() => handleAnswerSelect(answer.id)}
+              key={index}
+              onClick={() => handleAnswerSelect(answer.answer_text)}
               disabled={answer.isEliminated || showResult || loading}
               className={answer.className}
             >

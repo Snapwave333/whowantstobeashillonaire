@@ -71,9 +71,23 @@ class ShillonairGame {
     }
 
     init() {
+        this.tutorialShown = localStorage.getItem('tutorial_shown') === 'true';
+        this.currentTutorialStep = 1;
+
         this.bindEvents();
-        this.updateDisplay();
+        // Initialize safe haven options when settings panel is shown
+        this.generateSafeHavenOptions();
+        // Don't update display yet - game hasn't started
         this.startAutoSave();
+
+        // Show settings panel as the first page
+        document.getElementById('settings-panel').classList.remove('hidden');
+
+        // Show tutorial if first time
+        if (!this.tutorialShown) {
+            this.showTutorial();
+        }
+
         console.log("🚀 Who Wants to Be a Shillonair - Game Launched!");
     }
 
@@ -99,7 +113,11 @@ class ShillonairGame {
         });
 
         document.getElementById('close-settings').addEventListener('click', () => {
-            this.toggleSettings();
+            if (!this.tutorialShown) {
+                this.skipTutorial();
+            } else {
+                this.closeSettingsAndStartGame();
+            }
         });
 
         document.getElementById('apply-settings').addEventListener('click', () => {
@@ -113,6 +131,19 @@ class ShillonairGame {
         // Prize multiplier slider
         document.getElementById('prize-multiplier').addEventListener('input', (e) => {
             document.getElementById('multiplier-value').textContent = e.target.value + 'x';
+        });
+
+        // Tutorial buttons
+        document.addEventListener('click', (e) => {
+            if (e.target.id.includes('tutorial-next') || e.target.id === 'tutorial-next') {
+                this.nextTutorialStep();
+            } else if (e.target.classList.contains('tutorial-prev')) {
+                this.prevTutorialStep();
+            } else if (e.target.classList.contains('tutorial-skip') || e.target.id === 'tutorial-skip') {
+                this.skipTutorial();
+            } else if (e.target.id === 'tutorial-finish') {
+                this.finishTutorial();
+            }
         });
     }
 
@@ -180,7 +211,7 @@ class ShillonairGame {
     }
 
     progressToNextTier() {
-        if (this.currentTier >= 14) {
+        if (this.currentTier >= this.settings.numTiers - 1) {
             this.showVictory();
             return;
         }
@@ -417,7 +448,7 @@ class ShillonairGame {
 
     getSafeHavenPrize() {
         for (let i = this.currentTier; i >= 0; i--) {
-            if (this.safeHavens.includes(i)) {
+            if (this.settings.safeHavens.includes(i)) {
                 const basePrizes = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
                 return Math.floor(basePrizes[i] * this.settings.prizeMultiplier);
             }
@@ -537,9 +568,15 @@ class ShillonairGame {
 
     applySettings() {
         // Update settings from form
+        const oldNumTiers = this.settings.numTiers;
         this.settings.prizeMultiplier = parseFloat(document.getElementById('prize-multiplier').value);
         this.settings.numTiers = parseInt(document.getElementById('num-tiers').value);
         this.settings.difficulty = document.getElementById('difficulty').value;
+
+        // If number of tiers changed, regenerate safe haven checkboxes
+        if (oldNumTiers !== this.settings.numTiers) {
+            this.generateSafeHavenOptions();
+        }
 
         // Update safe havens
         this.settings.safeHavens = [];
@@ -552,6 +589,9 @@ class ShillonairGame {
         document.querySelectorAll('#crypto-selection input:checked').forEach(checkbox => {
             this.settings.cryptocurrencies.push(checkbox.value);
         });
+
+        // Regenerate the prize ladder with new settings
+        this.generatePrizeLadder();
 
         // Apply prize multiplier to current prize
         this.updatePrize();
@@ -606,6 +646,12 @@ class ShillonairGame {
                 const gameState = JSON.parse(savedState);
                 if (Date.now() - gameState.timestamp < 3600000) { // 1 hour
                     Object.assign(this, gameState);
+
+                    // If game container is already visible, regenerate the ladder
+                    if (!document.getElementById('game-container').classList.contains('hidden')) {
+                        this.generatePrizeLadder();
+                    }
+
                     this.updateDisplay();
                     console.log('📂 Game state loaded');
                     return true;
@@ -615,6 +661,161 @@ class ShillonairGame {
             }
         }
         return false;
+    }
+
+    showTutorial() {
+        document.getElementById('tutorial-overlay').classList.remove('hidden');
+        this.currentTutorialStep = 1;
+        this.showTutorialStep(1);
+    }
+
+    hideTutorial() {
+        document.getElementById('tutorial-overlay').classList.add('hidden');
+    }
+
+    showTutorialStep(step) {
+        document.querySelectorAll('.tutorial-step').forEach(s => s.classList.remove('tutorial-active'));
+        document.getElementById(`tutorial-step-${step}`).classList.add('tutorial-active');
+        this.currentTutorialStep = step;
+    }
+
+    nextTutorialStep() {
+        if (this.currentTutorialStep < 6) {
+            this.showTutorialStep(this.currentTutorialStep + 1);
+        }
+    }
+
+    prevTutorialStep() {
+        if (this.currentTutorialStep > 1) {
+            this.showTutorialStep(this.currentTutorialStep - 1);
+        }
+    }
+
+    skipTutorial() {
+        this.hideTutorial();
+        this.markTutorialShown();
+        this.closeSettingsAndStartGame();
+    }
+
+    finishTutorial() {
+        this.hideTutorial();
+        this.markTutorialShown();
+        this.closeSettingsAndStartGame();
+    }
+
+    markTutorialShown() {
+        localStorage.setItem('tutorial_shown', 'true');
+        this.tutorialShown = true;
+    }
+
+    generateSafeHavenOptions() {
+        const safeHavenContainer = document.getElementById('safe-haven-tiers');
+
+        // Generate safe haven options based on current numTiers
+        // Typically place safe havens at strategic intervals (not first or last)
+        const possibleSafeHavens = [];
+        if (this.settings.numTiers > 2) {
+            // Always add a middle interferometer
+            const middleTier = Math.ceil(this.settings.numTiers / 2) - 1; // 0-indexed
+            possibleSafeHavens.push(middleTier);
+
+            // Add more safe havens for larger ladders (every 4-6 tiers)
+            const interval = Math.floor(this.settings.numTiers / 4);
+            if (interval >= 2) {
+                // Add additional safe havens
+                for (let i = interval; i < this.settings.numTiers - 2; i += interval) {
+                    if (i !== middleTier && !possibleSafeHavens.includes(i)) {
+                        possibleSafeHavens.push(i);
+                    }
+                }
+            }
+        }
+
+        // Generate HTML for safe haven checkboxes
+        safeHavenContainer.innerHTML = '';
+        possibleSafeHavens.sort((a, b) => a - b).forEach(tierIndex => {
+            const tierNum = tierIndex + 1;
+            const isChecked = this.settings.safeHavens.includes(tierIndex) ? 'checked' : '';
+
+            const label = document.createElement('label');
+            label.innerHTML = `<input type="checkbox" value="${tierIndex}" ${isChecked}> Tier ${tierNum}`;
+            safeHavenContainer.appendChild(label);
+        });
+
+        // Store possible safe havens for reference
+        this.possibleSafeHavens = possibleSafeHavens;
+    }
+
+    generatePrizeLadder() {
+        const ladderContainer = document.querySelector('.ladder-container');
+        const basePrizes = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
+
+        // Set up CSS Grid for equal distribution
+        ladderContainer.style.display = 'grid';
+        ladderContainer.style.gridTemplateRows = `repeat(${this.settings.numTiers}, 1fr)`;
+        ladderContainer.style.gap = '0'; // Remove gap for cleaner fit
+
+        // Calculate responsive font sizes based on tier count
+        let fontSize, padding;
+        if (this.settings.numTiers <= 5) {
+            fontSize = '18px'; // Larger text for few tiers
+            padding = '12px 15px';
+        } else if (this.settings.numTiers <= 10) {
+            fontSize = '14px'; // Medium text
+            padding = '8px 10px';
+        } else {
+            fontSize = '12px'; // Smaller text for many tiers
+            padding = '6px 8px';
+        }
+
+        ladderContainer.innerHTML = '';
+
+        for (let i = this.settings.numTiers - 1; i >= 0; i--) {
+            const adjustedPrize = Math.floor(basePrizes[i] * this.settings.prizeMultiplier);
+            const tierNum = i + 1;
+            const isSafeHaven = this.settings.safeHavens.includes(i);
+
+            const tierElement = document.createElement('div');
+            tierElement.className = `tier tier-dynamic`;
+            tierElement.setAttribute('data-tier', i);
+
+            // Format prize amount with appropriate scaling
+            let displayPrize = adjustedPrize.toLocaleString();
+            if (adjustedPrize >= 1000000) {
+                displayPrize = (adjustedPrize / 1000000).toFixed(1) + 'M';
+            } else if (adjustedPrize >= 1000) {
+                displayPrize = (adjustedPrize / 1000).toFixed(1) + 'K';
+            }
+
+            tierElement.innerHTML = `
+                <span class="tier-number">${tierNum}</span>
+                <span class="crypto-amount">$${displayPrize}</span>
+                ${isSafeHaven ? '<div class="safe-haven">SAFE</div>' : ''}
+            `;
+
+            // Apply consistent sizing for grid
+            tierElement.style.fontSize = fontSize;
+            tierElement.style.padding = padding;
+            tierElement.style.minHeight = 'auto'; // Let grid handle height
+            tierElement.style.height = '100%'; // Fill grid cell
+
+            ladderContainer.appendChild(tierElement);
+        }
+    }
+
+    closeSettingsAndStartGame() {
+        // Apply current settings to initial prizes
+        this.updatePrize();
+
+        document.getElementById('settings-panel').classList.add('hidden');
+        document.getElementById('game-container').classList.remove('hidden');
+        document.getElementById('settings-btn').classList.remove('hidden');
+
+        // Generate the dynamic ladder based on settings
+        this.generatePrizeLadder();
+
+        // Now update the game display
+        this.updateDisplay();
     }
 }
 
@@ -629,4 +830,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Global function for popup buttons
-window.location = window.location;

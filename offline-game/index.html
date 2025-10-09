@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to Be a Shillionaire? - Offline Edition</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="screen active">
+            <div class="loading-content">
+                <h1>Who Wants to Be a Shillionaire?</h1>
+                <div class="loading-spinner"></div>
+                <p>Loading game data...</p>
+            </div>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="main-menu" class="screen">
+            <div class="menu-content">
+                <h1 class="game-title">Who Wants to Be a Shillionaire?</h1>
+                <div class="menu-buttons">
+                    <button id="start-game-btn" class="menu-btn primary">Start Game</button>
+                    <button id="admin-btn" class="menu-btn secondary">Admin Panel</button>
+                    <button id="stats-btn" class="menu-btn secondary">Statistics</button>
+                    <button id="settings-btn" class="menu-btn secondary">Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="question-counter">
+                    Question <span id="current-question">1</span> of <span id="total-questions">15</span>
+                </div>
+                <div class="prize-money">
+                    $<span id="current-prize">0</span>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="question-container">
+                    <h2 id="question-text">Loading question...</h2>
+                </div>
+
+                <div class="answers-container">
+                    <button class="answer-btn" data-answer="A">
+                        <span class="answer-letter">A:</span>
+                        <span class="answer-text" id="answer-a">Answer A</span>
+                    </button>
+                    <button class="answer-btn" data-answer="B">
+                        <span class="answer-letter">B:</span>
+                        <span class="answer-text" id="answer-b">Answer B</span>
+                    </button>
+                    <button class="answer-btn" data-answer="C">
+                        <span class="answer-letter">C:</span>
+                        <span class="answer-text" id="answer-c">Answer C</span>
+                    </button>
+                    <button class="answer-btn" data-answer="D">
+                        <span class="answer-letter">D:</span>
+                        <span class="answer-text" id="answer-d">Answer D</span>
+                    </button>
+                </div>
+
+                <div class="lifelines-container">
+                    <button id="fifty-fifty" class="lifeline-btn" title="50:50">
+                        <span>50:50</span>
+                    </button>
+                    <button id="phone-friend" class="lifeline-btn" title="Phone a Friend">
+                        <span>📞</span>
+                    </button>
+                    <button id="ask-audience" class="lifeline-btn" title="Ask the Audience">
+                        <span>👥</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="final-answer-btn" class="control-btn" disabled>Final Answer</button>
+                <button id="walk-away-btn" class="control-btn secondary">Walk Away</button>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin-screen" class="screen">
+            <div class="admin-content">
+                <h2>Admin Panel</h2>
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="questions">Questions</button>
+                    <button class="tab-btn" data-tab="import">Import</button>
+                    <button class="tab-btn" data-tab="export">Export</button>
+                </div>
+
+                <div id="questions-tab" class="tab-content active">
+                    <div class="question-form">
+                        <h3>Add/Edit Question</h3>
+                        <input type="hidden" id="edit-question-id">
+                        <div class="form-group">
+                            <label>Difficulty Level:</label>
+                            <select id="question-difficulty">
+                                <option value="1">Easy (1-5)</option>
+                                <option value="2">Medium (6-10)</option>
+                                <option value="3">Hard (11-15)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Question:</label>
+                            <textarea id="question-input" placeholder="Enter your question here..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Answer A:</label>
+                            <input type="text" id="answer-a-input" placeholder="Answer A">
+                        </div>
+                        <div class="form-group">
+                            <label>Answer B:</label>
+                            <input type="text" id="answer-b-input" placeholder="Answer B">
+                        </div>
+                        <div class="form-group">
+                            <label>Answer C:</label>
+                            <input type="text" id="answer-c-input" placeholder="Answer C">
+                        </div>
+                        <div class="form-group">
+                            <label>Answer D:</label>
+                            <input type="text" id="answer-d-input" placeholder="Answer D">
+                        </div>
+                        <div class="form-group">
+                            <label>Correct Answer:</label>
+                            <select id="correct-answer">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                        <div class="form-buttons">
+                            <button id="save-question-btn" class="btn primary">Save Question</button>
+                            <button id="clear-form-btn" class="btn secondary">Clear Form</button>
+                        </div>
+                    </div>
+
+                    <div class="questions-list">
+                        <h3>Existing Questions</h3>
+                        <div id="questions-container">
+                            <!-- Questions will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="import-tab" class="tab-content">
+                    <h3>Import Questions</h3>
+                    <div class="import-section">
+                        <label for="json-import">Import from JSON:</label>
+                        <input type="file" id="json-import" accept=".json">
+                        <button id="import-json-btn" class="btn primary">Import JSON</button>
+                    </div>
+                </div>
+
+                <div id="export-tab" class="tab-content">
+                    <h3>Export Questions</h3>
+                    <div class="export-section">
+                        <button id="export-json-btn" class="btn primary">Export as JSON</button>
+                        <button id="export-csv-btn" class="btn secondary">Export as CSV</button>
+                    </div>
+                </div>
+
+                <div class="admin-controls">
+                    <button id="back-to-menu-btn" class="btn secondary">Back to Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen">
+            <div class="game-over-content">
+                <h2 id="game-over-title">Game Over!</h2>
+                <div class="final-score">
+                    <p>You won: <span id="final-prize">$0</span></p>
+                    <p>Questions answered: <span id="questions-answered">0</span></p>
+                </div>
+                <div class="game-over-buttons">
+                    <button id="play-again-btn" class="btn primary">Play Again</button>
+                    <button id="main-menu-btn" class="btn secondary">Main Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lifeline Modals -->
+        <div id="phone-friend-modal" class="modal">
+            <div class="modal-content">
+                <h3>Phone a Friend</h3>
+                <p id="friend-advice">Your friend thinks the answer is...</p>
+                <button class="modal-close-btn">Close</button>
+            </div>
+        </div>
+
+        <div id="ask-audience-modal" class="modal">
+            <div class="modal-content">
+                <h3>Ask the Audience</h3>
+                <div id="audience-results">
+                    <div class="audience-bar">
+                        <span>A:</span>
+                        <div class="bar"><div class="fill" id="audience-a"></div></div>
+                        <span id="audience-a-percent">0%</span>
+                    </div>
+                    <div class="audience-bar">
+                        <span>B:</span>
+                        <div class="bar"><div class="fill" id="audience-b"></div></div>
+                        <span id="audience-b-percent">0%</span>
+                    </div>
+                    <div class="audience-bar">
+                        <span>C:</span>
+                        <div class="bar"><div class="fill" id="audience-c"></div></div>
+                        <span id="audience-c-percent">0%</span>
+                    </div>
+                    <div class="audience-bar">
+                        <span>D:</span>
+                        <div class="bar"><div class="fill" id="audience-d"></div></div>
+                        <span id="audience-d-percent">0%</span>
+                    </div>
+                </div>
+                <button class="modal-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="correct-sound" preload="auto">
+        <source src="sounds/correct.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="wrong-sound" preload="auto">
+        <source src="sounds/wrong.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="background-music" preload="auto" loop>
+        <source src="sounds/background.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Scripts -->
+    <script src="js/database.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

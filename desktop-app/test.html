@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to be a Shillionaire - Test</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #f7931e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .button {
+            background: linear-gradient(45deg, #f7931e, #ffd700);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Who Wants to be a Shillionaire?</h1>
+        
+        <div class="status">
+            <h2>✅ Electron App is Working!</h2>
+            <p>This is a test page to verify the Electron app can load HTML content.</p>
+            <p>If you can see this, the basic loading mechanism is working.</p>
+        </div>
+        
+        <div class="status">
+            <h3>Next Steps:</h3>
+            <p>1. ✅ Electron app loads HTML</p>
+            <p>2. 🔄 Load React app</p>
+            <p>3. 🔄 Connect to backend API</p>
+            <p>4. 🔄 Show game interface</p>
+        </div>
+        
+        <button class="button" onclick="testAPI()">Test Backend Connection</button>
+        <button class="button" onclick="loadReact()">Load React App</button>
+        
+        <div id="results" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing backend connection...</p>';
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/health');
+                const data = await response.json();
+                results.innerHTML = `<p style="color: green;">✅ Backend connected: ${data.message}</p>`;
+            } catch (error) {
+                results.innerHTML = `<p style="color: red;">❌ Backend error: ${error.message}</p>`;
+            }
+        }
+        
+        function loadReact() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Attempting to load React app...</p>';
+            
+            // This would normally load the React app
+            setTimeout(() => {
+                results.innerHTML = '<p style="color: orange;">🔄 React app loading would happen here</p>';
+            }, 1000);
+        }
+        
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(testAPI, 1000);
+        });
+    </script>
+</body>
+</html>

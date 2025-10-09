@@ -171,7 +171,7 @@ const Confetti = styled.div`
 function GameOverPage() {
   const navigate = useNavigate();
   const { 
-    playerName, 
+    // playerName, 
     score, 
     prizeAmount, 
     currentQuestionIndex, 

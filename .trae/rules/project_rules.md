@@ -1,0 +1,1 @@
+important never use prefabs or placeholders always generate the object or assets at every necessary step
