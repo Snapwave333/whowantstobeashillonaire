@@ -1,311 +1,547 @@
+<div align="center">
+
 # 🎯 Who Wants to Be a Shillionaire?
 
-<div align="center">
-  <img src="assets/github-banner.png" alt="Who Wants to Be a Shillionaire Banner" width="800">
-  
-  **A Modern Desktop Trivia Game Experience**
-  
-  [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Snapwave333/whowantstobeashillonaire/releases)
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/ci-cd.yml"><img alt="CI/CD" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/ci-cd.yml?label=CI%2FCD"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/codeql.yml"><img alt="CodeQL" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/codeql.yml?label=CodeQL"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/lint-frontend.yml"><img alt="Lint Frontend & Desktop" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/lint-frontend.yml?label=Lint%20Frontend%20%26%20Desktop"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/lint-backend.yml"><img alt="Lint Backend" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/lint-backend.yml?label=Lint%20Backend"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Snapwave333/whowantstobeashillonaire?display_name=tag&sort=semver"></a>
-  <a href="https://app.codecov.io/gh/Snapwave333/whowantstobeashillonaire"><img alt="Coverage" src="https://img.shields.io/codecov/c/github/Snapwave333/whowantstobeashillonaire?flag=combined"></a>
-  [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-  [![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)](https://github.com/Snapwave333/whowantstobeashillonaire)
-  <a href="https://snapwave333.github.io/whowantstobeashillonaire/docs/"><img alt="Docs" src="https://img.shields.io/badge/docs-available-blue"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/pkgs/container/whowantstobeashillonaire-frontend"><img alt="GHCR Frontend" src="https://img.shields.io/badge/GHCR-frontend-0A0?logo=docker&labelColor=555"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/pkgs/container/whowantstobeashillonaire-backend"><img alt="GHCR Backend" src="https://img.shields.io/badge/GHCR-backend-0A0?logo=docker&labelColor=555"></a>
-  <a href="https://img.shields.io/github/deployments/Snapwave333/whowantstobeashillonaire/github-pages?label=Pages"><img alt="Pages" src="https://img.shields.io/github/deployments/Snapwave333/whowantstobeashillonaire/github-pages?label=Pages"></a>
-  <a href="https://ghcr.io/Snapwave333/whowantstobeashillonaire-frontend"><img alt="Frontend Image Size" src="https://img.shields.io/docker/image-size/ghcr.io/snapwave333/whowantstobeashillonaire-frontend/latest?label=frontend%20image"></a>
-  <a href="https://ghcr.io/Snapwave333/whowantstobeashillonaire-backend"><img alt="Backend Image Size" src="https://img.shields.io/docker/image-size/ghcr.io/snapwave333/whowantstobeashillonaire-backend/latest?label=backend%20image"></a>
-  <a href="CONTRIBUTING.md"><img alt="Contributing" src="https://img.shields.io/badge/Contributing-welcome-brightgreen"></a>
-  <a href="CODE_OF_CONDUCT.md"><img alt="Code of Conduct" src="https://img.shields.io/badge/Code%20of%20Conduct-Contributor%20Covenant-blueviolet"></a>
-  <a href="SUPPORT.md"><img alt="Support" src="https://img.shields.io/badge/Support-get%20help-informational"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/stargazers"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/Snapwave333/whowantstobeashillonaire?style=social"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/network/members"><img alt="GitHub Forks" src="https://img.shields.io/github/forks/Snapwave333/whowantstobeashillonaire?style=social"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/issues"><img alt="GitHub Issues" src="https://img.shields.io/github/issues/Snapwave333/whowantstobeashillonaire"></a>
-  <a href="https://github.com/Snapwave333/whowantstobeashillonaire/pulls"><img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/Snapwave333/whowantstobeashillonaire"></a>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,16,18,20&height=200&section=header&text=Who%20Wants%20to%20Be%20a%20Shillionaire&fontSize=50&animation=fadeIn&fontAlignY=35" />
+
+### 🚀 AI-Powered Trivia Game with Stunning Visual Effects
+
+**Experience the thrill of the classic game show with modern tech!**
+
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)](https://github.com/Snapwave333/whowantstobeashillonaire/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/Snapwave333/whowantstobeashillonaire?style=for-the-badge&logo=github)](https://github.com/Snapwave333/whowantstobeashillonaire/stargazers)
+[![Issues](https://img.shields.io/github/issues/Snapwave333/whowantstobeashillonaire?style=for-the-badge)](https://github.com/Snapwave333/whowantstobeashillonaire/issues)
+
+<a href="https://github.com/Snapwave333/whowantstobeashillonaire/actions/workflows/ci-cd.yml"><img alt="CI/CD" src="https://img.shields.io/github/actions/workflow/status/Snapwave333/whowantstobeashillonaire/ci-cd.yml?label=CI%2FCD&style=for-the-badge"></a>
+<a href="https://github.com/Snapwave333/whowantstobeashillonaire/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Snapwave333/whowantstobeashillonaire?display_name=tag&sort=semver&style=for-the-badge"></a>
+
+[🎮 Play Now](#-quick-start) • [📖 Documentation](#-table-of-contents) • [🐛 Report Bug](https://github.com/Snapwave333/whowantstobeashillonaire/issues) • [✨ Request Feature](https://github.com/Snapwave333/whowantstobeashillonaire/issues)
+
 </div>
 
 ---
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=120&section=header&text=Who%20Wants%20to%20Be%20a%20Shillionaire&fontSize=24&animation=fadeIn" alt="Header banner" />
-</p>
+## 🌟 What's New
+
+### Latest Updates (v1.0.0)
+
+```diff
++ 🤖 FREE AI-Powered Question Generation using Hugging Face Mixtral-8x7B
++ ✨ Complete UI/UX Overhaul with stunning animations and effects
++ 🎯 15 Hand-Crafted Trivia Questions + Unlimited AI-Generated Questions
++ 🎨 Cinematic Glowing Borders and Visual Feedback
++ 🎮 Final Answer Confirmation Button (no more auto-submit!)
++ 💫 Active Tier Highlighting with Smooth Scrolling
++ 🎭 Enhanced Animations for Correct/Wrong Answers
++ 📱 Improved Settings Panel as Modal Overlay
++ 🔥 Better Game State Management and Transitions
+```
+
+---
 
 ## 🧭 Table of Contents
 
-- [🎮 About](#-about)
+- [✨ Features](#-features)
+- [🎬 Demo](#-demo)
 - [🚀 Quick Start](#-quick-start)
-- [⬇️ Downloads](#️-downloads)
-- [🎯 Game Modes](#-game-modes)
-- [🛠️ Development](#️-development)
-- [🎨 Customization](#-customization)
+- [🎮 How to Play](#-how-to-play)
 - [🤖 AI Integration](#-ai-integration)
-- [📈 Project Stats](#-project-stats)
-- [📋 Requirements](#-requirements)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [🎨 Customization](#-customization)
 - [🐛 Troubleshooting](#-troubleshooting)
+- [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
-- [👥 Contributing](#-contributing)
-- [📞 Contact](#-contact)
-- [🙏 Acknowledgments](#-acknowledgments)
+- [👨‍💻 Author](#-author)
 
-## 🎮 About
+---
 
-**Who Wants to Be a Shillionaire** is a modern, AI-powered desktop trivia game that brings the excitement of the classic game show to your computer. Built with Electron and powered by Gemini AI, it features dynamic question generation, scaling difficulty, and a professional dual-window interface for hosts and contestants.
+## ✨ Features
 
-### ✨ Key Features
+<table>
+<tr>
+<td width="50%">
 
-- 🤖 **AI-Powered Questions**: Dynamic question generation using Google's Gemini AI
-- 🎯 **Scaling Difficulty**: Questions automatically scale from easy to expert level
-- 🎨 **Modern UI**: Sleek dark theme with cinematic lighting and animations
-- 🎮 **Dual-Window Setup**: Separate interfaces for Game Master and Contestant
-- 🏆 **Customizable Prize Ladder**: Edit prizes, images, sounds, and display text
-- 🎵 **Audio Integration**: Sound effects and ambient audio support
-- 🔧 **Game Master Controls**: Full host control panel with API configuration
-- 📱 **Responsive Design**: Optimized for various screen sizes
+### 🤖 AI-Powered
+- **Free Hugging Face Integration**
+- Mixtral-8x7B model for questions
+- Dynamic difficulty scaling
+- No API key required!
+- Unlimited questions
+
+</td>
+<td width="50%">
+
+### 🎨 Beautiful UI
+- Cinematic glowing effects
+- Smooth animations
+- Dark theme with neon accents
+- Responsive design
+- Professional polish
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🎯 Game Features
+- 15 tiers with progressive difficulty
+- 3 lifelines (50/50, Ask, Phone)
+- Safe haven checkpoints
+- Prize ladder tracking
+- Auto-save functionality
+
+</td>
+<td width="50%">
+
+### ⚙️ Customization
+- Adjustable prize multipliers
+- Configurable tier count
+- Custom safe havens
+- Difficulty settings
+- Full game master control
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🎬 Demo
+
+### Game Interface
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  💰 PRIZE LADDER          │  ❓ QUESTION SECTION           │
+│  ┌───────────────┐        │  ┌──────────────────────────┐  │
+│  │ 15 | $1,000,000│ 🏆    │  │ What is the capital of   │  │
+│  │ 14 | $500,000  │        │  │ France?                  │  │
+│  │ 13 | $250,000  │        │  └──────────────────────────┘  │
+│  │ 12 | $125,000  │        │                                │
+│  │ 11 | $64,000   │        │  ┌────────┐  ┌────────┐       │
+│  │ 10 | $32,000   │ 🛡️    │  │ London │  │  Paris │       │
+│  │  9 | $16,000   │        │  └────────┘  └────────┘       │
+│  │  8 | $8,000    │ ⭐     │  ┌────────┐  ┌────────┐       │
+│  │  7 | $4,000    │        │  │ Berlin │  │ Madrid │       │
+│  └───────────────┘         │  └────────┘  └────────┘       │
+│                             │                                │
+│                             │  [   FINAL ANSWER   ]         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### ✨ Visual Effects
+
+- **Glowing Borders**: Animated rainbow gradient borders
+- **Hover Effects**: Ripple animations on buttons
+- **Active Tier**: Pulsing gold highlight on current question
+- **Answer Feedback**: Green (correct) / Red (wrong) animations
+- **Loading State**: "🤖 Generating question with AI..." indicator
+
+---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- **Node.js** (v16 or higher)
-- **npm** or **yarn**
-- **Git**
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Snapwave333/whowantstobeashillonaire.git
-   cd whowantstobeashillonaire
-   ```
-
-2. **Install dependencies**
-   ```bash
-   # Backend dependencies
-   cd backend
-   pip install -r requirements.txt
-   
-   # Frontend dependencies
-   cd ../frontend
-   npm install
-   
-   # Desktop app dependencies
-   cd ../desktop-app
-   npm install
-   ```
-
-3. **Configure API Key**
-   - Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/)
-   - Enter it in the Game Master Settings when you first run the app
-
-4. **Run the application**
-   ```bash
-   # Start the backend
-   cd backend
-   python app.py
-   
-   # Start the frontend (in another terminal)
-   cd frontend
-   npm start
-   
-   # Start the desktop app (in another terminal)
-   cd desktop-app
-   npm run dev
-   ```
-
-## ⬇️ Downloads
-
-- **Get the latest build:** [Releases page](https://github.com/Snapwave333/whowantstobeashillonaire/releases/latest)
-  - Windows installer: `.exe`
-  - Portable archive: `.zip`
-
-Note: Binaries are distributed via Releases only and are not committed to the repository.
-
-## 🎯 Game Modes
-
-### 🎮 Contestant Mode
-- Clean, focused interface for players
-- Real-time question display
-- Lifeline integration (50/50, Phone a Friend, Ask the Audience)
-- Prize ladder visualization
-
-### 🎛️ Game Master Mode
-- Full control panel for hosts
-- AI question generation with difficulty scaling
-- Prize ladder customization
-- Game state management
-- API configuration and testing
-
-## 🛠️ Development
-
-### Project Structure
-
-```
-whowantstobeashillonaire/
-├── backend/                 # Flask API server
-│   ├── app.py              # Main Flask application
-│   ├── models/             # Database models
-│   ├── routes/             # API endpoints
-│   └── utils/              # AI integration utilities
-├── frontend/               # React web application
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   └── context/        # Game state management
-│   └── public/
-├── desktop-app/            # Electron desktop application
-│   ├── src/                # Main and renderer processes
-│   ├── assets/             # Icons, images, sounds
-│   └── build/              # Built React app
-├── docs/                   # Documentation
-└── README.md
-```
-
-### Building for Production
+### 🎯 Instant Play (Recommended)
 
 ```bash
-# Build the desktop installer
-cd desktop-app
-npm run build:installer
+# 1. Clone the repository
+git clone https://github.com/Snapwave333/whowantstobeashillonaire.git
+cd whowantstobeashillonaire
 
-# Build the web version
-cd frontend
-npm run build
+# 2. Open and play!
+open index.html  # macOS
+start index.html # Windows
+xdg-open index.html # Linux
 ```
 
-## 🎨 Customization
+**That's it!** The game works right out of the box with:
+- ✅ 15 pre-loaded high-quality questions
+- ✅ AI generates unlimited additional questions (FREE!)
+- ✅ No setup, no API keys, no installation needed
 
-### Prize Ladder
-- Edit prize amounts and display text
-- Upload custom images and sounds
-- Set safe haven levels
-- Toggle between amount and text display
+### 🔧 Full Development Setup (Optional)
 
-### Question Categories
-- General Knowledge
-- Science & Technology
-- History
-- Geography
-- Sports & Entertainment
-- Literature & Arts
-- Random (AI-selected)
+<details>
+<summary>Click to expand full setup instructions</summary>
+
+#### Prerequisites
+- Node.js v16+ (for desktop app)
+- Python 3.8+ (for backend API - optional)
+- npm or yarn
+
+#### Installation
+
+```bash
+# Install backend dependencies (optional - for advanced features)
+cd backend
+pip install -r requirements.txt
+
+# Install frontend dependencies (optional - for React build)
+cd ../frontend
+npm install
+
+# Install desktop app dependencies (optional - for Electron)
+cd ../desktop-app
+npm install
+```
+
+#### Running Components
+
+```bash
+# Backend API (optional)
+cd backend
+python app.py
+
+# Frontend React App (optional)
+cd frontend
+npm start
+
+# Desktop Electron App (optional)
+cd desktop-app
+npm run dev
+```
+
+</details>
+
+---
+
+## 🎮 How to Play
+
+### Game Flow
+
+1. **Start**: Open `index.html` in your browser
+2. **Configure**: Adjust settings (optional) or click "START GAME"
+3. **Answer**: Read the question and select your answer
+4. **Confirm**: Click the golden "FINAL ANSWER" button
+5. **Progress**: Climb the ladder to $1,000,000!
+
+### Lifelines
+
+| Lifeline | Description |
+|----------|-------------|
+| **50/50** | Removes two incorrect answers |
+| **Ask Discord** | Shows poll results from the community |
+| **Phone a Scammer** | Get advice from an "expert" |
+
+### Win Conditions
+
+- Answer all 15 questions correctly = **$1,000,000** 🏆
+- Wrong answer? Fall back to last **Safe Haven** (Tiers 5, 10, 15)
+
+---
 
 ## 🤖 AI Integration
 
-The game uses Google's Gemini AI for dynamic question generation:
+### Powered by Hugging Face
 
-- **Smart Difficulty Scaling**: Questions automatically increase in complexity
-- **Category-Specific Content**: AI generates contextually appropriate questions
-- **Quality Assurance**: Built-in validation ensures proper question format
-- **Fallback System**: Sample questions available if API is unavailable
+```javascript
+🎯 Model: Mixtral-8x7B-Instruct-v0.1
+🆓 Cost: FREE (hosted on Hugging Face servers)
+🔑 API Key: NOT REQUIRED
+♾️  Questions: UNLIMITED
+```
 
-## 📈 Project Stats
+### How It Works
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Snapwave333&show_icons=true&theme=tokyonight&include_all_commits=true&rank_icon=github" alt="GitHub Stats" />
+```mermaid
+graph LR
+    A[Game Reaches Q16] --> B{AI Generation}
+    B -->|Success| C[Parse Question]
+    B -->|Fail| D[Use Fallback]
+    C --> E[Display to Player]
+    D --> E
+```
+
+### Difficulty Scaling
+
+| Tier | Difficulty | AI Prompt |
+|------|------------|-----------|
+| 1-2  | Easy       | Basic trivia |
+| 3-5  | Medium     | Moderate challenge |
+| 6-10 | Hard       | Advanced knowledge |
+| 11-15| Expert     | Very difficult |
+
+### Example AI-Generated Question
+
+```json
+{
+  "text": "Which programming language was created by Guido van Rossum?",
+  "answers": ["Java", "Python", "Ruby", "JavaScript"],
+  "correctAnswer": "Python",
+  "category": "ai-generated",
+  "difficulty": "hard"
+}
+```
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+<p>
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
 </p>
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Snapwave333&layout=compact&theme=tokyonight" alt="Top Languages" />
-</p>
-<p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=Snapwave333&theme=tokyonight" alt="GitHub Streak" />
-</p>
 
-<h2> 🚀 &nbsp;Some Tools I Have Used for this and other projects</h2>
-<p align="left">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="vscode" width="45" height="45"/>
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="bash" width="45" height="45"/>
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="php" width="45" height="45"/>
+### AI & Backend
+<p>
+<img src="https://img.shields.io/badge/Hugging%20Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" />
+<img src="https://img.shields.io/badge/Mixtral-8x7B-purple?style=for-the-badge" />
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+<img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
 </p>
 
-## 📋 Requirements
+### Desktop & Build
+<p>
+<img src="https://img.shields.io/badge/Electron-47848F?style=for-the-badge&logo=electron&logoColor=white" />
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+<img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white" />
+</p>
 
-### System Requirements
-- **OS**: Windows 10/11 (64-bit)
-- **RAM**: 4GB minimum, 8GB recommended
-- **Storage**: 500MB available space
-- **Internet**: Required for AI question generation
+### DevOps & Tools
+<p>
+<img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white" />
+<img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" />
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" />
+</p>
 
-### Development Requirements
-- **Node.js**: v16+
-- **Python**: v3.8+
-- **Git**: Latest version
+---
+
+## 📁 Project Structure
+
+```
+whowantstobeashillonaire/
+│
+├── 📄 index.html              # Main game file (START HERE!)
+├── 🎨 styles.css              # Beautiful styling & animations
+├── ⚙️  game.js                # Game logic + AI integration
+│
+├── 📂 backend/                # Optional Flask API
+│   ├── app.py
+│   ├── requirements.txt
+│   └── utils/
+│
+├── 📂 frontend/               # Optional React app
+│   ├── src/
+│   │   ├── components/
+│   │   └── context/
+│   └── package.json
+│
+├── 📂 desktop-app/            # Optional Electron app
+│   ├── src/
+│   ├── assets/
+│   └── package.json
+│
+├── 📂 assets/                 # Images & resources
+├── 📂 docs/                   # Documentation
+└── 📄 README.md               # You are here!
+```
+
+---
+
+## 🎨 Customization
+
+### Settings Panel
+
+Access the Pump Master Control Panel to customize:
+
+```javascript
+🎚️ Prize Scale Multiplier    (0.1x - 5.0x)
+🔢 Number of Tiers           (10 - 15)
+🛡️  Safe Havens              (Select checkpoints)
+📊 Difficulty Level          (Easy - Expert)
+💰 Cryptocurrency Display    (BTC, ETH, SHILL)
+```
+
+### Modifying Questions
+
+Edit `game.js` to add your own questions:
+
+```javascript
+this.questions = [
+    {
+        id: 1,
+        text: "Your question here?",
+        answers: ["Option A", "Option B", "Option C", "Option D"],
+        correctAnswer: "Option C",
+        category: "your-category",
+        difficulty: "easy"
+    },
+    // Add more...
+];
+```
+
+### Styling
+
+Edit `styles.css` to customize colors, animations, and effects:
+
+```css
+/* Change primary color */
+--primary-color: #ffd700;    /* Gold */
+--secondary-color: #00ff88;  /* Green */
+--accent-color: #4ecdc4;     /* Cyan */
+```
+
+---
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+<details>
+<summary><b>Game won't load / blank screen</b></summary>
 
-**API Connection Failed**
-- Verify your Gemini API key is correct
+- Check browser console for errors (F12)
+- Try a different browser (Chrome, Firefox recommended)
+- Clear browser cache and reload
+- Ensure JavaScript is enabled
+</details>
+
+<details>
+<summary><b>AI questions not generating</b></summary>
+
+- The game falls back to demo questions automatically
 - Check internet connection
-- Ensure API key has proper permissions
+- Hugging Face API may be temporarily unavailable
+- First 15 questions don't need AI (pre-loaded)
+</details>
 
-**App Won't Start**
-- Run `npm install` in all directories
-- Check Node.js version compatibility
-- Verify all dependencies are installed
+<details>
+<summary><b>Animations not smooth</b></summary>
 
-**Questions Not Generating**
-- Test API connection in Game Master Settings
-- Check API key configuration
-- Verify internet connectivity
+- Check GPU acceleration in browser settings
+- Close other resource-intensive tabs
+- Try reducing animation complexity in CSS
+- Update graphics drivers
+</details>
+
+<details>
+<summary><b>Mobile display issues</b></summary>
+
+- Game is optimized for desktop/tablet
+- Rotate device to landscape mode
+- Zoom out if elements are cut off
+- Consider using desktop version
+</details>
+
+### Still having issues?
+
+📧 [Open an issue](https://github.com/Snapwave333/whowantstobeashillonaire/issues) with:
+- Browser name & version
+- Operating system
+- Screenshot of the problem
+- Console error messages
+
+---
+
+## 🤝 Contributing
+
+We love contributions! Here's how to help:
+
+### Ways to Contribute
+
+```
+🐛 Report bugs
+💡 Suggest features
+📝 Improve documentation
+🎨 Design improvements
+🧪 Write tests
+🔧 Fix issues
+```
+
+### Contribution Steps
+
+1. **Fork** the repository
+2. **Create** a feature branch
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Commit** your changes
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+4. **Push** to the branch
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. **Open** a Pull Request
+
+### Development Guidelines
+
+- Follow existing code style
+- Add comments for complex logic
+- Test thoroughly before submitting
+- Update documentation if needed
+- Keep commits atomic and descriptive
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Contributing
+```
+MIT License - You are free to:
+✅ Use commercially
+✅ Modify
+✅ Distribute
+✅ Sublicense
+❗ Must include copyright notice
+```
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+---
 
-## 📞 Contact
+## 👨‍💻 Author
 
-- **Developer**: Snapwave333
-- **Email**: [Your Email]
-- **GitHub**: [@Snapwave333](https://github.com/Snapwave333)
+<div align="center">
+
+### Snapwave333
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Snapwave333)
+[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://snapwave333.github.io/whowantstobeashillonaire)
+
+**Made with ❤️ and ☕**
+
+</div>
+
+---
 
 ## 🙏 Acknowledgments
 
-- **Google Gemini AI** for question generation
-- **Electron** for cross-platform desktop development
-- **React** for modern web interface
-- **Flask** for robust backend API
+Special thanks to:
+
+- **Hugging Face** - For free AI model hosting
+- **Mistral AI** - For the Mixtral-8x7B model
+- **Google Fonts** - For Orbitron & Roboto Condensed
+- **GitHub** - For hosting and CI/CD
+- **You** - For playing the game! ⭐
+
+---
+
+## 📊 Project Stats
+
+<div align="center">
+
+![GitHub stars](https://img.shields.io/github/stars/Snapwave333/whowantstobeashillonaire?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Snapwave333/whowantstobeashillonaire?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/Snapwave333/whowantstobeashillonaire?style=social)
+
+<img src="https://github-readme-stats.vercel.app/api?username=Snapwave333&show_icons=true&theme=tokyonight&include_all_commits=true" alt="GitHub Stats" />
+
+</div>
 
 ---
 
 <div align="center">
-  <img src="assets/github-signature.png" alt="Who Wants to Be a Shillionaire Signature" width="600">
-  
-  <p>Made with ❤️ by Snapwave333</p>
 
-  <h2> 🚀 &nbsp;Some Tools I Have Used for this and other projects</h2>
-  <p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg" alt="npm" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg" alt="Electron" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" alt="Flask" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg" alt="SQLite" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" alt="Nginx" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/githubactions/githubactions-original.svg" alt="GitHub Actions" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" width="45" height="45"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Bash" width="45" height="45"/>
-  </p>
-  <p>⭐ Star this repo if you like it!</p>
-  
-  <img src="https://raw.githubusercontent.com/Snapwave333/whowantstobeashillonaire/output/github-contribution-grid-snake.svg" alt="snake" />
+### ⭐ If you like this project, give it a star!
+
+**Ready to play?** [Click here to start!](#-quick-start)
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,16,18,20&height=100&section=footer" />
+
 </div>

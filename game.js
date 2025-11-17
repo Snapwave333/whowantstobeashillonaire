@@ -3,8 +3,8 @@
 class ShillonairGame {
     constructor() {
         this.currentTier = 0;
-        this.currentPrize = { usd: 100, crypto: "0.001778", symbol: "BTC" };
-        this.safeHavens = [5, 10];
+        this.currentPrize = { usd: 100, crypto: "0.002222", symbol: "BTC" };
+        this.safeHavens = [4, 9];  // 0-indexed: tier 5 and tier 10
         this.usedLifelines = [];
         this.gameActive = true;
         this.selectedAnswer = null;
@@ -12,7 +12,7 @@ class ShillonairGame {
         this.settings = {
             prizeMultiplier: 1.0,
             numTiers: 15,
-            safeHavens: [5, 10],
+            safeHavens: [4, 9],  // 0-indexed: tier 5 and tier 10
             difficulty: 'general_medium',
             cryptocurrencies: ['BTC', 'ETH', 'SHILL']
         };
@@ -32,7 +32,7 @@ class ShillonairGame {
                 answers: ["Venus", "Mars", "Jupiter", "Saturn"],
                 correctAnswer: "Mars",
                 category: "science",
-                difficulty: "medium"
+                difficulty: "easy"
             },
             {
                 id: 3,
@@ -40,7 +40,7 @@ class ShillonairGame {
                 answers: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
                 correctAnswer: "Leonardo da Vinci",
                 category: "art",
-                difficulty: "medium"
+                difficulty: "easy"
             },
             {
                 id: 4,
@@ -56,7 +56,87 @@ class ShillonairGame {
                 answers: ["1944", "1945", "1946", "1947"],
                 correctAnswer: "1945",
                 category: "history",
+                difficulty: "easy"
+            },
+            {
+                id: 6,
+                text: "What is the chemical symbol for gold?",
+                answers: ["Go", "Gd", "Au", "Ag"],
+                correctAnswer: "Au",
+                category: "science",
                 difficulty: "medium"
+            },
+            {
+                id: 7,
+                text: "Which Shakespeare play features the characters Romeo and Juliet?",
+                answers: ["Hamlet", "Romeo and Juliet", "Macbeth", "Othello"],
+                correctAnswer: "Romeo and Juliet",
+                category: "literature",
+                difficulty: "medium"
+            },
+            {
+                id: 8,
+                text: "What is the tallest mountain in the world?",
+                answers: ["K2", "Mount Kilimanjaro", "Mount Everest", "Denali"],
+                correctAnswer: "Mount Everest",
+                category: "geography",
+                difficulty: "medium"
+            },
+            {
+                id: 9,
+                text: "Who developed the theory of relativity?",
+                answers: ["Isaac Newton", "Nikola Tesla", "Albert Einstein", "Stephen Hawking"],
+                correctAnswer: "Albert Einstein",
+                category: "science",
+                difficulty: "medium"
+            },
+            {
+                id: 10,
+                text: "Which country is home to the Great Barrier Reef?",
+                answers: ["Brazil", "Indonesia", "Australia", "Philippines"],
+                correctAnswer: "Australia",
+                category: "geography",
+                difficulty: "medium"
+            },
+            {
+                id: 11,
+                text: "What year did the first iPhone release?",
+                answers: ["2005", "2006", "2007", "2008"],
+                correctAnswer: "2007",
+                category: "technology",
+                difficulty: "hard"
+            },
+            {
+                id: 12,
+                text: "Which element has the atomic number 1?",
+                answers: ["Helium", "Hydrogen", "Oxygen", "Carbon"],
+                correctAnswer: "Hydrogen",
+                category: "science",
+                difficulty: "hard"
+            },
+            {
+                id: 13,
+                text: "Who wrote '1984' and 'Animal Farm'?",
+                answers: ["Aldous Huxley", "George Orwell", "Ray Bradbury", "Ernest Hemingway"],
+                correctAnswer: "George Orwell",
+                category: "literature",
+                difficulty: "hard"
+            },
+            {
+                id: 14,
+                text: "What is the smallest country in the world by land area?",
+                answers: ["Monaco", "San Marino", "Vatican City", "Liechtenstein"],
+                correctAnswer: "Vatican City",
+                category: "geography",
+                difficulty: "hard"
+            },
+            {
+                id: 15,
+                text: "Which programming language was created by Guido van Rossum?",
+                answers: ["Java", "Python", "Ruby", "JavaScript"],
+                correctAnswer: "Python",
+                category: "technology",
+                difficulty: "hard"
             }
         ];
 
@@ -97,6 +177,11 @@ class ShillonairGame {
             answer.addEventListener('click', (e) => {
                 this.selectAnswer(e.target);
             });
+        });
+
+        // Final Answer button
+        document.getElementById('final-answer-btn').addEventListener('click', () => {
+            this.submitAnswer();
         });
 
         // Lifeline usage
@@ -159,14 +244,15 @@ class ShillonairGame {
         answerElement.classList.add('selected');
         this.selectedAnswer = answerElement.dataset.letter;
 
-        // Auto-submit after 2 seconds (simulating final answer)
-        setTimeout(() => {
-            this.submitAnswer();
-        }, 2000);
+        // Show Final Answer button
+        document.getElementById('final-answer-btn').classList.remove('hidden');
     }
 
     submitAnswer() {
         if (!this.selectedAnswer || !this.gameActive) return;
+
+        // Hide Final Answer button
+        document.getElementById('final-answer-btn').classList.add('hidden');
 
         const currentQuestion = this.questions[this.currentQuestionIndex];
         const isCorrect = this.selectedAnswer === this.getAnswerLetter(currentQuestion.correctAnswer);
@@ -210,7 +296,7 @@ class ShillonairGame {
         }, 2000);
     }
 
-    progressToNextTier() {
+    async progressToNextTier() {
         if (this.currentTier >= this.settings.numTiers - 1) {
             this.showVictory();
             return;
@@ -219,8 +305,8 @@ class ShillonairGame {
         this.currentTier++;
         this.currentQuestionIndex++;
         this.updatePrize();
+        await this.loadNextQuestion();
         this.updateDisplay();
-        this.loadNextQuestion();
 
         // Trigger auto-save
         this.saveGameState();
@@ -242,17 +328,133 @@ class ShillonairGame {
         };
     }
 
-    loadNextQuestion() {
+    async loadNextQuestion() {
         if (this.currentQuestionIndex >= this.questions.length) {
-            // Generate a simple new question for demo
-            const question = this.generateDemoQuestion();
-            this.questions.push(question);
+            // Try to generate AI question first, fall back to demo question
+            try {
+                const question = await this.generateAIQuestion();
+                this.questions.push(question);
+            } catch (error) {
+                console.warn('AI generation failed, using demo question:', error);
+                const question = this.generateDemoQuestion();
+                this.questions.push(question);
+            }
         }
 
         this.selectedAnswer = null;
         document.querySelectorAll('.answer').forEach(ans => {
-            ans.classList.remove('selected');
+            ans.classList.remove('selected', 'correct', 'wrong');
+            ans.style.opacity = '1';
+            ans.style.pointerEvents = 'auto';
+            ans.style.background = '';
+            ans.style.borderColor = '';
         });
+
+        // Hide Final Answer button
+        document.getElementById('final-answer-btn').classList.add('hidden');
+    }
+
+    async generateAIQuestion() {
+        // Determine difficulty based on current tier
+        let difficulty = "easy";
+        if (this.currentTier >= 10) {
+            difficulty = "expert";
+        } else if (this.currentTier >= 5) {
+            difficulty = "hard";
+        } else if (this.currentTier >= 2) {
+            difficulty = "medium";
+        }
+
+        // Show loading indicator
+        const questionText = document.getElementById('question-text');
+        const originalText = questionText.textContent;
+        questionText.textContent = "🤖 Generating question with AI...";
+
+        try {
+            // Use Hugging Face's free inference API
+            const prompt = `Generate a ${difficulty} trivia question with 4 multiple choice answers.
+Format your response EXACTLY like this example:
+Q: What is the capital of France?
+A) London
+B) Paris
+C) Berlin
+D) Madrid
+CORRECT: B
+
+Now generate a ${difficulty} ${this.settings.difficulty} trivia question:`;
+
+            const response = await fetch('https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    inputs: prompt,
+                    parameters: {
+                        max_new_tokens: 250,
+                        temperature: 0.8,
+                        top_p: 0.9,
+                        return_full_text: false
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            let generatedText = data[0]?.generated_text || '';
+
+            // Parse the AI response
+            const question = this.parseAIResponse(generatedText);
+
+            // Restore original text before returning
+            questionText.textContent = originalText;
+
+            return question;
+        } catch (error) {
+            // Restore original text on error
+            questionText.textContent = originalText;
+            throw error;
+        }
+    }
+
+    parseAIResponse(text) {
+        try {
+            // Extract question
+            const questionMatch = text.match(/Q:\s*(.+?)(?=\n[A-D]\))/s);
+            const question = questionMatch ? questionMatch[1].trim() : '';
+
+            // Extract answers
+            const answers = [];
+            const answerMatches = text.matchAll(/[A-D]\)\s*(.+?)(?=\n|$)/g);
+            for (const match of answerMatches) {
+                answers.push(match[1].trim());
+            }
+
+            // Extract correct answer
+            const correctMatch = text.match(/CORRECT:\s*([A-D])/);
+            const correctLetter = correctMatch ? correctMatch[1] : 'A';
+            const correctIndex = correctLetter.charCodeAt(0) - 'A'.charCodeAt(0);
+
+            // Validate we have all components
+            if (!question || answers.length < 4) {
+                throw new Error('Invalid AI response format');
+            }
+
+            return {
+                id: Date.now(),
+                text: question,
+                answers: answers.slice(0, 4),
+                correctAnswer: answers[correctIndex],
+                category: "ai-generated",
+                difficulty: this.currentTier >= 10 ? "expert" : this.currentTier >= 5 ? "hard" : "medium"
+            };
+        } catch (error) {
+            console.error('Failed to parse AI response:', error);
+            throw new Error('Could not parse AI-generated question');
+        }
     }
 
     generateDemoQuestion() {
@@ -535,6 +737,16 @@ class ShillonairGame {
         document.querySelector('.prize-amount').textContent = `${this.currentPrize.crypto} ${this.currentPrize.symbol}`;
         document.querySelector('.prize-usd').textContent = `$${this.currentPrize.usd.toLocaleString()} USD`;
 
+        // Highlight current tier in ladder
+        document.querySelectorAll('.tier').forEach(tier => {
+            tier.classList.remove('active');
+        });
+        const currentTierElement = document.querySelector(`.tier[data-tier="${this.currentTier}"]`);
+        if (currentTierElement) {
+            currentTierElement.classList.add('active');
+            currentTierElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
         // Update question and answers
         const currentQuestion = this.questions[this.currentQuestionIndex];
         if (currentQuestion) {
@@ -547,6 +759,7 @@ class ShillonairGame {
                 answerElements[index].dataset.letter = letter;
                 answerElements[index].style.opacity = '1';
                 answerElements[index].style.pointerEvents = 'auto';
+                answerElements[index].classList.remove('selected', 'correct', 'wrong');
             });
         }
 

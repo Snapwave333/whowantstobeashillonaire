@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Who Wants to Be a Shillonair</title>
+    <title>Who Wants to Be a Shillionaire</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
@@ -22,66 +22,66 @@
         <div id="pump-ladder">
             <h3>PUMP LADDER</h3>
             <div class="ladder-container">
-                <div class="tier" data-tier="15">
-                    <span class="tier-number">15</span>
-                    <span class="crypto-amount">$45,000</span>
-                    <div class="safe-haven">SAFE</div>
-                </div>
                 <div class="tier" data-tier="14">
-                    <span class="tier-number">14</span>
-                    <span class="crypto-amount">$22,500</span>
+                    <span class="tier-number">15</span>
+                    <span class="crypto-amount">$1,000,000</span>
+                    <div class="safe-haven">SAFE</div>
                 </div>
                 <div class="tier" data-tier="13">
-                    <span class="tier-number">13</span>
-                    <span class="crypto-amount">$11,250</span>
+                    <span class="tier-number">14</span>
+                    <span class="crypto-amount">$500,000</span>
                 </div>
                 <div class="tier" data-tier="12">
-                    <span class="tier-number">12</span>
-                    <span class="crypto-amount">$5,625</span>
+                    <span class="tier-number">13</span>
+                    <span class="crypto-amount">$250,000</span>
                 </div>
                 <div class="tier" data-tier="11">
-                    <span class="tier-number">11</span>
-                    <span class="crypto-amount">$2,812</span>
+                    <span class="tier-number">12</span>
+                    <span class="crypto-amount">$125,000</span>
                 </div>
                 <div class="tier" data-tier="10">
-                    <span class="tier-number">10</span>
-                    <span class="crypto-amount">$1,406</span>
-                    <div class="safe-haven">SAFE</div>
+                    <span class="tier-number">11</span>
+                    <span class="crypto-amount">$64,000</span>
                 </div>
                 <div class="tier" data-tier="9">
-                    <span class="tier-number">9</span>
-                    <span class="crypto-amount">$703</span>
+                    <span class="tier-number">10</span>
+                    <span class="crypto-amount">$32,000</span>
+                    <div class="safe-haven">SAFE</div>
                 </div>
                 <div class="tier" data-tier="8">
-                    <span class="tier-number">8</span>
-                    <span class="crypto-amount">$350</span>
+                    <span class="tier-number">9</span>
+                    <span class="crypto-amount">$16,000</span>
                 </div>
                 <div class="tier" data-tier="7">
-                    <span class="tier-number">7</span>
-                    <span class="crypto-amount">$175</span>
+                    <span class="tier-number">8</span>
+                    <span class="crypto-amount">$8,000</span>
                 </div>
                 <div class="tier" data-tier="6">
-                    <span class="tier-number">6</span>
-                    <span class="crypto-amount">$87</span>
+                    <span class="tier-number">7</span>
+                    <span class="crypto-amount">$4,000</span>
                 </div>
                 <div class="tier" data-tier="5">
+                    <span class="tier-number">6</span>
+                    <span class="crypto-amount">$2,000</span>
+                </div>
+                <div class="tier" data-tier="4">
                     <span class="tier-number">5</span>
                     <span class="crypto-amount">$1,000</span>
                     <div class="safe-haven">SAFE</div>
                 </div>
-                <div class="tier" data-tier="4">
+                <div class="tier" data-tier="3">
                     <span class="tier-number">4</span>
                     <span class="crypto-amount">$500</span>
                 </div>
-                <div class="tier" data-tier="3">
+                <div class="tier" data-tier="2">
                     <span class="tier-number">3</span>
                     <span class="crypto-amount">$300</span>
                 </div>
-                <div class="tier" data-tier="2">
+                <div class="tier" data-tier="1">
                     <span class="tier-number">2</span>
                     <span class="crypto-amount">$200</span>
                 </div>
-                <div class="tier" data-tier="1">
+                <div class="tier" data-tier="0">
                     <span class="tier-number">1</span>
                     <span class="crypto-amount">$100</span>
                 </div>
@@ -98,6 +98,9 @@
                     <div class="answer" data-letter="B">B) Berlin</div>
                     <div class="answer" data-letter="C">C) Paris</div>
                     <div class="answer" data-letter="D">D) Madrid</div>
+                </div>
+                <div id="final-answer-container">
+                    <button id="final-answer-btn" class="hidden">FINAL ANSWER</button>
                 </div>
             </div>
 
@@ -133,6 +136,15 @@
     <div id="settings-panel">
         <div class="settings-content">
             <h2>PUMP MASTER CONTROL PANEL</h2>
+
+            <div style="background: rgba(0, 255, 136, 0.1); border: 2px solid #00ff88; border-radius: 10px; padding: 15px; margin-bottom: 20px; text-align: center;">
+                <p style="font-size: 14px; color: #00ff88; margin: 0; margin-bottom: 8px;">
+                    <strong>🤖 AI-Powered Questions!</strong>
+                </p>
+                <p style="font-size: 12px; color: #cccccc; margin: 0;">
+                    This game uses Hugging Face's free AI (Mixtral-8x7B) to generate unique trivia questions after the pre-loaded ones. Questions scale in difficulty as you progress. No API key needed!
+                </p>
+            </div>
 
             <div class="setting-group">
                 <label>Prize Scale Multiplier:</label>
