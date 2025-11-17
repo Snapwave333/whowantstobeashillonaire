@@ -296,7 +296,7 @@ class ShillonairGame {
         }, 2000);
     }
 
-    progressToNextTier() {
+    async progressToNextTier() {
         if (this.currentTier >= this.settings.numTiers - 1) {
             this.showVictory();
             return;
@@ -305,8 +305,8 @@ class ShillonairGame {
         this.currentTier++;
         this.currentQuestionIndex++;
         this.updatePrize();
+        await this.loadNextQuestion();
         this.updateDisplay();
-        this.loadNextQuestion();
 
         // Trigger auto-save
         this.saveGameState();
@@ -328,11 +328,17 @@ class ShillonairGame {
         };
     }
 
-    loadNextQuestion() {
+    async loadNextQuestion() {
         if (this.currentQuestionIndex >= this.questions.length) {
-            // Generate a simple new question for demo
-            const question = this.generateDemoQuestion();
-            this.questions.push(question);
+            // Try to generate AI question first, fall back to demo question
+            try {
+                const question = await this.generateAIQuestion();
+                this.questions.push(question);
+            } catch (error) {
+                console.warn('AI generation failed, using demo question:', error);
+                const question = this.generateDemoQuestion();
+                this.questions.push(question);
+            }
         }
 
         this.selectedAnswer = null;
@@ -346,6 +352,109 @@ class ShillonairGame {
 
         // Hide Final Answer button
         document.getElementById('final-answer-btn').classList.add('hidden');
+    }
+
+    async generateAIQuestion() {
+        // Determine difficulty based on current tier
+        let difficulty = "easy";
+        if (this.currentTier >= 10) {
+            difficulty = "expert";
+        } else if (this.currentTier >= 5) {
+            difficulty = "hard";
+        } else if (this.currentTier >= 2) {
+            difficulty = "medium";
+        }
+
+        // Show loading indicator
+        const questionText = document.getElementById('question-text');
+        const originalText = questionText.textContent;
+        questionText.textContent = "🤖 Generating question with AI...";
+
+        try {
+            // Use Hugging Face's free inference API
+            const prompt = `Generate a ${difficulty} trivia question with 4 multiple choice answers.
+Format your response EXACTLY like this example:
+Q: What is the capital of France?
+A) London
+B) Paris
+C) Berlin
+D) Madrid
+CORRECT: B
+
+Now generate a ${difficulty} ${this.settings.difficulty} trivia question:`;
+
+            const response = await fetch('https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    inputs: prompt,
+                    parameters: {
+                        max_new_tokens: 250,
+                        temperature: 0.8,
+                        top_p: 0.9,
+                        return_full_text: false
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            let generatedText = data[0]?.generated_text || '';
+
+            // Parse the AI response
+            const question = this.parseAIResponse(generatedText);
+
+            // Restore original text before returning
+            questionText.textContent = originalText;
+
+            return question;
+        } catch (error) {
+            // Restore original text on error
+            questionText.textContent = originalText;
+            throw error;
+        }
+    }
+
+    parseAIResponse(text) {
+        try {
+            // Extract question
+            const questionMatch = text.match(/Q:\s*(.+?)(?=\n[A-D]\))/s);
+            const question = questionMatch ? questionMatch[1].trim() : '';
+
+            // Extract answers
+            const answers = [];
+            const answerMatches = text.matchAll(/[A-D]\)\s*(.+?)(?=\n|$)/g);
+            for (const match of answerMatches) {
+                answers.push(match[1].trim());
+            }
+
+            // Extract correct answer
+            const correctMatch = text.match(/CORRECT:\s*([A-D])/);
+            const correctLetter = correctMatch ? correctMatch[1] : 'A';
+            const correctIndex = correctLetter.charCodeAt(0) - 'A'.charCodeAt(0);
+
+            // Validate we have all components
+            if (!question || answers.length < 4) {
+                throw new Error('Invalid AI response format');
+            }
+
+            return {
+                id: Date.now(),
+                text: question,
+                answers: answers.slice(0, 4),
+                correctAnswer: answers[correctIndex],
+                category: "ai-generated",
+                difficulty: this.currentTier >= 10 ? "expert" : this.currentTier >= 5 ? "hard" : "medium"
+            };
+        } catch (error) {
+            console.error('Failed to parse AI response:', error);
+            throw new Error('Could not parse AI-generated question');
+        }
     }
 
     generateDemoQuestion() {
